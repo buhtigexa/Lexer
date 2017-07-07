@@ -8,11 +8,13 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 				
-		Lexer l = new Lexer("/home/marcelo/workspace/test_files/entrega1.txt");
+		Lexer l = new Lexer("/home/marcelo/workspace/test_files/asigns.txt");
 		
 		Object token=null;
-		while (token==null){
+		for (int i=0; i <260;i++){
 			token=l.getToken();
+			System.out.println();
+			System.out.println("--" + token);
 		}
 		
 		String t=(String)token;
@@ -20,20 +22,7 @@ public class Test {
 			System.out.println(" >>>> END OF FILE <<<<");
 		}
 		
-		/*
-		l = new Lexer("/home/marcelo/workspace/test_files/tp2-ambitos-32-ok.txt");
 		
-		token=null;
-		while (token==null){
-			token=l.getToken();
-		}
-		
-		t=(String)token;
-		if (t.equals("T_EOF")){
-			System.out.println(" >>>> END OF FILE <<<<");
-		}
-		
-		*/
 		
 		
 		
