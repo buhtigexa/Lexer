@@ -1,5 +1,6 @@
 package semanticActions;
 
+import symboltable.RowConst;
 import automaton.Lexer;
 
 public class Constant extends SimpleAction{
@@ -18,25 +19,24 @@ public class Constant extends SimpleAction{
 		
 		constant=Long.parseLong(lexer.lexeme);
 		
-		if (constant <= 65535){
-			//token ( uint, ptr_ts)
-			System.out.println(" CONSTANT UINT:"  + constant);
-			token=null;
+		if ((constant <= 65535)&&(constant >=0)){
+			token = new RowConst("T_UINT",lexer.lexeme,"UINT");
 		}
+		
 		else 
-			if ( (constant > 65566) && ((constant-1) <= 2147483647)){
-				//token (long, ptr_ts)
+			if ( (constant > 65536) && ((constant-1) <= 2147483647)){
 				System.out.println(" CONSTANT LONG :"  + constant);
-				token=null;
+				token = new RowConst("T_LONG",lexer.lexeme,"LONG");
 			}
 		
 			else {
+				
 				System.out.println("[Error - Constante fuera de rango ] " + lexer.lexeme);
 				lexer.errors++;
 			}
 				
 		
-		return null;
+		return token;
 	}
 
 }

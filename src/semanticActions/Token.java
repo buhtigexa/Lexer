@@ -1,5 +1,6 @@
 package semanticActions;
 
+import symboltable.RowToken;
 import automaton.Lexer;
 
 public class Token extends SimpleAction {
@@ -12,8 +13,12 @@ public class Token extends SimpleAction {
 	@Override
 	public Object execute(char c) {
 		// TODO Auto-generated method stub
-		System.out.println(" TOKEN : " + lexer.lexeme);
-		return null;
+		Object token = null;
+		
+		token = new RowToken(lexer.lexeme);
+		
+		return token;
+		
 	}
 
 }
