@@ -23,7 +23,7 @@ public class Lexer {
 	protected String filePath;
 	protected RandomAccessFile raf;
 	public String lexeme;
-	public final static int MaxState=5;
+	public final static int MaxState=16;
 	
 	long position;
 	
@@ -54,13 +54,13 @@ public class Lexer {
 	
 	public SemanticAction as0 = new Empty(this);
 			
-	public SemanticAction as1=new Clear(this);
+	public SemanticAction as1 = new Clear(this);
 	
-	public SemanticAction as2=new Accumulate(this);
+	public SemanticAction as2 = new Accumulate(this);
 	
-	public SemanticAction as3=new Rewind(this);
+	public SemanticAction as3 = new Rewind(this);
 	
-	public SemanticAction as4=new ID(this);
+	public SemanticAction as4 = new ID(this);
 	
 	public SemanticAction as5 = new WhiteChar(this);
 	
@@ -73,9 +73,9 @@ public class Lexer {
 	
 	// composite semantic actions 
 	
-	public SemanticAction as12=new SequentialAction(this, as1, as2);
+	public SemanticAction as12 = new SequentialAction(this, as1, as2);
 
-	public SemanticAction as34=new SequentialAction(this, as3, as4);
+	public SemanticAction as34 = new SequentialAction(this, as3, as4);
 			
 	public SemanticAction as36 = new SequentialAction(this, as3, as6);
 	
@@ -93,7 +93,7 @@ public class Lexer {
 																							// invalid char
 	/*		0   1   2   3    4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19	20*/
 	
-	/*e0*/ {e2, e1, e12,e10,ef, e3, e4, ef, ef, e3, e3, e8, e3, e0, e0, e0, e0, e3, e3, e3, ef},
+	/*e0*/ {e2, e1,e12,e10, e3, e3, e4, ef, ef, e3, e3, e8, e3, e0, e0, e0, e0, e3, e3, e3, ef},
 	
 	/*e1*/ {ef, e1, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
 	
@@ -109,7 +109,7 @@ public class Lexer {
 	
 	/*e7*/ {ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
 	
-	/*e8*/ {e0, e0, e0, e0, e0, e0, e0, e9, e0, e0, e0, e0, e0, e0, e0, e0, e0, e0, e0, e0, ef},
+	/*e8*/ {ef, ef, ef, ef, ef, ef, ef, e9, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
 	
 	/*e9*/ {ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
 	
@@ -134,7 +134,7 @@ public class Lexer {
 
 	/*		0     1      2     3     4     5     6     7     8      9   10    11    12    13    14    15   16     17    18    19   20   */
 			
-	/*e0*/ {as12,as12, as12, as12, as0, as12, as12,  as0, as12, as12, as12,  as0, as12, as5,  as5,  as5,  as5,  as12,  as12,  as12, as0},
+	/*e0*/ {as12,as12, as12, as12, as12, as12, as12,  as0, as12, as12, as12,  as12, as12, as5,  as5,  as5,  as5,  as12,  as12,as12,  as0},
 	
 	/*e1*/ {as34,as2 , as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34,  as0},
 	
@@ -158,11 +158,11 @@ public class Lexer {
 	
 	/*e11*/{as37,as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37,  as0},
 	
-	/*e12*/{as37,as37, as37, as37, as37, as37, as37, as37, as37, as0, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37,   as0},
+	/*e12*/{as37,as37, as37, as37, as37, as37, as37, as37, as37, as0, as37, as37, as37, as37, as37, as37, as37, as37, as37,  as37,  as0},
 	
-	/*e13*/{as0,  as0,  as0, as0,  as0,  as0,  as0,   as0,  as0, as0,  as0,  as0,  as0,  as0, as5 ,  as5,  as5,  as0,  as0,  as0,   as0},
+	/*e13*/{as0,  as0,  as0, as0,  as0,  as0,  as0,   as0,  as0, as0,  as0,  as0,  as0,  as0, as5 ,  as5,  as5,  as0,  as0,   as0,  as0},
 	
-	/*e14*/{ as3, as3,  as0,  as3,  as3,  as3,  as3,  as3,  as3,  as3, as3,  as3,  as3,  as3,  as3 ,  as3,  as3,  as3,  as3, as3,   as0},
+	/*e14*/{ as3, as3,  as0,  as3,  as3,  as3,  as3,  as3,  as3,  as3, as3,  as3,  as3,  as3,  as3 ,  as3,  as3,  as3,  as3,  as3,  as0},
 	
 	/*e15*/{as13,as13, as13, as13 ,as13, as13, as13, as13, as13, as13, as13, as13, as13, as13, as13,  as13, as13, as13, as13, as13, as0},
 	
@@ -276,25 +276,28 @@ public class Lexer {
 	public Object getToken(){
 		
 		Object token=null;
-		int e_i=0;
+		int e_i=e0;
 		int code=0;
 		char c=0;
 		SemanticAction currentAction=null;
+		
 		try{
 			
-			//while(true){
-			while (e_i!=ef){
+			while ( e_i != ef ){
 				
 				c=(char)raf.readByte();
-				//System.out.println(" Caracter - codigo : " +  c + " -- "  + (int)c + " ---- "   +  " "  + (short)c   );
 				position++;
 				code=map(c);
 				currentAction=actions[e_i][code];
 				e_i=automaton[e_i][code];
-				currentAction.execute(c);
+				token=currentAction.execute(c);
 				if (map(c)==INVALID_CHAR){
 					errors++;
 					System.out.println("[Error: Caracter inválido- linea,columna] : " + line + " , "  + column + "  " + c );
+				}
+				
+				if ((e_i==ef) && (token==null)){
+					e_i=e0;
 				}
 			}
 			

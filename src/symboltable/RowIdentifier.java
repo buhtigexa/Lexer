@@ -2,7 +2,7 @@ package symboltable;
 
 public class RowIdentifier extends Row{
 
-	public String type;
+	
 	
 	public String getType() {
 		return type;

@@ -13,12 +13,14 @@ public class Token extends SimpleAction {
 	@Override
 	public Object execute(char c) {
 		// TODO Auto-generated method stub
+		
 		Object token = null;
-		
 		token = new RowToken(lexer.lexeme);
-		
+		//System.out.println(token);
 		return token;
 		
 	}
 
 }
+
+

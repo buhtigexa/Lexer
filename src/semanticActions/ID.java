@@ -33,7 +33,7 @@ public class ID extends SimpleAction{
 				}
 			token = new RowIdentifier("ID",lexer.lexeme,"");
 			
-			
+		//System.out.println(token);	
 		return token;
 	}
 

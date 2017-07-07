@@ -13,9 +13,10 @@ public class SequentialAction extends CompositeAction{
 	public Object execute(char c) {
 		// TODO Auto-generated method stub
 		sa1.execute(c);
-		sa2.execute(c);
 		
-		return null;
+		return sa2.execute(c);
+		
+		//return null;
 	}
 
 }

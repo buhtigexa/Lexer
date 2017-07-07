@@ -25,7 +25,7 @@ public class Constant extends SimpleAction{
 		
 		else 
 			if ( (constant > 65536) && ((constant-1) <= 2147483647)){
-				System.out.println(" CONSTANT LONG :"  + constant);
+				//System.out.println(" CONSTANT LONG :"  + constant);
 				token = new RowConst("T_LONG",lexer.lexeme,"LONG");
 			}
 		
@@ -35,7 +35,7 @@ public class Constant extends SimpleAction{
 				lexer.errors++;
 			}
 				
-		
+		//System.out.println(token);
 		return token;
 	}
 
