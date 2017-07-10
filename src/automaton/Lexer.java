@@ -11,19 +11,22 @@ import semanticActions.Clear;
 import semanticActions.Constant;
 import semanticActions.Empty;
 import semanticActions.ID;
+import semanticActions.IllegalCharacter;
 import semanticActions.Rewind;
 import semanticActions.SemanticAction;
 import semanticActions.SequentialAction;
+import semanticActions.TComment;
+import semanticActions.TString;
 import semanticActions.Token;
 import semanticActions.WhiteChar;
 
 public class Lexer {
 
-	final static int INVALID_CHAR = 20;
+	final static int INVALID_CHAR = 21;
 	protected String filePath;
 	protected RandomAccessFile raf;
 	public String lexeme;
-	public final static int MaxState=16;
+	public final static int MaxState=18;
 	
 	long position;
 	
@@ -70,6 +73,10 @@ public class Lexer {
 	
 	public SemanticAction as8 = new IllegalCharacter(this);
 	
+	public SemanticAction as9 = new TString(this);
+		
+	public SemanticAction as10 = new TComment(this);
+	
 	
 	// composite semantic actions 
 	
@@ -83,91 +90,110 @@ public class Lexer {
 	
 	public SemanticAction as38 = new SequentialAction(this, as3, as8);
 	
-	
 	public SemanticAction as13 = new SequentialAction(this,as1,as3);
+	
+	public SemanticAction as39 = new SequentialAction(this, as3, as9);
+	
+	public SemanticAction as87 = new SequentialAction(this, as8, as7);
+	
+	public SemanticAction as28 = new SequentialAction(this, as2, as8);
+	
+	public SemanticAction as310 = new SequentialAction(this, as3, as10);
+	
+	public SemanticAction as810 = new SequentialAction(this, as8, as10);
 	
 	public Hashtable<String, String> reservedWords;
 
 	
 	public int automaton[][]={
 																							// invalid char
-	/*		0   1   2   3    4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19	20*/
+			
+	/*		0 	  1      2     3    4      5      6     7    8      9    10     11    12     13     14    15    16     17   18    19	20	 21*/
 	
-	/*e0*/ {e2, e1,e12,e10, e3, e3, e4, ef, ef, e3, e3, e8, e3, e0, e0, e0, e0, e3, e3, e3, ef},
-	
-	/*e1*/ {ef, e1, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e2*/ {e2, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e3*/ {ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e4*/ {ef, ef, ef, ef, ef, ef, ef, e5, e5, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e5*/ {ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e6*/ {ef, ef, ef, ef, ef, ef, ef, e7, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e7*/ {ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e8*/ {ef, ef, ef, ef, ef, ef, ef, e9, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e9*/ {ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e10*/{ef, ef, ef, e11,ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e11*/{ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e12*/{ef, ef, ef, ef, ef, ef, ef, ef, ef, e13,ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e13*/{e13,e13,e13,e13,e13,e13,e13,e13,e13,e13,e14,e13,e13,e13,e13,e13,e13,e13,e13,e13,ef},
-	
-	/*e14*/{e13,e13,e15,e13,e13,e13,e13,e13,e13,e13,e14,e13,e13,e13,e13,e13,e13,e13,e13,e13,ef},
-	
-	/*e15*/{ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef},
-	
-	/*e16*/{ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef, ef}
+/*e0*/ 	{	ef,  ef,    e3,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,  e14,   ef},
+
+/*e1*/ 	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},	
+
+/*e2*/ 	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},		
+
+/*e3*/ 	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   e4,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
+
+/*e4*/ 	{	e4,  e4,    e4,    e4,  e4,   e4,    e4,   e4,   e4,   e4,   e5,    e4,    e4,   e4,    e4,   e4,   e4,   e4,   e4,   e4,   e4,   e4},
+
+/*e5*/ 	{	e4,  e4,    e6,    e4,  e4,   e4,    e4,   e4,   e4,   e4,   e4,    e4,    e4,   e4,    e4,   e4,   e4,   e4,   e4,   e4,   e4,   e4},
+
+/*e6*/ 	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
+
+
+/*e7*/ 	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
+
+/*e8*/ 	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
+
+/*e9*/ 	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
+
+/*e10*/ {	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
+
+/*e11*/ {	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
+
+/*e12*/	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
+
+/*e13*/	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
+
+/*e14*/	{ e14,  e14,   e14,   e14, e14,  e14,   e14,  e14,  e14,  e14,  e14,   e14,   e14,  e14,   e14,  e14,  e14,  e14,  e14,  e14,  e15,  e14},
+
+/*e15*/	{  ef,   ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,  e0}
+
+
 	
 	};
 	
 	
 	public SemanticAction actions[][]={
 
-	/*		0     1      2     3     4     5     6     7     8      9   10    11    12    13    14    15   16     17    18    19   20   */
-			
-	/*e0*/ {as12,as12, as12, as12, as12, as12, as12,  as0, as12, as12, as12,  as12, as12, as5,  as5,  as5,  as5,  as12,  as12,as12,  as0},
+	/*		0     1      2     3     4     5     6     7     8      9    10     11    12     13     14    15    16     17    18    19    20     21*/
+
+/*e0*/ {   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as1,   as0},
+
+/*e1*/ {   as0,  as0,   as0,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+
+/*e2*/ {   as0,  as0,   as0,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+
+/*e3*/ {  as37, as37,  as37, as37, as37,  as37, as37, as37, as37, as1, as37,  as37, as37,   as37,  as37, as37, as37, as37,  as37, as37, as37, as87},
 	
-	/*e1*/ {as34,as2 , as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34, as34,  as0},
+/*e4*/ {   as2,  as2,   as2,  as2,  as2,  as2,  as2,  as2,  as2,   as2,  as0,   as2,  as2,   as2,   as2,  as2,  as2,  as2,   as2,  as2,  as2,  as28},
 	
-	/*e2*/ {as2 ,as36, as36, as36, as36, as36, as36, as36, as36, as36, as36, as36, as36, as36, as36, as36, as36, as36, as36, as36,  as0},
+/*e5*/ {   as3,  as3,   as3,  as3,  as3,  as3,  as3,  as3,  as3,   as3,  as3,   as3,  as3,   as3,   as3,  as3,  as3,  as3,   as3,  as3,  as3,   as3},	
 	
-	/*e3*/ {as37,as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37,  as0},
+/*e6*/ { as310,as310, as310,as310,as310, as310, as310,as310,as310,as310,as310,as310,as310, as310, as310,as310,as310,as310, as310,as310, as310 ,as810},
+
+/*e7*/ {   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+
+/*e8*/ {   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+
+/*e9*/ {   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+
+/*e10*/{   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+
+/*e11*/{   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+
+/*e12*/{   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+
+/*e13*/{   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+
+/*e14*/{   as2,  as2,  as2,  as2,   as2,  as2,  as2,  as2,  as2,   as2,  as2,   as2,  as2,   as2,   as2,  as2,  as2,  as2,   as2,  as2,  as0,   as8},
+
+/*e15*/{  as39, as39, as39, as39, as39,  as39, as39, as39, as39,  as39, as39,  as39,  as39, as39,  as39, as39, as39, as39,  as39, as39, as39,  as39}
+
 	
-	/*e4*/ {as37,as37, as37, as37, as37, as37, as37,  as2,  as2, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37,  as0},
-	
-	/*e5*/ {as37,as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37,  as0},
-	
-	/*e6*/ {as37,as37, as37, as37, as37, as37, as37,  as2, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37,  as0},
-	
-	/*e7*/ {as37,as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37,  as0},
-	
-	/*e8*/ {as38,as38, as38, as38, as38, as38, as38,  as2, as38, as38, as38, as38, as38, as38, as38, as38, as38, as38, as38, as38,  as0},
-	
-	/*e9*/ {as37,as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37,  as0},
-	
-	/*e10*/{as37,as37, as37,  as2, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37,  as0},
-	
-	/*e11*/{as37,as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37, as37,  as0},
-	
-	/*e12*/{as37,as37, as37, as37, as37, as37, as37, as37, as37, as0, as37, as37, as37, as37, as37, as37, as37, as37, as37,  as37,  as0},
-	
-	/*e13*/{as0,  as0,  as0, as0,  as0,  as0,  as0,   as0,  as0, as0,  as0,  as0,  as0,  as0, as5 ,  as5,  as5,  as0,  as0,   as0,  as0},
-	
-	/*e14*/{ as3, as3,  as0,  as3,  as3,  as3,  as3,  as3,  as3,  as3, as3,  as3,  as3,  as3,  as3 ,  as3,  as3,  as3,  as3,  as3,  as0},
-	
-	/*e15*/{as13,as13, as13, as13 ,as13, as13, as13, as13, as13, as13, as13, as13, as13, as13, as13,  as13, as13, as13, as13, as13, as0},
-	
-	/*e16*/{as0,  as0,  as0,  as0 ,as0,   as0,  as0,  as0,  as0,  as0,  as0,  as0,  as0,  as0,  as0,   as0, as0,  as0,  as0,  as0,  as0}
 	};
+	
+
+	
+	//	https://youtu.be/JnaP-nOEF8A
+	//	https://youtu.be/GPeiU6RqIjA
+	//	https://youtu.be/PIQOqMmU0A8
+	
+	
 	
 	public Lexer(String path){
 		setUp();
@@ -185,6 +211,7 @@ public class Lexer {
 		return false;
 	}
 	public static int map(char c){
+		
 		int code=(int)c;
 		int map=INVALID_CHAR;// invalid char
 		
@@ -269,6 +296,11 @@ public class Lexer {
 			map = 19;
 		}
 		
+		// '
+		if (code ==39){
+			map = 20;
+		}
+		
 		return map;
 		
 	}
@@ -279,13 +311,15 @@ public class Lexer {
 		int e_i=e0;
 		int code=0;
 		char c=0;
+		byte b =0;
 		SemanticAction currentAction=null;
 		
 		try{
 			
 			while ( e_i != ef ){
 				
-				c=(char)raf.readByte();
+				b=raf.readByte();
+				c=(char)b;
 				position++;
 				code=map(c);
 				currentAction=actions[e_i][code];
@@ -295,17 +329,15 @@ public class Lexer {
 					errors++;
 					System.out.println("[Error: Caracter inválido- linea,columna] : " + line + " , "  + column + "  " + c );
 				}
-				
 				if ((e_i==ef) && (token==null)){
-					e_i=e0;
+					 e_i=e0;
 				}
 			}
 			
 		}
 		
 		catch(EOFException e){
-		
-			//System.out.println("EOF");
+					
 			token="T_EOF";
 		
 		}

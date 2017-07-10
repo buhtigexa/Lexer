@@ -8,7 +8,7 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 				
-		Lexer l = new Lexer("/home/marcelo/workspace/test_files/asigns.txt");
+		Lexer l = new Lexer("/home/marcelo/workspace/test_files/entrega1.txt");
 		
 		Object token=null;
 		for (int i=0; i <260;i++){
