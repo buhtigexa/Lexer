@@ -11,17 +11,22 @@ public class Test {
 		Lexer l = new Lexer("/home/marcelo/workspace/test_files/entrega1.txt");
 		
 		Object token=null;
-		for (int i=0; i <260;i++){
+		for (int i=0; i <200;i++){
 			token=l.getToken();
 			System.out.println();
 			System.out.println("--" + token);
 		}
 		
-		String t=(String)token;
-		if (t.equals("T_EOF")){
+		try
+		{
+			String t=(String)token;
+			if (t.equals("T_EOF")){
+				System.out.println(" >>>> END OF FILE <<<<");
+			}
+		}
+		catch(ClassCastException e){
 			System.out.println(" >>>> END OF FILE <<<<");
 		}
-		
 		
 		
 		

@@ -102,19 +102,27 @@ public class Lexer {
 	
 	public SemanticAction as810 = new SequentialAction(this, as8, as10);
 	
+	public SemanticAction as78 = new SequentialAction(this, as7, as8);
+	
+	public SemanticAction as32 = new SequentialAction(this, as3, as2);
+	
+	public SemanticAction as84 = new SequentialAction(this, as8, as4);
+	
+	public SemanticAction as86 = new SequentialAction(this, as8, as6);
+	
 	public Hashtable<String, String> reservedWords;
 
 	
 	public int automaton[][]={
 																							// invalid char
 			
-	/*		0 	  1      2     3    4      5      6     7    8      9    10     11    12     13     14    15    16     17   18    19	20	 21*/
+	/*		0 	  1      2     3     4     5     6     7     8      9    10     11    12     13     14    15    16     17    18    19	20	 21*/
 	
-/*e0*/ 	{	ef,  ef,    e3,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,  e14,   ef},
+/*e0*/ 	{	e2,  e1,    e3,    ef,  e7,   e7,    e10,  e7,  e12,    e7,   e7,   ef,   e7,    e0,   e0,   e0,    e0,   e7,  e7,   e7,  e14,  ef},
 
-/*e1*/ 	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},	
+/*e1*/ 	{	ef,  e1,    ef,    ef,  ef,   ef,    ef,   ef,   ef,    ef,   ef,    ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,  ef,  ef,   ef},	
 
-/*e2*/ 	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},		
+/*e2*/ 	{	e2,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},		
 
 /*e3*/ 	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   e4,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
 
@@ -131,54 +139,50 @@ public class Lexer {
 
 /*e9*/ 	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
 
-/*e10*/ {	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
+/*e10*/ {	ef,  ef,    ef,    ef,  ef,   ef,    ef,  e11,  e11,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
 
 /*e11*/ {	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
 
-/*e12*/	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
+/*e12*/	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,  e13,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
 
 /*e13*/	{	ef,  ef,    ef,    ef,  ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,   ef},
 
 /*e14*/	{ e14,  e14,   e14,   e14, e14,  e14,   e14,  e14,  e14,  e14,  e14,   e14,   e14,  e14,   e14,  e14,  e14,  e14,  e14,  e14,  e15,  e14},
 
-/*e15*/	{  ef,   ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,  e0}
+/*e15*/	{  ef,   ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,  ef}
 
-
-	
 	};
-	
-	
 	public SemanticAction actions[][]={
 
 	/*		0     1      2     3     4     5     6     7     8      9    10     11    12     13     14    15    16     17    18    19    20     21*/
 
-/*e0*/ {   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as1,   as0},
+/*e0*/ {  as12, as12, as12,  as0,  as12, as12, as12, as12, as12,  as12,  as12,  as0, as12,  as5,   as5,   as5,  as5,  as12, as12, as12, as1,  as8},
 
-/*e1*/ {   as0,  as0,   as0,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+/*e1*/ {  as34, as2,   as34, as34,  as34, as34, as34, as34, as34,  as34,  as34, as34, as34, as34, as34,  as34,  as34, as34, as34, as34, as34,  as84},
 
-/*e2*/ {   as0,  as0,   as0,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+/*e2*/ {  as2,  as36,  as36,  as36,  as36,  as36,  as36,  as36,as36,  as36, as36,  as36, as36,  as36,  as36,  as36,  as36,  as36,  as36,  as36, as86},
 
-/*e3*/ {  as37, as37,  as37, as37, as37,  as37, as37, as37, as37, as1, as37,  as37, as37,   as37,  as37, as37, as37, as37,  as37, as37, as37, as87},
+/*e3*/ {  as37, as37,  as37, as37, as37,  as37, as37, as37, as37, as12,  as37,  as37, as37,   as37,  as37, as37, as37, as37,  as37, as37,as37, as87},
 	
-/*e4*/ {   as2,  as2,   as2,  as2,  as2,  as2,  as2,  as2,  as2,   as2,  as0,   as2,  as2,   as2,   as2,  as2,  as2,  as2,   as2,  as2,  as2,  as28},
+/*e4*/ {  as2,  as2,   as2,  as2,  as2,  as2,  as2,   as2,  as2,   as2,  as2,   as2,  as2,   as2,   as2,  as2,  as2,  as2,   as2,  as2,  as2,  as28},
 	
-/*e5*/ {   as3,  as3,   as3,  as3,  as3,  as3,  as3,  as3,  as3,   as3,  as3,   as3,  as3,   as3,   as3,  as3,  as3,  as3,   as3,  as3,  as3,   as3},	
+/*e5*/ {  as3,  as3,   as0,  as3,  as3,   as3,  as3,  as3,  as3,   as3,  as3,   as3,  as3,   as3,   as3,  as3,  as3,  as3,   as3,  as3, as3,   as8},	
 	
-/*e6*/ { as310,as310, as310,as310,as310, as310, as310,as310,as310,as310,as310,as310,as310, as310, as310,as310,as310,as310, as310,as310, as310 ,as810},
+/*e6*/ { as310,as310, as310,as310,as310, as310,as310,as310,as310,as310,as310,as310,as310, as310, as310,as310,as310,as310, as310,as310, as310, as810},
 
-/*e7*/ {   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+/*e7*/ {  as37, as37,  as37, as37, as37,  as37, as37, as37, as37, as37, as37, as37, as37,  as37, as37, as37, as37,   as37,  as37, as37,  as37, as78},
 
 /*e8*/ {   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
 
 /*e9*/ {   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
 
-/*e10*/{   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+/*e10*/{  as37, as37,  as37, as37, as37, as37, as37,  as2,  as2,  as37, as37,  as37, as37,  as37,  as37,  as37, as37,as37,  as37, as37, as37,  as37},
 
-/*e11*/{   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+/*e11*/{  as37, as37,  as12, as37, as37, as37, as37, as37, as37,  as37, as37,  as37, as37,  as37,  as37,  as37, as37,as37,  as37, as37, as37,  as78},
 
-/*e12*/{   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+/*e12*/{  as37, as37, as37,  as37, as37, as37, as37,  as2, as37, as37, as37,   as37, as37,  as37, as37, as37, as37, as37,  as37, as37, as37,   as78},
 
-/*e13*/{   as0,  as0,  as12,  as0,  as0,  as0,  as0,  as0,  as0,   as0,  as0,   as0,  as0,   as0,   as0,  as0,  as0,  as0,   as0,  as0,  as0,   as0},
+/*e13*/{  as37, as37, as37, as37, as37, as37,  as37, as37, as37, as37, as37,   as37 ,as37, as37,  as37, as37, as37, as37,  as37,  as37,  as37,  as78},
 
 /*e14*/{   as2,  as2,  as2,  as2,   as2,  as2,  as2,  as2,  as2,   as2,  as2,   as2,  as2,   as2,   as2,  as2,  as2,  as2,   as2,  as2,  as0,   as8},
 
@@ -204,12 +208,14 @@ public class Lexer {
 				e.printStackTrace();
 		}
 	}
+	
 	public boolean isReservedWord(String lexeme){
 		if (reservedWords.containsKey(lexeme)){
 			return true;
 		}
 		return false;
 	}
+	
 	public static int map(char c){
 		
 		int code=(int)c;
@@ -302,8 +308,8 @@ public class Lexer {
 		}
 		
 		return map;
-		
 	}
+	
 	
 	public Object getToken(){
 		
@@ -366,6 +372,7 @@ public class Lexer {
 	protected void setUp(){
 		
 		reservedWords=new Hashtable<String, String>();
+	
 		reservedWords.put("long","long");
 		reservedWords.put("uint","uint");
 		reservedWords.put("if","if");
