@@ -184,9 +184,9 @@ public class Lexer {
 
 /*e12*/{  as37, as37, as37,  as37, as37, as37, as37,  as2, as37, as37, as37,   as37, as37,  as37, as37, as37, as37, as37,  as37, as37, as37,   as78},
 
-/*e13*/{  as37, as37, as37, as37, as37, as37,  as37, as37, as37, as37, as37,   as37 ,as37, as37,  as37, as37, as37, as37,  as37,  as37,  as37,  as78},
+/*e13*/{  as37, as37, as37, as37, as37, as37,  as37, as37, as37, as37, as37,   as37 ,as37, as37,  as37, as37, as37, as37,  as37,  as37,  as37, as78},
 
-/*e14*/{  as2,   as2,  as2,  as2,  as2,  as2,   as2,  as2,  as2,  as2,  as2,    as2,  as2,  as2,   as2,  as2,  as2,  as2,   as2,   as2,   as0,   as8},
+/*e14*/{  as2,   as2,  as2,  as2,  as2,  as2,   as2,  as2,  as2,  as2,  as2,    as2,  as2,  as2,   as2,  as2,  as2,  as2,   as2,   as2,   as0,  as8},
 
 /*e15*/{  as39, as39, as39, as39, as39,  as39, as39, as39, as39,  as39, as39,  as39,  as39, as39,  as39, as39, as39, as39,  as39, as39, as39,   as39}
 
@@ -378,7 +378,6 @@ public class Lexer {
 		reservedWords.put("long","long");
 		reservedWords.put("uint","uint");
 		reservedWords.put("if","if");
-		reservedWords.put("then","then");
 		reservedWords.put("else","else");
 		reservedWords.put("do","do");
 		reservedWords.put("while","while");

@@ -31,10 +31,24 @@ public class ID extends SimpleAction{
 				lexer.warnings++;
 				lexer.lexeme=lexer.lexeme.substring(0, 15);
 				}
-			token = new RowIdentifier("ID",lexer.lexeme,"");
+			token = new RowIdentifier("T_IDENTIFIER",lexer.lexeme,"");
 			
 		//System.out.println(token);	
 		return token;
 	}
 
 }
+
+/*
+
+T_STRING
+T_RW_IF
+T_RW_ELSE
+T_RW_DO
+T_RW_PRINT
+T_RW_WHILE
+T_RW_TOLONG
+T_RW_LONG
+T_RW_UINT
+
+*/

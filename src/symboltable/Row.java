@@ -7,15 +7,11 @@ public abstract class Row {
 	public String type;
 	
 	public Row(String token){
-		
 		this.token=token;
-		
 	}
 	
 	public String getToken(){
-		
 		return token;
-		
 	}
 	
 	public abstract String getLexeme();
