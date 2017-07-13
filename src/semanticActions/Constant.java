@@ -20,13 +20,13 @@ public class Constant extends SimpleAction{
 		constant=Long.parseLong(lexer.lexeme);
 		
 		if ((constant <= 65535)&&(constant >=0)){
-			token = new RowConst("T_UINT",lexer.lexeme,"UINT");
+			token = new RowConst("const",lexer.lexeme,"UINT");
 		}
 		
 		else 
 			if ( (constant > 65536) && ((constant-1) <= 2147483647)){
 				//System.out.println(" CONSTANT LONG :"  + constant);
-				token = new RowConst("T_LONG",lexer.lexeme,"LONG");
+				token = new RowConst("const",lexer.lexeme,"LONG");
 			}
 		
 			else {

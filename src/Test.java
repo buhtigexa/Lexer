@@ -1,3 +1,7 @@
+
+
+import parser.Parser;
+import symboltable.SymbolTable;
 import automaton.Lexer;
 
 public class Test {
@@ -8,14 +12,28 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 				
-		Lexer l = new Lexer("/home/marcelo/workspace/test_files/entrega1.txt");
 		
+		SymbolTable symbolTable = new SymbolTable();
+		Lexer lexer = new Lexer("/home/marcelo/workspace/test_files/entrega1.txt",symbolTable);
+		
+		
+		Parser parser = new Parser();
+		parser.load(lexer, symbolTable);
+		parser.run();
+		
+		
+		/*
 		Object token=null;
-		for (int i=0; i <200;i++){
-			token=l.getToken();
+				
+		for (int i=0; i <280;i++){
+			token=lexer.getToken();
+			
 			System.out.println();
-			System.out.println("--" + token);
+			System.out.println("LEXER -- TOKEN " + token);
 		}
+		
+		System.out.println("--------  SYMBOL TABLE ---------------------");
+		System.out.println(symbolTable);
 		
 		try
 		{
@@ -24,11 +42,18 @@ public class Test {
 				System.out.println(" >>>> END OF FILE <<<<");
 			}
 		}
+		
+		catch(NullPointerException e){
+			
+			System.out.println(" >>>> END OF FILE  <<<<");
+		}
 		catch(ClassCastException e){
-			System.out.println(" >>>> END OF FILE <<<<");
+
+			System.out.println(" >>>> END OF FILE EXCEPTION <<<<");
+		
 		}
 		
-		
+		*/
 		
 		
 	}

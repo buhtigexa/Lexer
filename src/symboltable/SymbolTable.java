@@ -14,4 +14,21 @@ public class SymbolTable {
 		rows=new Vector<Row>();
 		
 	}
+	
+	public void add(Row row){
+		
+		this.rows.add(row);
+	}
+	
+	
+	public String toString(){
+		
+		String str=new String();
+				
+		for (Row row:rows){
+			str+= "\n " + rows;
+		}
+		return str;
+		
+	}
 }

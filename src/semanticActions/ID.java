@@ -31,7 +31,7 @@ public class ID extends SimpleAction{
 				lexer.warnings++;
 				lexer.lexeme=lexer.lexeme.substring(0, 15);
 				}
-			token = new RowIdentifier("T_IDENTIFIER",lexer.lexeme,"");
+			token = new RowIdentifier("identifier",lexer.lexeme,"");
 			
 		//System.out.println(token);	
 		return token;
