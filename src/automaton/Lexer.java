@@ -34,7 +34,7 @@ public class Lexer {
 	
 	long position;
 	
-	boolean eof;
+	public static boolean eof;
 	
 	public int line,column,errors,warnings;
 	
@@ -124,7 +124,7 @@ public class Lexer {
 			
 	/*		0 	  1      2     3     4     5     6     7     8      9    10     11    12     13     14    15    16     17    18    19	20	 21*/
 	
-/*e0*/ 	{	e2,  e1,    e3,    e8,  e7,   e7,    e10,  e7,  e12,    e7,   e7,   e16,   e7,    e0,   e0,   e0,    e0,   e7,  e7,   e7,  e14,  ef},
+/*e0*/ 	{	e2,  e1,    e3,    e8,  e7,   e7,    e10,  e7,  e12,    e7,   e7,   e16,   e7,    e0,   e0,   e0,    e0,   e7,  e7,   e7,  e14,   ef},
 
 /*e1*/ 	{	ef,  e1,    ef,    ef,  ef,   ef,    ef,   ef,   ef,    ef,   ef,    ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,  ef,  ef,   ef},	
 
@@ -159,7 +159,7 @@ public class Lexer {
 
 /*e16*/	{  ef,   ef,   ef,    ef,   ef,   ef,   ef,   e17,    ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,  ef},
 
-/*e17*/	{  ef,   ef,   ef,    ef,   ef,   ef,   ef,   ef,    ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,  ef}
+/*e17*/	{  ef,   ef,   ef,    ef,   ef,   ef,   ef,    ef,    ef,   ef,   ef,    ef,    ef,   ef,    ef,   ef,   ef,   ef,   ef,   ef,   ef,  ef}
 
 	};
 	
@@ -172,21 +172,21 @@ public class Lexer {
 
 /*e1*/ {  as34, as2,   as34, as34,  as34, as34, as34, as34, as34,  as34,  as34, as34, as34, as34, as34,  as34,  as34, as34, as34, as34, as34,  as84},
 
-/*e2*/ {  as2,  as36,  as36,  as36,  as36,  as36,     as36,  as36,as36,  as36, as36,  as36, as36,  as36,  as36,  as36,  as36,  as36,  as36,  as36,as86},
+/*e2*/ {  as2,  as36,  as36,  as36,  as36, as36, as36,as36, as36,  as36, as36,  as36, as36,  as36,  as36,  as36,  as36,  as36,  as36,  as36,  as86},
 
 /*e3*/ {  as37, as37,  as37, as37, as37,  as37, as37, as37, as37, as12,  as37,  as37, as37,   as37,  as37, as37, as37, as37,  as37, as37,as37, as87},
 	
 /*e4*/ {  as2,  as2,   as2,  as2,  as2,  as2,  as2,   as2,  as2,   as2,  as2,   as2,  as2,   as2,   as2,  as2,  as2,  as2,   as2,  as2,  as2,  as28},
 	
-/*e5*/ {  as3,  as3,   as0,  as3,  as3,   as3,  as3,  as3,  as3,   as3,  as3,   as3,  as3,   as3,   as3,  as3,  as3,  as3,   as3,  as3, as3,    as8},	
+/*e5*/ {  as3,  as3,   as0,  as3,  as3,   as3,  as3,  as3,  as3,   as3,  as3,   as3,  as3,   as3,   as3,  as3,  as3,  as3,   as3,  as3,  as3,   as8},	
 	
 /*e6*/ { as310,as310, as310,as310,as310, as310,as310,as310,as310,as310,as310,as310,as310, as310, as310,as310,as310,as310, as310,as310, as310, as810},
 
-/*e7*/ {  as37, as37,  as37, as37, as37,  as37, as37, as37, as37, as37, as37,  as37, as37, as37, as37, as37, as37,  as37, as37, as37,  as37,   as78},
+/*e7*/ {  as37, as37,  as37, as37, as37,  as37, as37, as37, as37, as37, as37,  as37, as37, as37, as37, as37, as37,  as37, as37, as37,   as37,  as78},
 
-/*e8*/ {  as37, as37,  as12,  as2, as37,  as37, as37, as37, as37, as37,  as37, as37,as37,  as37, as37, as37, as37,  as37, as37, as37, as37,    as78},
+/*e8*/ {  as37, as37,  as12,  as2, as37,  as37, as37, as37, as37, as37,  as37, as37,as37,  as37, as37, as37, as37,  as37, as37, as37,   as37,  as78},
 
-/*e9*/ {  as37, as37,  as37, as37, as37, as37, as37, as37, as37,  as37, as37,  as37, as37,  as37, as37, as37, as37,  as37, as37, as37, as37,   as78},
+/*e9*/ {  as37, as37,  as37, as37, as37, as37, as37, as37, as37,  as37, as37,  as37, as37,  as37, as37, as37, as37,  as37, as37, as37,  as37,  as78},
 
 /*e10*/{  as37, as37,  as37, as37, as37, as37, as37,  as2,  as2,  as37, as37,  as37, as37,  as37,  as37,  as37, as37,as37,  as37, as37, as37,  as37},
 
@@ -194,18 +194,18 @@ public class Lexer {
 
 /*e12*/{  as37, as37, as37,  as37, as37, as37, as37,  as2, as37, as37, as37,   as37, as37,  as37, as37, as37, as37, as37,  as37, as37, as37,   as78},
 
-/*e13*/{  as37, as37, as37, as37, as37, as37,  as37, as37, as37, as37, as37,   as37 ,as37, as37,  as37, as37, as37, as37,  as37,  as37,  as37, as78},
+/*e13*/{  as37, as37, as37, as37, as37, as37,  as37, as37, as37, as37, as37,   as37 ,as37, as37,  as37, as37, as37, as37,  as37,  as37, as37,  as78},
 
-/*e14*/{  as2,   as2,  as2,  as2,  as2,  as2,   as2,  as2,  as2,  as2,  as2,    as2,  as2,  as2,   as2,  as2,  as2,  as2,   as2,   as2,   as0,  as8},
+/*e14*/{  as2,   as2,  as2,  as2,  as2,  as2,   as2,  as2,  as2,  as2,  as2,    as2,  as2,  as2,   as2,  as2,  as2,  as2,   as2,   as2,  as0,   as8},
 
-/*e15*/{  as39, as39, as39, as39, as39,  as39, as39, as39, as39,  as39, as39,  as39,  as39, as39,  as39, as39, as39, as39,  as39, as39, as39,   as39},
+/*e15*/{  as39, as39, as39, as39, as39,  as39, as39, as39, as39,  as39, as39,  as39,  as39, as39,  as39, as39, as39, as39,  as39, as39, as39,  as39},
 
 								// aqui trato con la asignacioń: ":="
 
-/*e16*/{  as37, as37, as37, as37, as37,  as37, as37, as2, as37,  as37, as37,  as37,   as37, as37,  as37, as37, as37, as37,  as37, as37, as37,   as37},
+/*e16*/{ as37, as37, as37, as37, as37, as37, as37,  as2,  as37,  as37, as37,  as37, as37, as37,  as37, as37, as37, as37,  as37, as37,  as37,   as37},
 	
-/*e17*/{  as37, as37, as37, as37, as37,  as37, as37, as37, as37,  as37, as37,  as37,  as37, as37,  as37, as37, as37, as37,  as37, as37, as37,   as37}
-	
+/*e17*/{ as37, as37, as37, as37, as37, as37, as37, as37,  as37,  as37, as37,  as37, as37,  as37,  as37, as37, as37, as37,  as37, as37, as37,   as37}
+
 	};
 	
 
@@ -350,8 +350,7 @@ public class Lexer {
 				e_i=automaton[e_i][code];
 				token=currentAction.execute(c);
 				
-				
-				
+								
 				if (map(c)==INVALID_CHAR){
 					errors++;
 					System.out.println("[Error: Caracter inválido- linea,columna] : " + line + " , "  + column + "  " + c );
@@ -360,16 +359,12 @@ public class Lexer {
 					 e_i=e0;
 				}
 			}
-			
 		}
 		
 		catch(EOFException e){
-					
 			eof=true;
-		
 		}
 		catch(IOException e){
-			
 		}
 		
 		

@@ -199,7 +199,7 @@ final static short yylhs[] = {                           -1,
    12,   12,   12,   12,
 };
 final static short yylen[] = {                            2,
-    0,    4,    3,    3,    1,    2,    1,    1,    1,    2,
+    0,    5,    3,    3,    1,    2,    1,    1,    1,    2,
     1,    3,    3,    2,    1,    3,    2,    1,    4,    3,
     2,    2,    1,    2,    2,    1,    1,    1,    1,    1,
     1,    2,    2,    2,    3,    3,    3,    3,    2,    4,
@@ -224,8 +224,9 @@ final static short yydefred[] = {                         0,
    86,    0,    0,   62,   63,   64,   65,   66,   67,   68,
     0,    0,    0,    0,   47,    0,    0,    0,    0,   41,
    40,    0,   53,   24,   92,   93,   90,   91,    0,   20,
-    2,    0,   16,   82,    0,   72,    0,   73,    0,    0,
-    0,    0,   77,   74,   78,   75,    0,   55,   19,   81,
+    0,    0,   16,   82,    0,   72,    0,   73,    0,    0,
+    0,    0,   77,   74,   78,   75,    0,   55,    2,   19,
+   81,
 };
 final static short yydgoto[] = {                          8,
    80,   81,   10,   87,   39,   13,   14,   44,   82,   74,
@@ -246,14 +247,15 @@ final static short yysindex[] = {                       -86,
     0,    9,  366,    0,    0,    0,    0,    0,    0,    0,
   314,  328,  366,  366,    0,  366,  342,  360,  366,    0,
     0,  349,    0,    0,    0,    0,    0,    0,  289,    0,
-    0,  -19,    0,    0,  -22,    0,  -28,    0,  -28,  -22,
+ -189,  -19,    0,    0,  -22,    0,  -28,    0,  -28,  -22,
   -22,  -22,    0,    0,    0,    0,   14,    0,    0,    0,
+    0,
 };
-final static short yyrindex[] = {                        89,
+final static short yyrindex[] = {                        96,
     1,    0,    0,    0,    0,    0,    0,    0,    0,    0,
   139,    0,    0,    0,  115,  129,  157,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,   96,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,   97,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,   22,    0,    0,    0,    0,    0,    0,    0,
@@ -265,11 +267,12 @@ final static short yyrindex[] = {                        89,
     0,    0,    0,    0,    0,    0,    0,    0,   -7,    0,
     0,    0,    0,    0,  -29,    0,   45,    0,   66,  159,
   168,  180,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,
 };
 final static short yygindex[] = {                         0,
-   20,   -1,    0,   64,  604,    0,    0,    0,   12,   31,
-    0,    0,    0,    0,    0,  -21,   88,  -11,  -35,    0,
-   58,   11,  580,  -43,  -42,    0,    0,
+   20,   -1,    0,   64,  604,    0,    0,    0,   18,   42,
+    0,    0,    0,    0,    0,  -21,   93,  -11,  -35,    0,
+   59,   11,  580,  -43,  -42,    0,    0,
 };
 final static int YYTABLESIZE=733;
 static short yytable[];
@@ -281,13 +284,13 @@ yytable = new short[]{                        115,
   111,   71,  112,   92,   27,   45,   36,   94,   96,   49,
    76,  120,  121,   50,   84,   69,    7,  102,   91,   75,
    98,   83,   83,   83,   69,   83,   72,   83,   46,  134,
-   47,  111,   34,  112,  150,   35,  111,   83,  112,   83,
+   47,  111,   34,  112,  151,   35,  111,   83,  112,   83,
    42,   43,   71,   11,   71,   70,   71,  137,  139,   77,
    38,   27,   41,   78,  144,  146,  100,  101,  129,  119,
-   71,  135,  133,  128,   32,   69,   36,   69,    1,   69,
-   38,  140,  141,  125,  142,    6,  132,  147,   38,   41,
-   35,  130,  122,   69,    1,  149,   70,   26,   70,    2,
-   70,    3,    4,   71,   28,    5,    6,   25,  116,    0,
+   71,  135,  133,  128,   32,   69,   36,   69,  149,   69,
+   38,  140,  141,  125,  142,    1,    6,  147,   38,   41,
+   35,  130,  132,   69,    1,  150,   70,   26,   70,    2,
+   70,    3,    4,  122,   28,    5,    6,   25,   71,  116,
     0,    0,    0,   83,   70,   83,    0,    0,   29,    0,
     0,    0,    0,    0,    0,   41,    0,    0,    7,    0,
     0,   79,    1,   41,   71,   36,   71,    2,   38,    3,
@@ -364,10 +367,10 @@ yycheck = new short[] {                         41,
    59,   43,   91,   45,   41,  123,   43,  125,   45,   59,
   256,  257,   41,    0,   43,    0,   45,  111,  112,  261,
     7,  123,    9,  261,  117,  118,   41,  258,   80,   40,
-   59,  103,  257,   93,  123,   41,    0,   43,    0,   45,
-   27,  113,  114,  125,  116,    0,   85,  119,   35,   36,
-    0,  125,   72,   59,  257,  125,   41,  125,   43,  262,
-   45,  264,  265,   26,    0,  268,  269,  125,   61,   -1,
+   59,  103,  257,   93,  123,   41,    0,   43,  278,   45,
+   27,  113,  114,  125,  116,    0,    0,  119,   35,   36,
+    0,  125,   85,   59,  257,  125,   41,  125,   43,  262,
+   45,  264,  265,   72,    0,  268,  269,  125,   26,   61,
    -1,   -1,   -1,  123,   59,  125,   -1,   -1,    0,   -1,
    -1,   -1,   -1,   -1,   -1,   72,   -1,   -1,    0,   -1,
    -1,  256,  257,   80,  123,   59,  125,  262,   85,  264,
@@ -459,7 +462,7 @@ null,null,null,null,null,null,null,null,"T_IDENTIFIER","T_CONST","T_UINT",
 final static String yyrule[] = {
 "$accept : programa",
 "programa :",
-"programa : '{' declaraciones conjunto_sentencias '}'",
+"programa : '{' declaraciones conjunto_sentencias '}' T_ENDOFFILE",
 "programa : '{' declaraciones '}'",
 "programa : '{' conjunto_sentencias '}'",
 "programa : declaracion_sentencia",
@@ -557,7 +560,6 @@ final static String yyrule[] = {
 //#line 408 "grammar.y"
 
 
-Lexer lexer;
 
 
 SymbolTable symbolTable;
@@ -571,23 +573,6 @@ int maxNest;
 
 String token;
 String stringEmpty;
-
-void initParser(Lexer a, SymbolTable t) {
-
-/*        token.clear();
-        stringEmpty.clear();
-        noEnvironment=0;
-		Lexer = a;
-       	symbolTable = t;
-        codeGenerator = cG;
-        nest = 0;
-        maxNest= 10;
-        aux=0;
-        decorator = nm;
-*/
-
-}
-
 
 
 Lexer lex ;
@@ -610,24 +595,24 @@ public int yyerror(String s){
 }
 
 public int yylex(){
-
-
-	if (lex.endOfFile()){
-    return 0 ;
-  } 
-	Row tok = (Row) lex.getToken();
-
-	if(tok == null)
-		return (Short) codes.get("ENDOFFILE");
-
-	yylval = new ParserVal(tok);
-
-	Short s = (Short) codes.get(tok.getToken());
-
+ 
+  boolean eof = false;
+  eof = lex.endOfFile();
+  if (eof){
+	return  0;//(Short)codes.get("ENDOFFILE");
+  }
+  
+  Row tok = (Row) lex.getToken();
+  if(tok == null){
+		  Short x = (Short) codes.get("ENDOFFILE");
+      return x;
+   }
+  
+  yylval = new ParserVal(tok);
+  Short s = (Short) codes.get(tok.getToken());
   System.out.println("[ PARSER - TOKEN  ] " + tok);
-	return s.intValue();
+  return s.intValue();
 
-	
 } 
 
 
@@ -667,35 +652,9 @@ static {
 	  codes.put("long",T_RW_LONG);
 	  codes.put("print",T_RW_PRINT);
 	  codes.put("string",T_STRING);
-      codes.put("ENDOFFILE",T_ENDOFFILE);
+    codes.put("ENDOFFILE",T_ENDOFFILE);
 
 }
-
-
-
-
-  /*  token = Lexer->getToken();
-    int tokenCode = Lexer->TokenCodes[token];
-    if ( (tokenCode==T_IDENTIFIER) || (tokenCode == T_STRING ) || (tokenCode==T_CONST) )
-           yylval.ptr = Lexer->getPtr();
-
-    else
-         yylval.op=new string(token);
-
-    return tokenCode;
-*/
-
-
-/*void syntaxError(string mensaje) {
-	TForm1::writer("[Error] L�nea " + Lexer->getNroLinea() + ": " + mensaje + ".");
-        TForm1::incErrors();
-
-}
-
-void informarSentencia(string mensaje) {
-	//TForm1::writer("L�nea " + Lexer->getNroLinea() + ": " + mensaje + ".");
-}
-*/
 /*******************************************************************************************************************************
 
                         PROCEDIMIENTOS COMPLEMENTARIOS PARA LA GENERACION DE CODIGO
@@ -746,7 +705,7 @@ Fila * verifyDeclaration (nameDecorator *decorer, Fila *ptrSymTable ) {
 
 
 
-//#line 678 "Parser.java"
+//#line 644 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -900,43 +859,15 @@ boolean doaction;
     switch(yyn)
       {
 //########## USER-SUPPLIED ACTIONS ##########
-case 1:
-//#line 73 "grammar.y"
-{ System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.0 "); }
-break;
 case 2:
 //#line 74 "grammar.y"
-{ System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.1 "); }
-break;
-case 3:
-//#line 75 "grammar.y"
-{ System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.2 "); }
-break;
-case 4:
-//#line 77 "grammar.y"
-{ System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM. 3"); }
-break;
-case 5:
-//#line 78 "grammar.y"
-{ System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.4 "); }
-break;
-case 6:
-//#line 79 "grammar.y"
-{ System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM. 5"); }
-break;
-case 7:
-//#line 83 "grammar.y"
-{ System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.0 "); }
-break;
-case 8:
-//#line 84 "grammar.y"
-{ System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.0 "); }
+{ System.out.println(" Programa aceptado ");}
 break;
 case 71:
 //#line 304 "grammar.y"
 { yyval=val_peek(0);}
 break;
-//#line 863 "Parser.java"
+//#line 801 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

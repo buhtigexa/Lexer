@@ -70,18 +70,18 @@ import symboltable.*;
 %start programa 
 
 %%
-programa:{ System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.0 "); }
-        |  '{' declaraciones  conjunto_sentencias '}' { System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.1 "); }
-        | '{'declaraciones'}' { System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.2 "); }
+programa:
+        | '{' declaraciones  conjunto_sentencias'}' T_ENDOFFILE { System.out.println(" Programa aceptado ");}
+        | '{'declaraciones'}' 
                         //{syntaxError("Se esperan sentencias ejecutables a continuaci�n de las declaraciones.");}
-        | '{' /*{ syntaxError("Se esperan declaraciones al inicio del programa.");}*/ conjunto_sentencias   '}' { System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM. 3"); }
-        | declaracion_sentencia { System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.4 "); }
-        | declaraciones conjunto_sentencias  { System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM. 5"); }
+        | '{' /*{ syntaxError("Se esperan declaraciones al inicio del programa.");}*/ conjunto_sentencias '}' 
+        | declaracion_sentencia 
+        | declaraciones conjunto_sentencias   
         ;
 
 
-declaracion_sentencia :declaracion { System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.0 "); }
-                      | sentencia  { System.out.println(" MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.0 "); }
+declaracion_sentencia :declaracion 
+                      | sentencia  
                       ;
 
 declaraciones: declaracion
@@ -407,7 +407,6 @@ impresion       :       T_RW_PRINT '(' T_STRING ')' /*{
 /*************************************************************************************************************************/
 %%
 
-Lexer lexer;
 
 
 SymbolTable symbolTable;
@@ -421,23 +420,6 @@ int maxNest;
 
 String token;
 String stringEmpty;
-
-void initParser(Lexer a, SymbolTable t) {
-
-/*        token.clear();
-        stringEmpty.clear();
-        noEnvironment=0;
-		Lexer = a;
-       	symbolTable = t;
-        codeGenerator = cG;
-        nest = 0;
-        maxNest= 10;
-        aux=0;
-        decorator = nm;
-*/
-
-}
-
 
 
 Lexer lex ;
@@ -461,14 +443,21 @@ public int yyerror(String s){
 
 public int yylex(){
 
+  
+  boolean eof = false;
+  eof = lex.endOfFile();
 
-	if (lex.endOfFile()){
-    return 0 ;
+	if (eof){
+    return (Short)codes.get("ENDOFFILE");
   } 
-	Row tok = (Row) lex.getToken();
+	
 
-	if(tok == null)
-		return (Short) codes.get("ENDOFFILE");
+  Row tok = (Row) lex.getToken();
+	if(tok == null){
+		  Short x = (Short) codes.get("ENDOFFILE");
+      return x;
+   }
+
 
 	yylval = new ParserVal(tok);
 
@@ -517,35 +506,9 @@ static {
 	  codes.put("long",T_RW_LONG);
 	  codes.put("print",T_RW_PRINT);
 	  codes.put("string",T_STRING);
-      codes.put("ENDOFFILE",T_ENDOFFILE);
+    codes.put("ENDOFFILE",T_ENDOFFILE);
 
 }
-
-
-
-
-  /*  token = Lexer->getToken();
-    int tokenCode = Lexer->TokenCodes[token];
-    if ( (tokenCode==T_IDENTIFIER) || (tokenCode == T_STRING ) || (tokenCode==T_CONST) )
-           yylval.ptr = Lexer->getPtr();
-
-    else
-         yylval.op=new string(token);
-
-    return tokenCode;
-*/
-
-
-/*void syntaxError(string mensaje) {
-	TForm1::writer("[Error] L�nea " + Lexer->getNroLinea() + ": " + mensaje + ".");
-        TForm1::incErrors();
-
-}
-
-void informarSentencia(string mensaje) {
-	//TForm1::writer("L�nea " + Lexer->getNroLinea() + ": " + mensaje + ".");
-}
-*/
 /*******************************************************************************************************************************
 
                         PROCEDIMIENTOS COMPLEMENTARIOS PARA LA GENERACION DE CODIGO
