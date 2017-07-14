@@ -38,6 +38,14 @@ public class Lexer {
 	
 	public int line,column,errors,warnings;
 	
+	public int getLine() {
+		return line;
+	}
+
+	public void setLine(int line) {
+		this.line = line;
+	}
+
 	public int ef=MaxState;
 	
 	public int e0=0;

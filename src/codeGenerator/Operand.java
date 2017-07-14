@@ -117,10 +117,10 @@ public String getType(){
 
 	String tempType="";
     if (!(isSalto()) && ( (tsValue) != null )   ){
-             Row f =  symbolTable.getRow(value);
-             if ( f != null ){
-                 tempType = f.getType();
-             }
+    	Row f =  symbolTable.getRow(value);
+        if ( f != null ){
+            tempType = f.getType();
+         }
       }
       else if ( isSalto() )
     	tempType=Integer.toString(getPosicion());

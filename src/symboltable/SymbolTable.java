@@ -26,9 +26,30 @@ public class SymbolTable {
 		String str=new String();
 				
 		for (Row row:rows){
-			str+= "\n " + rows;
+			str+= "\n " + row;
 		}
 		return str;
 		
 	}
+	
+	public Row getRow(int i){
+		
+		if (i < this.rows.size() ){
+			return rows.elementAt(i);
+		}
+		return null;
+	}
+	
+	public Row getRow(String lexeme){
+	
+		for (int i=0; i < rows.size();i++){
+			if (rows.get(i).getLexeme().equals(lexeme)){
+				return rows.get(i);
+			}
+		}
+		return null;
+	}
+	      	
 }
+
+
