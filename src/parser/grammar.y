@@ -72,11 +72,11 @@ import symboltable.*;
 %%
 programa:
         | '{' declaraciones  conjunto_sentencias'}' T_ENDOFFILE { System.out.println(" Programa aceptado ");}
-        | '{'declaraciones'}' 
+        | '{'declaraciones'}' T_ENDOFFILE
                         //{syntaxError("Se esperan sentencias ejecutables a continuaci�n de las declaraciones.");}
         | '{' /*{ syntaxError("Se esperan declaraciones al inicio del programa.");}*/ conjunto_sentencias '}' 
-        | declaracion_sentencia 
-        | declaraciones conjunto_sentencias   
+        | declaracion_sentencia T_ENDOFFILE
+        | declaraciones conjunto_sentencias T_ENDOFFILE   
         ;
 
 
@@ -446,25 +446,20 @@ public int yylex(){
   
   boolean eof = false;
   eof = lex.endOfFile();
-
-	if (eof){
-    return (Short)codes.get("ENDOFFILE");
-  } 
-	
-
+  if (eof){
+  return  0;//(Short)codes.get("ENDOFFILE");
+  }
+  
   Row tok = (Row) lex.getToken();
-	if(tok == null){
-		  Short x = (Short) codes.get("ENDOFFILE");
+  if(tok == null){
+      Short x = (Short) codes.get("ENDOFFILE");
       return x;
    }
-
-
-	yylval = new ParserVal(tok);
-
-	Short s = (Short) codes.get(tok.getToken());
-
+  
+  yylval = new ParserVal(tok);
+  Short s = (Short) codes.get(tok.getToken());
   System.out.println("[ PARSER - TOKEN  ] " + tok);
-	return s.intValue();
+  return s.intValue();
 
 	
 } 
