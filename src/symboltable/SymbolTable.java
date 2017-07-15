@@ -15,6 +15,11 @@ public class SymbolTable {
 		
 	}
 	
+	public int size(){
+		
+		return rows.size();
+	}
+	
 	public void add(Row row){
 		
 		this.rows.add(row);
@@ -49,7 +54,14 @@ public class SymbolTable {
 		}
 		return null;
 	}
-	      	
+	    
+	
+	public int indexSymbol(String str){
+        for (int i=0 ; i< rows.size() ; i++)
+                if ( rows.get(i).getLexeme().compareTo(str)==0)
+                        return i;
+        return -1;
+	}
 }
 
 

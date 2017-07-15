@@ -23,7 +23,7 @@ public class CodeGenerator {
         
         
         
-        GeneradorCodigo(String fileName, ThirdGenerator tg, SymbolTable st) {
+        public CodeGenerator(String fileName, ThirdGenerator tg, SymbolTable st) {
 
             noConst = 0;
             aux="";
@@ -37,10 +37,10 @@ public class CodeGenerator {
 			identation = 0;
 			this.myRegisters= new RegisterBank();
 			
-			Register bx("bx");
-			Register cx("cx");
-			Register dx("dx");
-			Register ax("ax");
+			Register bx=new Register("bx");
+			Register cx=new Register("cx");
+			Register dx=new Register("dx");
+			Register ax=new Register("ax");
 			
 			
 			this.myRegisters.addRegister(bx);
@@ -145,15 +145,17 @@ public void generarDataSeg(){
 public void generarIDiv(Third third){
 
 		boolean isExtended=false;
-		Register regDndL("ax"), regDndH("dx"),regDsr("bx");
+		Register regDndL=new Register("ax");
+		Register regDndH=new Register("dx");
+		Register regDsr=new Register("bx");
 		String opCode = "div";
 		if ( third != null){
 		    if ( (third.getType()).compareTo("long")==0 ){
 		            isExtended=true;
 		            opCode="idiv";
 		           }
-		     Operand  opL = third.getLeft();
-		     Operand  opR = third.getRight();
+		     Operand  opL = third.getLeftOp();
+		     Operand  opR = third.getRightOp();
 		     regDndL.setExtended(isExtended);
 		     regDndH.setExtended(isExtended);
 		     regDsr.setExtended(isExtended);
@@ -191,14 +193,17 @@ void generarIMul(Third third){
 
 		boolean  isExtended=false;
 		String opCode="mul";
-		Register regMulH("dx"),regMulL("ax"),regMdr("cx");
+		Register regMulH = new Register("dx");
+		Register regMulL= new Register("aux");
+		Register regMdr= new Register("cx");
+		
 		if ( third != null){
 		if ( third.getType().compareTo("long")==0){
 		            isExtended=true;
 		            opCode="imul";
 		            }
-		    Operand  opL=third.getLeft();
-		    Operand  opR=third.getRight();
+		    Operand  opL=third.getLeftOp();
+		    Operand  opR=third.getRightOp();
 		    regMulH.setExtended(isExtended);
 		    regMulL.setExtended(isExtended);
 		    regMdr.setExtended(isExtended);
@@ -228,9 +233,10 @@ void generarIMul(Third third){
 //-----------------------------------------------------
 void tolongRegister(Third third){
 
-		Register regAux("cx"),regSrc("bx");
+		Register regAux=new Register("cx");
+		Register regSrc=new Register("bx");
 		if ( third != null){
-		    Operand  opL = third.getRight();
+		    Operand  opL = third.getRightOp();
 		    if (  opL.isRegistro() )
 		           {writeArchivo(";                                         tolong register ");
 		                    writeArchivo(" pop  " + regSrc.getName()  + ";            sacando el registro a extender");
@@ -251,12 +257,12 @@ void tolongRegister(Third third){
 //-----------------------------------------------------
 void tolongMemory(Third third){
 
-	Register regAux("bx");
+	Register regAux=new Register("bx");
 	regAux.setExtended();
 	Third  refL;
 	String regTempL;
 	if ( third != null){
-	    Operand  opL = third.getRight();
+	    Operand  opL = third.getRightOp();
 	    if (  !opL.isRegistro() ) {
 	            writeArchivo(";           tolong variable ");
 	              if  (  opL.getType().compareTo("uint")==0  ) {
@@ -279,15 +285,16 @@ void generarTolong(Third third){
 void generarIAdd(Third third){
 
 	boolean  isExtended=false;
-	Register regSrc("bx"),regDest("cx");
+	Register regSrc=new Register("bx");
+	Register regDest=new Register("cx");
 	if ( third != null){
 	    if ( (third.getType()).compareTo("long")==0)
 	            isExtended=true;
 	    regSrc.setExtended( isExtended);
 	    regDest.setExtended(isExtended);
 	    writeArchivo(" ;                                                        suma.");
-	    Operand  opL = third.getLeft();
-	    Operand  opR = third.getRight();
+	    Operand  opL = third.getLeftOp();
+	    Operand  opR = third.getRightOp();
 	    if (( !opL.isRegistro()) && (!opR.isRegistro() ) ) {
 	              writeArchivo(" mov " + regDest.getName() +  ", " + opL.getValue() );
 	              writeArchivo(" add "+  regDest.getName() +  ", " + opR.getValue() );
@@ -315,15 +322,16 @@ void generarIAdd(Third third){
 public void generarISub(Third third){
 
 	boolean  isExtended=false;
-	Register regSrc("bx"),regDest("cx");
+	Register regSrc=new Register("bx");
+	Register regDest=new Register("cx");
 	if ( third != null){
 	    if ( (third.getType()).compareTo("long")==0)
 	            isExtended=true;
 	    regSrc.setExtended( isExtended);
 	    regDest.setExtended(isExtended);
 	    writeArchivo(" ;                                                        Resta.");
-	    Operand  opL = third.getLeft();
-	    Operand  opR = third.getRight();
+	    Operand  opL = third.getLeftOp();
+	    Operand  opR = third.getRightOp();
 	    if (( !opL.isRegistro()) && (!opR.isRegistro() ) ) {
 	              writeArchivo(" mov " + regDest.getName() +  ", " + opL.getValue() );
 	              writeArchivo(" sub "+  regDest.getName() +  ", " + opR.getValue() );
@@ -342,7 +350,7 @@ public void generarISub(Third third){
 	              writeArchivo(" pop   "    +   regDest.getName());
 	              writeArchivo(" sub "+  regDest.getName() +  ", " + regSrc.getName() );
 	    }
-	    runtimeTestSub(Third,regDest.getName());
+	    runtimeTestSub(third,regDest.getName());
 	    writeArchivo( " push " + regDest.getName());
 	     }
 }
@@ -350,14 +358,15 @@ public void generarISub(Third third){
 public void generarIAssign(Third third){
 
 	boolean isExtended=false;
-	Register regAux("dx"),regSrc("ax");
+	Register regAux=new Register("dx");
+	Register regSrc=new Register("ax");
 	if ( third != null){
 	    if ( (third.getType()).compareTo("long")==0)
 	            isExtended=true;
 	    regSrc.setExtended(isExtended);
 	    regAux.setExtended(isExtended);
-	    Operand  opL = third.getLeft();
-	    Operand  opR = third.getRight();
+	    Operand  opL = third.getLeftOp();
+	    Operand  opR = third.getRightOp();
 	    if (( !opL.isRegistro()) && (!opR.isRegistro() ) ) {//  (:=,VARIABLE,VARIABLE)
 	
 	            writeArchivo(" mov  " + regAux.getName() + ",  " + opR.getValue());
@@ -390,15 +399,16 @@ public void generarPrint(Third third){
 //------------------------------------------------------------
 public void generarCmp(Third third){
 
-	Register regL("bx"),regR("dx");
+	Register regL=new Register("bx");
+	Register regR=new Register("dx");
 	
 	myRegisters.setBusy(regL);
 	myRegisters.setBusy(regR);
 	boolean  isExtended=false;
 	
 	if ( third != null){
-	    Operand opL = third.getLeft();
-	    Operand opR = third.getRight();
+	    Operand opL = third.getLeftOp();
+	    Operand opR = third.getRightOp();
 	
 	    if ( third.getType().compareTo("long")==0 )
 	              isExtended=true;
@@ -422,8 +432,8 @@ public void generarCmp(Third third){
 	            writeArchivo(" pop " + regL.getName());
 	            writeArchivo("cmp  " + regL.getName() + ", " + regL.getName());
 	    }
- }
-
+  }
+}
 
 //------------------------------------------------------------
 void generarFBranch(Third third){
