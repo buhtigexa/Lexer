@@ -6,4 +6,7 @@ public class Register {
 		
 	}
 
+	public Register(String name){
+		
+	}
 }

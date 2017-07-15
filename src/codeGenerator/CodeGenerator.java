@@ -114,7 +114,7 @@ public void generarDataSeg(){
 			addIdentacion();
 		
 			for (  int i = 0; i < n ; i++ ){
-			   row = symbolTable.getFila(i);
+			   row = symbolTable.getRow(i);
 			    token=row.getToken();
 			    type =row.getType();
 			    lexeme=row.getLexeme();
