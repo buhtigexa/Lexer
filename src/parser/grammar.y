@@ -347,35 +347,48 @@ variable        :       T_IDENTIFIER                {      //Row *refDecl = veri
 
 
 constante       :       T_CONST                     {          //double val =StrToFloat (      ( ($1.obj).getLexeme() ).c_str() );
-                                                               if ( val > 2147483647 )
+                                                               double val = new Double(0.0);
+                                                               try{
+                                                               		val=Double.parseDouble(((Row)($1.obj)).getLexeme());
+                                                               		  if ( val > 2147483647.0 )
                                                                                syntaxError(" Constante long " + ((Row)($1.obj)).getLexeme() + "  fuera de rango.");
-                                                               else {
-                                                                                Operand op = new Operand(((Row)($1.obj)).getLexeme(),($1.obj),symbolTable);
-                                                                                codeGenerator.apilarOperando(op);
-                                                                                codeGenerator.showPila(codeGenerator.getOperadores());
-                                                               }
-                                                    }
+                                                               				else {
+                                                                            	    Operand op = new Operand(((Row)($1.obj)).getLexeme(),($1.obj),symbolTable);
+                                                                                	codeGenerator.apilarOperando(op);
+                                                                                	codeGenerator.showPila(codeGenerator.getOperadores());
+                                                               					}
+														}
+															catch(NumberFormatException e){
+
+                                                               	}
+                                                        }
 
                 |       '-' T_CONST                 {
                                                          //double val =StrToFloat(  (($2.obj).getLexeme()).c_str());
-                                                         Double val = 
-                                                         if ( val > 2147483648 )
-                                                                syntaxError(" Constante long    -" + (((Row)($2.obj)).getLexeme()) +  "  fuera de rango.");
+                                                         try{ 
+                                                         	double val = Double.parseDouble(((Row)($2.obj)).getLexeme());
+	                                                         if ( val > 2147483648.0 )
+    	                                                            syntaxError(" Constante long    -" + (((Row)($2.obj)).getLexeme()) +  "  fuera de rango.");
 
-                                                        else    {     String lexCTE="-"+ ((Row)($2.obj)).getLexeme();
-                                                                      ((Row)($2.obj)).setLexeme(lexCTE);
-                                                                      ((Row)($2.obj)).setType("long");
-                                                                      Row f=symbolTable.getRow(lexCTE);
-                                                                      if ( f != null ){
+                                                        		else    {     String lexCTE="-"+ ((Row)($2.obj)).getLexeme();
+                                                                	      ((Row)($2.obj)).setLexeme(lexCTE);
+                                                                    	  ((Row)($2.obj)).setType("long");
+                                                                      	Row f=symbolTable.getRow(lexCTE);
+                                                                      	if ( f != null ){
                                                                                Operand op = new Operand(((Row)($2.obj)).getLexeme(),($2.obj),symbolTable);
                                                                                codeGenerator.apilarOperando(op);
                                                                                codeGenerator.showPila(codeGenerator.getOperadores());
 
                                                                       }
                                                                       yylval.obj=f;
+                                                                }
+                                                            }
+                                                                catch(NumberFormatException e){
 
                                                                 }
-                                                     }
+
+                                                     
+                                                 }
 
 
 
