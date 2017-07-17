@@ -2,11 +2,9 @@ package symboltable;
 
 public class NameDecorator {
 
-	public 
-	
-	int nroAmbito;
-	int nroAnidamiento;
-	String decorado;
+	public 	int nroAmbito;
+	public int nroAnidamiento;
+	public String decorado;
 	
 	
 	public NameDecorator(){

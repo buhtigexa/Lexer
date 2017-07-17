@@ -51,7 +51,7 @@ public class ThirdGenerator {
 }
 
 
-	    public void completeJmp(boolean plus){
+	    public void completarSalto(boolean plus){
         
 	    	int NoTerceto=0;
 	    	int incremento = 0;
@@ -85,7 +85,7 @@ public class ThirdGenerator {
           }
 	    }
 	    
-	    void showTercetos(){
+	    public void showTercetos(){
 
 	    	String NoTerceto=new String();
 	    	//Form1->Memo5->Clear();
@@ -153,22 +153,22 @@ public class ThirdGenerator {
 	    	return (thirdList.size());
 	    }
 
-	    void apilarOperador(Operand op){
+	    public void apilarOperador(Operand op){
 	    		apilarOperando(op);
 	    		showPila(operators);
 	    }
 
-	    void desapilarOperando(){
+	    public void desapilarOperando(){
 
 	    	if ( !operators.isEmpty() )
 	    			operators.pop();
 	    	}
 
-	    void desapilarOperador(){
+	    public void desapilarOperador(){
 	    	desapilarOperando();
 	    }
 
-	    void generarTerceto(Third t){
+	    public void generarTerceto(Third t){
 	    	//listaTercetos->at(index)=t;
 	    	thirdList.add(index, t);
 	    	index=index+1;

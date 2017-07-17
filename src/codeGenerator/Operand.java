@@ -27,8 +27,9 @@ public class Operand {
     reg=false;
 }
 
-public Operand(String v,Row tsV,SymbolTable st){
+public Operand(String v,Object obj,SymbolTable st){
 
+	Row tsV = (Row)obj;
 	if ( tsV!=null){
         value=tsV.getLexeme();
         tsValue=tsV;

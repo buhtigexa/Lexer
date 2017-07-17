@@ -4,8 +4,16 @@ public abstract class Row {
 
 	protected String token;
 	protected String lexeme;
+	public void setLexeme(String lexeme) {
+		this.lexeme = lexeme;
+	}
+
 	public String type;
 	
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public Row(String token){
 		this.token=token;
 	}
@@ -23,5 +31,10 @@ public abstract class Row {
 		
 	}
 	
-	
+	public boolean isEmptyType(){
+		 
+		 if ( type=="" )
+		        return true;
+		 return false;
+	}
 }
