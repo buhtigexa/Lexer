@@ -4,18 +4,21 @@ import java.util.Vector;
 
 import symboltable.Row;
 import symboltable.SymbolTable;
+import utils.MyFStream;
 
 public class CodeGenerator {
 
 	
-        fstream fileAsm;
-        int identation;
+        //fstream fileAsm;
+    
+		MyFStream fstream;
+       	int identation;
         ThirdGenerator tGenerator;
         SymbolTable  symbolTable;
         RegisterBank myRegisters;
         int countAux;
         String vaAux;                 
-         int noConst;
+        int noConst;
         String aux;
         int noString;
         String strConst;
@@ -23,15 +26,19 @@ public class CodeGenerator {
         
         
         
+        
         public CodeGenerator(String fileName, ThirdGenerator tg, SymbolTable st) {
 
+        	fstream=new MyFStream();
+        	
             noConst = 0;
             aux="";
             noString = 0;
             strConst="";
             strNum="";
 
-            fileAsm.open(fileName.c_str(), ios::out);
+            //fileAsm.open(fileName.c_str(), ios::out);
+            
             this.tGenerator=tg;
 			this.symbolTable = st;
 			identation = 0;
@@ -51,7 +58,7 @@ public class CodeGenerator {
 			this.countAux=0;
 			
 			
-			}
+		}
 //------------------------------------------------------------
 
 		public String getAuxVar(boolean  isExtended){
@@ -61,18 +68,23 @@ public class CodeGenerator {
 		String count=Integer.toString(this.countAux);
 		temp = "aux_" + count;
 		if ( isExtended )
-			writeArchivo( temp +  "   dd     0");
+			//fstream.writeArchivo( temp +  "   dd     0");
+			fstream.writeArchivo( temp +  "   dd     0");
 		else
-			writeArchivo( temp  + "   dw     0");
-		return temp;
+			//fstream.writeArchivo( temp  + "   dw     0");
+			fstream.writeArchivo( temp  + "   dw     0");
+		
+			return temp;
 		}
 
-		public void writeArchivo(String txt) {
+		/*public void fstream.writeArchivo(String txt) {
 			String tabs = "";
 			for ( int i = 0; i < identation; i++)
 			    tabs += "    ";
+			
 			fileAsm << tabs + txt << endl;
 		}
+		*/
 //------------------------------------------------------------
 
 		public void addIdentacion() {
@@ -81,8 +93,8 @@ public class CodeGenerator {
 //------------------------------------------------------------
 
 		public void quiteIdentacion() {
-		if (identation > 0)
-		    identation--;
+			if (identation > 0)
+				identation--;
 		}
 //------------------------------------------------------------
 
@@ -96,11 +108,12 @@ public class CodeGenerator {
 		}
 //------------------------------------------------------------
 public void generarDataSeg(){
-		writeArchivo(".model small");
-		writeArchivo(".radix 10");
-		writeArchivo(".stack 200h");
-		writeArchivo(".data");
-		writeArchivo(";         aquí viene el segmento de identificadores variables y constantes.");
+		
+		fstream.writeArchivo(".model small");
+		fstream.writeArchivo(".radix 10");
+		fstream.writeArchivo(".stack 200h");
+		fstream.writeArchivo(".data");
+		fstream.writeArchivo(";         aquí viene el segmento de identificadores variables y constantes.");
 		downloadSymbolTable();
 
 
@@ -120,20 +133,20 @@ public void generarDataSeg(){
 			    lexeme=row.getLexeme();
 			    if ( token.compareTo("Identifier")==0 )
 			            if ( type.compareTo("long")==0 )
-			                    writeArchivo(lexeme + "    dd      "  +  "   0   " +    ";      identificador  long");
+			            	fstream.writeArchivo(lexeme + "    dd      "  +  "   0   " +    ";      identificador  long");
 			            else
-			                    writeArchivo(lexeme + "    dw      "  +  "   0   " +    ";      identificador  uint");
+			            	fstream.writeArchivo(lexeme + "    dw      "  +  "   0   " +    ";      identificador  uint");
 			    if ( token.compareTo("String")==0 ){
 			            //strAddr=IntToStr(i).c_str();
 			            strAddr=Integer.toString(i);
 			    		strNum="String"+ strAddr;
-			            writeArchivo(strNum    +   "       db      "       +   "'" + lexeme + "',10,13,'$'");
+			    		fstream.writeArchivo(strNum    +   "       db      "       +   "'" + lexeme + "',10,13,'$'");
 			          }
 			   }
-			writeArchivo("\n;          Chequeos en tiempo de ejecución:\n");
+			fstream.writeArchivo("\n;          Chequeos en tiempo de ejecución:\n");
 			
-			writeArchivo("runtimeExceptionDivByZero            db      '[Error]: No se puede dividir por 0.',10,13,'$'");
-			writeArchivo("runtimeExceptionSubOp           db      '[Error]: Sustracción  fuera de rango.',10,13,'$'");
+			fstream.writeArchivo("runtimeExceptionDivByZero            db      '[Error]: No se puede dividir por 0.',10,13,'$'");
+			fstream.writeArchivo("runtimeExceptionSubOp           db      '[Error]: Sustracción  fuera de rango.',10,13,'$'");
 		}
 		
 //------------------------------------------------------------
@@ -159,32 +172,32 @@ public void generarIDiv(Third third){
 		     regDndL.setExtended(isExtended);
 		     regDndH.setExtended(isExtended);
 		     regDsr.setExtended(isExtended);
-		     writeArchivo(" xor  " +  regDndH.getName() + ",  " + regDndH.getName() );
+		     fstream.writeArchivo(" xor  " +  regDndH.getName() + ",  " + regDndH.getName() );
 		     if ( (!opL.isRegistro()) && (!opR.isRegistro()) ){
-		            writeArchivo( " mov  " + regDndL.getName() + ",  "  +  opL.getValue());
-		            writeArchivo( " mov  " + regDsr.getName() + ",  "  +  opR.getValue());
-		            runtimeTestDivByZero(regDsr);
-		            writeArchivo(opCode + "    "    +  regDsr.getName());
+		    	 fstream.writeArchivo( " mov  " + regDndL.getName() + ",  "  +  opL.getValue());
+		    	 fstream.writeArchivo( " mov  " + regDsr.getName() + ",  "  +  opR.getValue());
+		    	 runtimeTestDivByZero(regDsr);
+		    	 fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
 		     }
 		     if ( (!opL.isRegistro()) && (opR.isRegistro()) ){
-		            writeArchivo(" pop  "  + regDsr.getName()  );
+		    	 fstream.writeArchivo(" pop  "  + regDsr.getName()  );
 		            runtimeTestDivByZero(regDsr);
-		            writeArchivo(" mov  "  + regDndL.getName() +  ",   "  + opL.getValue());
-		            writeArchivo(opCode + "    "    +  regDsr.getName());
+		         fstream.writeArchivo(" mov  "  + regDndL.getName() +  ",   "  + opL.getValue());
+		         fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
 		     }
 		     if ( (opL.isRegistro()) && (!opR.isRegistro()) ){
-		           writeArchivo(" mov  "  + regDsr.getName() +  ",   "  + opR.getValue());
+		    	 	fstream.writeArchivo(" mov  "  + regDsr.getName() +  ",   "  + opR.getValue());
 		           runtimeTestDivByZero(regDsr);
-		           writeArchivo(" pop  "  + regDndL.getName()  );
-		           writeArchivo(opCode + "    "    +  regDsr.getName());
+		           fstream.writeArchivo(" pop  "  + regDndL.getName()  );
+		           fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
 		     }
 		     if ( (opL.isRegistro()) && (opR.isRegistro()) ){
-		           writeArchivo(" pop  "  + regDsr.getName()  );
+		    	 	fstream.writeArchivo(" pop  "  + regDsr.getName()  );
 		           runtimeTestDivByZero(regDsr);
-		           writeArchivo(" pop  "  + regDndL.getName()  );
-		           writeArchivo(opCode + "    "    +  regDsr.getName());
+		           fstream.writeArchivo(" pop  "  + regDndL.getName()  );
+		           fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
 		     }
-		     writeArchivo("push "   + regDndL.getName());
+		     	fstream.writeArchivo("push "   + regDndL.getName());
 		}
 }
 //------------------------------------------------------------
@@ -208,26 +221,26 @@ void generarIMul(Third third){
 		    regMulL.setExtended(isExtended);
 		    regMdr.setExtended(isExtended);
 		    if ((!opL.isRegistro()) && (!opR.isRegistro() ) ) {          //  (/,VARIABLE,VARIABLE)
-		            writeArchivo("mov  " + regMulL.getName() + ", "  + opL.getValue() );
-		            writeArchivo("mov  " + regMdr.getName() + ",  " + opR.getValue() );
-		            writeArchivo(opCode + "    "    +  regMdr.getName() );
+		    	fstream.writeArchivo("mov  " + regMulL.getName() + ", "  + opL.getValue() );
+		    	fstream.writeArchivo("mov  " + regMdr.getName() + ",  " + opR.getValue() );
+		    	fstream.writeArchivo(opCode + "    "    +  regMdr.getName() );
 		    }
 		    if ( (!opL.isRegistro()) && ( opR.isRegistro()) ){
-		            writeArchivo(" pop  "  + regMdr.getName()  );
-		            writeArchivo(" mov  "  + regMulL.getName() +  ",   "  + opL.getValue());
-		            writeArchivo(opCode + "    "    +  regMdr.getName());
+		    	fstream.writeArchivo(" pop  "  + regMdr.getName()  );
+		    	fstream.writeArchivo(" mov  "  + regMulL.getName() +  ",   "  + opL.getValue());
+		    	fstream.writeArchivo(opCode + "    "    +  regMdr.getName());
 		     }
 		    if ( (opL.isRegistro()) && ( !opR.isRegistro()) ){
-		            writeArchivo(" pop  "  + regMulL.getName() );
-		            writeArchivo(" mov  "  + regMdr.getName() +  ",   "  + opR.getValue());
-		            writeArchivo(opCode + "    "    +  regMdr.getName() );
+		    	fstream.writeArchivo(" pop  "  + regMulL.getName() );
+		    	fstream.writeArchivo(" mov  "  + regMdr.getName() +  ",   "  + opR.getValue());
+		    	fstream.writeArchivo(opCode + "    "    +  regMdr.getName() );
 		     }
 		    if ( (opL.isRegistro()) && ( opR.isRegistro()) ){
-		            writeArchivo(" pop  "  + regMdr.getName()  );
-		            writeArchivo(" pop  "  + regMulL.getName()  );
-		            writeArchivo(opCode + "    "    +  regMdr.getName() );
+		    	fstream.writeArchivo(" pop  "  + regMdr.getName()  );
+		    	fstream.writeArchivo(" pop  "  + regMulL.getName()  );
+		    	fstream.writeArchivo(opCode + "    "    +  regMdr.getName() );
 		     }
-		   writeArchivo("push "   + regMulL.getName());
+		    	fstream.writeArchivo("push "   + regMulL.getName());
 		}
 }
 //-----------------------------------------------------
@@ -237,19 +250,19 @@ void tolongRegister(Third third){
 		Register regSrc=new Register("bx");
 		if ( third != null){
 		    Operand  opL = third.getRightOp();
-		    if (  opL.isRegistro() )
-		           {writeArchivo(";                                         tolong register ");
-		                    writeArchivo(" pop  " + regSrc.getName()  + ";            sacando el registro a extender");
+		    if (  opL.isRegistro() ){
+		    	fstream.writeArchivo(";                                         tolong register ");
+		    	fstream.writeArchivo(" pop  " + regSrc.getName()  + ";            sacando el registro a extender");
 		                       if  (  opL.getType().compareTo("uint")==0  ) {
-		                            writeArchivo(" ;                        el registro es uint.");
+		                    	   	fstream.writeArchivo(" ;                        el registro es uint.");
 		                            regAux.setExtended();
-		                            writeArchivo(" xor    " + regAux.getName()   + ",   " + regAux.getName());
+		                            fstream.writeArchivo(" xor    " + regAux.getName()   + ",   " + regAux.getName());
 		                            regAux.setExtended(false);
-		                            writeArchivo(" mov    "   +  regAux.getName()  +  ", " +  regSrc.getName());
+		                            fstream.writeArchivo(" mov    "   +  regAux.getName()  +  ", " +  regSrc.getName());
 		                            regSrc.setExtended(); regAux.setExtended();
-		                            writeArchivo("mov " + regSrc.getName() + ",  " + regAux.getName());
+		                            fstream.writeArchivo("mov " + regSrc.getName() + ",  " + regAux.getName());
 		                    }
-		           writeArchivo(" push " + regSrc.getName() );
+		                       	fstream.writeArchivo(" push " + regSrc.getName() );
 		        }
 		}
 }
@@ -264,20 +277,21 @@ void tolongMemory(Third third){
 	if ( third != null){
 	    Operand  opL = third.getRightOp();
 	    if (  !opL.isRegistro() ) {
-	            writeArchivo(";           tolong variable ");
+	    	fstream.writeArchivo(";           tolong variable ");
 	              if  (  opL.getType().compareTo("uint")==0  ) {
-	                            writeArchivo(" ;                        la varaible es uint.");
-	                            writeArchivo(" xor " + regAux.getName()   + ",  " + regAux.getName() );
+	            	  fstream.writeArchivo(" ;                        la varaible es uint.");
+	            	  fstream.writeArchivo(" xor " + regAux.getName()   + ",  " + regAux.getName() );
 	                            regAux.setExtended(false);
 	                           }
-	           writeArchivo(" mov " + regAux.getName()  +  ", " + opL.getValue() );
+	           fstream.writeArchivo(" mov " + regAux.getName()  +  ", " + opL.getValue() );
 	           regAux.setExtended();
-	           writeArchivo(" push " + regAux.getName() );
+	           fstream.writeArchivo(" push " + regAux.getName() );
 	          }
 	   }
 }
 //-----------------------------------------------------
 void generarTolong(Third third){
+		
 		tolongRegister(third);
 		tolongMemory(third);
 }
@@ -292,29 +306,29 @@ void generarIAdd(Third third){
 	            isExtended=true;
 	    regSrc.setExtended( isExtended);
 	    regDest.setExtended(isExtended);
-	    writeArchivo(" ;                                                        suma.");
+	    fstream.writeArchivo(" ;                                                        suma.");
 	    Operand  opL = third.getLeftOp();
 	    Operand  opR = third.getRightOp();
 	    if (( !opL.isRegistro()) && (!opR.isRegistro() ) ) {
-	              writeArchivo(" mov " + regDest.getName() +  ", " + opL.getValue() );
-	              writeArchivo(" add "+  regDest.getName() +  ", " + opR.getValue() );
+	    	fstream.writeArchivo(" mov " + regDest.getName() +  ", " + opL.getValue() );
+	    	fstream.writeArchivo(" add "+  regDest.getName() +  ", " + opR.getValue() );
 	    }
 	    if ( ( !opL.isRegistro() ) && ( opR.isRegistro() ) ) {// ( + ,VARIABLE, REGISTRO )
-	              writeArchivo( " pop  " +  regDest.getName() );
-	              writeArchivo( " add   " + regDest.getName() + ", " + opL.getValue() );
+	    		fstream.writeArchivo( " pop  " +  regDest.getName() );
+	    		fstream.writeArchivo( " add   " + regDest.getName() + ", " + opL.getValue() );
 	    }
 	    if (( opL.isRegistro()) && (!opR.isRegistro() ) ) {
-	              writeArchivo( " pop  " +  regDest.getName() );
-	              writeArchivo( " add   " + regDest.getName() + ", " + opR.getValue() );
+	    		fstream.writeArchivo( " pop  " +  regDest.getName() );
+	    		fstream.writeArchivo( " add   " + regDest.getName() + ", " + opR.getValue() );
 	    }
 	    if (( opL.isRegistro()) && (opR.isRegistro() ) ) {// ( + ,REGISTRO,REGISTRO )
-	               writeArchivo(" pop " + regSrc.getName());
-	               writeArchivo(" pop " + regDest.getName());
-	               writeArchivo("add  " + regDest.getName() + ", " + regSrc.getName() );
+	    		fstream.writeArchivo(" pop " + regSrc.getName());
+	    		fstream.writeArchivo(" pop " + regDest.getName());
+	    		fstream.writeArchivo("add  " + regDest.getName() + ", " + regSrc.getName() );
 	   }
 	
-	writeArchivo("push " + regDest.getName() );
-	writeArchivo( "                            ; ( + , " + regDest.getName()  + ",  " +  regSrc.getName()  +")" );
+	    	fstream.writeArchivo("push " + regDest.getName() );
+	    	fstream.writeArchivo( "                            ; ( + , " + regDest.getName()  + ",  " +  regSrc.getName()  +")" );
 	
 	  }
 }
@@ -329,29 +343,29 @@ public void generarISub(Third third){
 	            isExtended=true;
 	    regSrc.setExtended( isExtended);
 	    regDest.setExtended(isExtended);
-	    writeArchivo(" ;                                                        Resta.");
+	    fstream.writeArchivo(" ;                                                        Resta.");
 	    Operand  opL = third.getLeftOp();
 	    Operand  opR = third.getRightOp();
 	    if (( !opL.isRegistro()) && (!opR.isRegistro() ) ) {
-	              writeArchivo(" mov " + regDest.getName() +  ", " + opL.getValue() );
-	              writeArchivo(" sub "+  regDest.getName() +  ", " + opR.getValue() );
+	              fstream.writeArchivo(" mov " + regDest.getName() +  ", " + opL.getValue() );
+	              fstream.writeArchivo(" sub "+  regDest.getName() +  ", " + opR.getValue() );
 	    }
 	    if (( !opL.isRegistro()) && ( opR.isRegistro() ) ) {
-	              writeArchivo(" pop  " + regSrc.getName());
-	              writeArchivo(" mov  " + regDest.getName() + ",  " + opL.getValue());
-	              writeArchivo(" sub "+   regDest.getName() +  ", " + regSrc.getName() );
+	              fstream.writeArchivo(" pop  " + regSrc.getName());
+	              fstream.writeArchivo(" mov  " + regDest.getName() + ",  " + opL.getValue());
+	              fstream.writeArchivo(" sub "+   regDest.getName() +  ", " + regSrc.getName() );
 	    }
 	    if ((  opL.isRegistro()) && ( !opR.isRegistro() ) ) {
-	              writeArchivo(" pop   "   +  regDest.getName());
-	              writeArchivo(" sub "+  regDest.getName() +  ", " + opR.getValue() );
+	              fstream.writeArchivo(" pop   "   +  regDest.getName());
+	              fstream.writeArchivo(" sub "+  regDest.getName() +  ", " + opR.getValue() );
 	    }
 	    if (( opL.isRegistro()) && ( opR.isRegistro() ) ) {
-	              writeArchivo(" pop   "    +   regSrc.getName());
-	              writeArchivo(" pop   "    +   regDest.getName());
-	              writeArchivo(" sub "+  regDest.getName() +  ", " + regSrc.getName() );
+	              fstream.writeArchivo(" pop   "    +   regSrc.getName());
+	              fstream.writeArchivo(" pop   "    +   regDest.getName());
+	              fstream.writeArchivo(" sub "+  regDest.getName() +  ", " + regSrc.getName() );
 	    }
 	    runtimeTestSub(third,regDest.getName());
-	    writeArchivo( " push " + regDest.getName());
+	    fstream.writeArchivo( " push " + regDest.getName());
 	     }
 }
 //------------------------------------------------------------
@@ -369,12 +383,12 @@ public void generarIAssign(Third third){
 	    Operand  opR = third.getRightOp();
 	    if (( !opL.isRegistro()) && (!opR.isRegistro() ) ) {//  (:=,VARIABLE,VARIABLE)
 	
-	            writeArchivo(" mov  " + regAux.getName() + ",  " + opR.getValue());
-	            writeArchivo(" mov  " + opL.getValue()  + ",  "   + regAux.getName());
+	            fstream.writeArchivo(" mov  " + regAux.getName() + ",  " + opR.getValue());
+	            fstream.writeArchivo(" mov  " + opL.getValue()  + ",  "   + regAux.getName());
 	          }
 	    if (( !opL.isRegistro()) && (  opR.isRegistro() ) ) {
-	                    writeArchivo(" pop   " + regAux.getName() );
-	                    writeArchivo(" mov  " +  opL.getValue() + ",  " + regAux.getName()   );
+	                    fstream.writeArchivo(" pop   " + regAux.getName() );
+	                    fstream.writeArchivo(" mov  " +  opL.getValue() + ",  " + regAux.getName()   );
 	         }
 	}
 
@@ -389,9 +403,9 @@ public void generarPrint(Third third){
 	            i=this.symbolTable.indexSymbol((third.getRightOp()).getValue());
 	            strAux = Integer.toString(i);
 	            strNum="String"+ strAux;
-	            writeArchivo("mov ah, 09");
-	            writeArchivo("lea dx, "+ strNum);
-	            writeArchivo("int 21h");
+	            fstream.writeArchivo("mov ah, 09");
+	            fstream.writeArchivo("lea dx, "+ strNum);
+	            fstream.writeArchivo("int 21h");
 	
 	}
 
@@ -415,22 +429,22 @@ public void generarCmp(Third third){
 	    regL.setExtended(isExtended);
 	    regR.setExtended(isExtended);
 	    if ( ( !opL.isRegistro() )  && ( !opR.isRegistro() ) ) { //  ( cmp, VARIABLE, VARIABLE )
-	            writeArchivo (" mov " +   regL.getName() +  ",  "  + opL.getValue() );
-	            writeArchivo (" cmp "  +  regL.getName() + ",  "  + opR.getValue() );
+	           fstream.writeArchivo (" mov " +   regL.getName() +  ",  "  + opL.getValue() );
+	           fstream.writeArchivo (" cmp "  +  regL.getName() + ",  "  + opR.getValue() );
 	      }
 	    if ( ( !opL.isRegistro() )  && (opR.isRegistro()  ) ){ //   ( cmp, VARIABLE, REGISTRO  )
-	            writeArchivo (" mov " +  regL.getName() +  ",  "  + opL.getValue() );
-	            writeArchivo (" pop " +  regR.getName() );
-	            writeArchivo (" cmp "  + regL.getName() + ",  " +  regR.getName() );
+	           fstream.writeArchivo (" mov " +  regL.getName() +  ",  "  + opL.getValue() );
+	           fstream.writeArchivo (" pop " +  regR.getName() );
+	           fstream.writeArchivo (" cmp "  + regL.getName() + ",  " +  regR.getName() );
 	           }
 	    if ( ( opL.isRegistro() )  && ( !opR.isRegistro() ) ){ //  ( cmp, REGISTRO, VARIABLE  )
-	            writeArchivo(" pop "  + regL.getName());
-	            writeArchivo(" cmp "  + regL.getName() + ",   " + opR.getValue() ) ;
+	            fstream.writeArchivo(" pop "  + regL.getName());
+	            fstream.writeArchivo(" cmp "  + regL.getName() + ",   " + opR.getValue() ) ;
 	     }
 	    if ( ( opL.isRegistro() )  && ( opR.isRegistro()  ) ){ //   ( cmp, REGISTRO, REGISTRO  )
-	            writeArchivo(" pop " + regR.getName());
-	            writeArchivo(" pop " + regL.getName());
-	            writeArchivo("cmp  " + regL.getName() + ", " + regL.getName());
+	            fstream.writeArchivo(" pop " + regR.getName());
+	            fstream.writeArchivo(" pop " + regL.getName());
+	            fstream.writeArchivo("cmp  " + regL.getName() + ", " + regL.getName());
 	    }
   }
 }
@@ -445,16 +459,18 @@ void generarFBranch(Third third){
 		    cond = third.getOpPrevious();
 		    labelJmp= third.getLabelSrc();
 		    jmpType = this.getJmp(third.getType(),cond);
-		    writeArchivo(jmpType + "    " + labelJmp);
-		   }
+		    fstream.writeArchivo(jmpType + "    " + labelJmp);
+		   
+		}
 }
 //------------------------------------------------------------
 public void generarIBranch(Third third){
+	
 		String labelJmp,jmpType;
 		if ( ( third !=null ) ) {
 		    labelJmp = third.getLabelSrc();
 		    jmpType = this.getJmp("sinTipo","incondicional");
-		    writeArchivo(jmpType +  "    " + labelJmp);
+		    fstream.writeArchivo(jmpType +  "    " + labelJmp);
 		 }
 }
 //------------------------------------------------------------
@@ -495,16 +511,18 @@ public String getJmp(String type, String cond){
 
 //------------------------------------------------------------
 void runtimeTestDivByZero(Register registerDsr){
-	writeArchivo("cmp  " + registerDsr.getName() + ", 0h");
-	writeArchivo("jz errDivByZero");
+	
+	fstream.writeArchivo("cmp  " + registerDsr.getName() + ", 0h");
+	fstream.writeArchivo("jz errDivByZero");
+
 }
 //------------------------------------------------------------
 void runtimeTestSub(Third third,String registerOp){
 	
 
 	if ( ( third != null) && ( third.getType().compareTo("uint")==0 ) ){
-	    writeArchivo(" cmp  " + registerOp   +  ",0h ");
-	    writeArchivo("jl errSub");
+	    fstream.writeArchivo(" cmp  " + registerOp   +  ",0h ");
+	    fstream.writeArchivo("jl errSub");
 	}
 
 }
@@ -512,31 +530,31 @@ void runtimeTestSub(Third third,String registerOp){
 /*********************************************************************************************************************************/
 public void generarCodeSeg(){
 
-	writeArchivo(".code");
-	writeArchivo(".386");
-	writeArchivo(".387");
+	fstream.writeArchivo(".code");
+	fstream.writeArchivo(".386");
+	fstream.writeArchivo(".387");
 	Vector<Third> myThirds = tGenerator.getTercetos();
-	writeArchivo("start:");
+	fstream.writeArchivo("start:");
 	addIdentacion();
 	addIdentacion();
-	writeArchivo("                  mov ax,@data ");
-	writeArchivo("                  mov ds,ax   ");
-	writeArchivo("                  jmp start_code");
+	fstream.writeArchivo("                  mov ax,@data ");
+	fstream.writeArchivo("                  mov ds,ax   ");
+	fstream.writeArchivo("                  jmp start_code");
 	quiteIdentacion();
-	writeArchivo("errDivByZero:");
+	fstream.writeArchivo("errDivByZero:");
 	addIdentacion();
-	writeArchivo("                  mov ah,09 ");
-	writeArchivo("                  mov dx, offset runtimeExceptionDivByZero");
-	writeArchivo("                  int 21h ");
-	writeArchivo("                  jmp exit_code ");
+	fstream.writeArchivo("                  mov ah,09 ");
+	fstream.writeArchivo("                  mov dx, offset runtimeExceptionDivByZero");
+	fstream.writeArchivo("                  int 21h ");
+	fstream.writeArchivo("                  jmp exit_code ");
 	quiteIdentacion();
-	writeArchivo("errSub:");
+	fstream.writeArchivo("errSub:");
 	addIdentacion();
-	writeArchivo("                  mov ah,09 ");
-	writeArchivo("                  mov dx, offset runtimeExceptionSubOp");
-	writeArchivo("                  int 21h ");
-	writeArchivo("                  jmp exit_code ");
-	writeArchivo("start_code:");
+	fstream.writeArchivo("                  mov ah,09 ");
+	fstream.writeArchivo("                  mov dx, offset runtimeExceptionSubOp");
+	fstream.writeArchivo("                  int 21h ");
+	fstream.writeArchivo("                  jmp exit_code ");
+	fstream.writeArchivo("start_code:");
 	this.tGenerator.showTercetos();
 	Third  temp;
 	String labelDestiny;
@@ -545,11 +563,11 @@ public void generarCodeSeg(){
 	     int nThirds=myThirds.size();
 	    for (  int index=0;index < nThirds; index++)  {
 	
-	          writeArchivo("\n");
+	          fstream.writeArchivo("\n");
 	
 	          temp =  myThirds.get(index);
 	          this.showThird(temp);
-	          if ( temp!=null) { labelDestiny = temp.getLabelDst(); if ( !labelDestiny.isEmpty() ) writeArchivo(labelDestiny + ":");  }
+	          if ( temp!=null) { labelDestiny = temp.getLabelDst(); if ( !labelDestiny.isEmpty() ) fstream.writeArchivo(labelDestiny + ":");  }
 	          if ( ( temp.getOperator()).compareTo("+")==0 )
 	               generarIAdd(temp);
 	          if ( (temp.getOperator()).compareTo(":=")==0 )
@@ -578,16 +596,16 @@ public void generarCodeSeg(){
 	         }
 			}
 			// fin de instrucciones ejecutables.
-			writeArchivo("\n");
+			fstream.writeArchivo("\n");
 			quiteIdentacion();
-			writeArchivo("exit_code:");
+			fstream.writeArchivo("exit_code:");
 			addIdentacion();
-			writeArchivo("                  mov ah,04ch");
-			writeArchivo("                  mov al,00h");
-			writeArchivo("                  int 21h");
+			fstream.writeArchivo("                  mov ah,04ch");
+			fstream.writeArchivo("                  mov al,00h");
+			fstream.writeArchivo("                  int 21h");
 			quiteIdentacion();
-			writeArchivo("end start  ");
-			writeArchivo("\n  ");
+			fstream.writeArchivo("end start  ");
+			fstream.writeArchivo("\n  ");
 	}
 
 //------------------------------------------------------------
