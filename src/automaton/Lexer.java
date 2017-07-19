@@ -19,6 +19,7 @@ import semanticActions.TComment;
 import semanticActions.TString;
 import semanticActions.Token;
 import semanticActions.WhiteChar;
+import symboltable.NameDecorator;
 import symboltable.Row;
 import symboltable.SymbolTable;
 
@@ -30,6 +31,7 @@ public class Lexer {
 	public String lexeme;
 	public final static int MaxState=18;
 	public SymbolTable symTable;
+	public NameDecorator decortator;
 	
 	
 	long position;
@@ -357,8 +359,6 @@ public class Lexer {
 				currentAction=actions[e_i][code];
 				e_i=automaton[e_i][code];
 				token=currentAction.execute(c);
-				
-								
 				if (map(c)==INVALID_CHAR){
 					errors++;
 					System.out.println("[Error: Caracter inválido- linea,columna] : " + line + " , "  + column + "  " + c );
@@ -366,6 +366,7 @@ public class Lexer {
 				if ((e_i==ef) && (token==null)){
 					 e_i=e0;
 				}
+				
 			}
 		}
 		
@@ -375,7 +376,7 @@ public class Lexer {
 		catch(IOException e){
 		}
 		
-		
+		//System.out.println("[ LEXER - TOKEN  ] " + token);
 		return token;
 		
 	}

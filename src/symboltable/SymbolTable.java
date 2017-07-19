@@ -7,11 +7,16 @@ public class SymbolTable {
 
 	
 	public Vector<Row> rows;
+	public NameDecorator decorator;
 	
-	
-	public SymbolTable(){
+	public NameDecorator getDecorator() {
+		return decorator;
+	}
+
+	public SymbolTable(NameDecorator decorator){
 		
 		rows=new Vector<Row>();
+		this.decorator=decorator;
 		
 	}
 	
@@ -23,16 +28,20 @@ public class SymbolTable {
 	public void add(Row row){
 		
 		this.rows.add(row);
+		//System.out.println(this);
 	}
 	
 	
 	public String toString(){
-		
+	
+		System.out.println("------------------- Symbol Table Starts ------------------------------------");
 		String str=new String();
-				
-		for (Row row:rows){
-			str+= "\n " + row;
+		
+		for (int i=0; i< rows.size();i++){
+			System.out.println(rows.get(i));
 		}
+		
+		System.out.println("------------------- Symbol Table Ends ------------------------------------");
 		return str;
 		
 	}
@@ -55,6 +64,14 @@ public class SymbolTable {
 		return null;
 	}
 	    
+
+	public boolean contains(String lexeme)
+	{
+	        if (getRow(lexeme)!= null)
+	                return true;
+	        return false;
+	}
+
 	
 	public int indexSymbol(String str){
         for (int i=0 ; i< rows.size() ; i++)

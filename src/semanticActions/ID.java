@@ -13,23 +13,36 @@ public class ID extends SimpleAction{
 
 	@Override
 	public Object execute(char c) {
-		// TODO Auto-generated method stub
 		
 		Object token=null;
+		
 		if (lexer.isReservedWord(lexer.lexeme)){
-				
-				//System.out.println(" Palabra reservada :  "  + lexer.lexeme);
-				token=new RowToken(lexer.lexeme);
-				return token;
+			token = new RowToken(lexer.lexeme);
 		}
-		else
-			if (lexer.lexeme.length()> 15){
-				//System.out.println("Identificador: " + lexer.lexeme  + "  muy largo , se trunca a: " + lexer.lexeme.substring(0, 15));
+		else{
+			
+			// si es identificador, truncar si es largo .
+			// aplicar namemangling : si no está en TS ,agregar.
+			// 						: si está en TS, retornar.
+			if (lexer.lexeme.length()>15){
 				lexer.warnings++;
+				System.out.println("Identificador muy largo , se trunca : " +  lexer.lexeme.substring(0, 15));
 				lexer.lexeme=lexer.lexeme.substring(0, 15);
 				}
-			token = new RowIdentifier("identifier",lexer.lexeme,"");
+				lexer.lexeme=lexer.symTable.getDecorator().decorate(lexer.lexeme);
+				System.out.println("[ LEXER - name mangling applied :] " +  lexer.lexeme);
+				if (!lexer.symTable.contains(lexer.lexeme)){
+					token=new RowIdentifier("identifier",lexer.lexeme,"");
+					}
+				else
+					{
+					token=lexer.symTable.getRow(lexer.lexeme);
+				}
+				
+		}
+		
 		return token;
+		
 	}
 
 }

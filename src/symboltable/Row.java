@@ -27,7 +27,7 @@ public abstract class Row {
 	
 	public String toString(){
 		
-		return " TOKEN: " + token + " LEXEME: " + lexeme + " TYPE: " + type;
+		return "<<< TOKEN: " + token + " LEXEME: " + lexeme + " TYPE: " + type  + ">>>";
 		
 	}
 	

@@ -23,7 +23,6 @@ public class RowIdentifier extends Row{
 
 	@Override
 	public String getLexeme() {
-		
 		return lexeme;
 	}
 

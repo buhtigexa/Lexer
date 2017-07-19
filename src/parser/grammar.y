@@ -73,7 +73,7 @@ import codeGenerator.*;
 
 %%
 programa:
-        | '{' declaraciones  conjunto_sentencias'}' T_ENDOFFILE { System.out.println(" Programa aceptado ");}
+        | '{' declaraciones  conjunto_sentencias'}' T_ENDOFFILE { System.out.println(" Programa aceptado con TS de :" + symbolTable.size()  + " -- Contenido : \n "  + symbolTable );}
         | '{'declaraciones'}' T_ENDOFFILE
                         //{syntaxError("Se esperan sentencias ejecutables a continuaci�n de las declaraciones.");}
         | '{' /*{ syntaxError("Se esperan declaraciones al inicio del programa.");}*/ conjunto_sentencias '}' 
@@ -230,7 +230,7 @@ condicion       :       '('comparacion')'            {
                 ;
 
 
-comparacion     :       comparacion sgn_cmp exp_ar   {  codeGenerator.generarTerceto(($2.sval),true);
+comparacion     :       comparacion sgn_cmp exp_ar   {  codeGenerator.generarTerceto( ((Row)($2.obj)).getLexeme(),true);
                                                         codeGenerator.showTercetos();
                                                       }
 
@@ -238,7 +238,7 @@ comparacion     :       comparacion sgn_cmp exp_ar   {  codeGenerator.generarTer
                 |       comparacion error  exp_ar    { syntaxError("Operador de comparaci�n no v�lido.");}
 
                 |       exp_ar sgn_cmp exp_ar        {
-                                                       codeGenerator.generarTerceto(($2.sval),true);
+                                                       codeGenerator.generarTerceto(((Row)($2.obj)).getLexeme(),true);
                                                          codeGenerator.showTercetos();
                                                      }
 
@@ -321,7 +321,7 @@ term            :       term '*' factor {  codeGenerator.generarTerceto("*",true
 factor          :        variable
                 |       constante
                 |       conversion '(' exp_ar ')'                   {
-                                                                      String operadorTerceto =(($1.sval));
+                                                                      String operadorTerceto =((Row)$1.obj).getLexeme();
                                                                       codeGenerator.generarTerceto(operadorTerceto,true);
                                                                   }
 
@@ -336,7 +336,7 @@ variable        :       T_IDENTIFIER                {      //Row *refDecl = veri
                                                            Row refDecl = verifyDeclaration(decorator,(Row)($1.obj));
                                                            if ( refDecl != null ){
                                                                         Operand op = new Operand((refDecl).getLexeme(),refDecl,symbolTable  );
-                                                                codeGenerator.apilarOperando( op );
+                                                                		codeGenerator.apilarOperando( op );
                                                                 }
                                                     }
                 
@@ -349,7 +349,7 @@ variable        :       T_IDENTIFIER                {      //Row *refDecl = veri
 constante       :       T_CONST                     {          //double val =StrToFloat (      ( ($1.obj).getLexeme() ).c_str() );
                                                                double val = new Double(0.0);
                                                                try{
-                                                               		val=Double.parseDouble(((Row)($1.obj)).getLexeme());
+                                                               		val=Double.parseDouble( ((Row)($1.obj)).getLexeme() );
                                                                		  if ( val > 2147483647.0 )
                                                                                syntaxError(" Constante long " + ((Row)($1.obj)).getLexeme() + "  fuera de rango.");
                                                                				else {
@@ -359,7 +359,8 @@ constante       :       T_CONST                     {          //double val =Str
                                                                					}
 														}
 															catch(NumberFormatException e){
-
+																	System.out.println(" Error en conversión del flotante " + ((Row)($1.obj)).getLexeme());
+                                                               		e.printStackTrace();
                                                                	}
                                                         }
 
@@ -385,6 +386,8 @@ constante       :       T_CONST                     {          //double val =Str
                                                             }
                                                                 catch(NumberFormatException e){
 
+                                                                	System.out.println(" Error en conversión del flotante " + ((Row)($1.obj)).getLexeme());
+                                                                	e.printStackTrace();
                                                                 }
 
                                                      
@@ -410,7 +413,7 @@ impresion       :       T_RW_PRINT '(' T_STRING ')' {
 
                                                         Operand op = new Operand( ((Row)($3.obj)).getLexeme(),($3.obj),symbolTable );
                                                         codeGenerator.apilarOperando( op );
-                                                        codeGenerator.generarTerceto(($1.sval),false);
+                                                        codeGenerator.generarTerceto(((Row)($1.obj)).getToken(),false);
 
                                                   }
 
@@ -426,7 +429,7 @@ impresion       :       T_RW_PRINT '(' T_STRING ')' {
 
 
 
-SymbolTable symbolTable;
+
 int aux;
 int nest;
 int noEnvironment;
@@ -442,16 +445,15 @@ String stringEmpty;
 
 
 Lexer lex ;
-SymbolTable st ;
+SymbolTable symbolTable;
 String type; //Used in declarations
 
-public void load(Lexer lex,SymbolTable st,ThirdGenerator codeGenerator ){
+public void load(Lexer lex,SymbolTable st,ThirdGenerator codeGenerator,NameDecorator decorator){
 
-	this.st= st ;
+	this.symbolTable= st ;
 	this.lex = lex ;
 	this.codeGenerator=codeGenerator;
-	
-
+	this.decorator=decorator;
 }
 
 public int yyerror(String s){
@@ -476,12 +478,14 @@ public int yylex(){
       return x;
    }
   
+  symbolTable.add(tok);
+  //System.out.println(symbolTable);
+
   yylval = new ParserVal(tok);
   Short s = (Short) codes.get(tok.getToken());
-  System.out.println("[ PARSER - TOKEN  ] " + tok);
+  //System.out.println("[ PARSER RECOGNIZES ] " + tok);
   return s.intValue();
 
-	
 } 
 
 
@@ -566,15 +570,14 @@ void updateDeclaration ( Row symbolTableRow, String identifierType) {
 Row verifyDeclaration (NameDecorator decorer, Row ptrSymTable ) {
 
         int zero = 0;
-        Row ptr;
-        ptr=null;
+        Row ptr=null;
         String newName;
         String lexeme;
            if ( (decorator != null ) && ( ptrSymTable != null ) ){
                 lexeme =  decorer.getDecorado();
                 //newName= lexeme + "_" +  (IntToStr(decorer.nroAmbito)).c_str() + "_" + (IntToStr(decorer.nroAnidamiento)).c_str();
                 newName= lexeme + "_" +  Integer.toString(decorer.nroAmbito) + "_" + Integer.toString(decorer.nroAnidamiento);
-
+                System.out.println(" NewName : "  + newName);
 				ptr=symbolTable.getRow(newName);
                 if ( ( ptr !=null ) && (ptr.isEmptyType() ) ){
                         //newName=lexeme + "_" +  (IntToStr(zero)).c_str() + "_" + (IntToStr(zero)).c_str();
