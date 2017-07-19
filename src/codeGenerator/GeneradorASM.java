@@ -1,11 +1,12 @@
 package codeGenerator;
 
 import symboltable.SymbolTable;
+import utils.MyFStream;
 
 public class GeneradorASM extends CodeGenerator {
 
-	public GeneradorASM(String fileName, ThirdGenerator tg, SymbolTable st) {
-		super(fileName, tg, st);
+	public GeneradorASM( ThirdGenerator tg, SymbolTable st,MyFStream fstream) {
+		super( tg, st,fstream);
 		// TODO Auto-generated constructor stub
 	}
 	

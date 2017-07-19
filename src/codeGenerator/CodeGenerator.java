@@ -27,11 +27,11 @@ public class CodeGenerator {
         
         
         
-        public CodeGenerator(String fileName, ThirdGenerator tg, SymbolTable st) {
+        public CodeGenerator(ThirdGenerator tg, SymbolTable st,MyFStream fstream) {
 
-        	fstream=new MyFStream();
+        	this.fstream=fstream;
         	
-            noConst = 0;
+        	noConst = 0;
             aux="";
             noString = 0;
             strConst="";
@@ -107,14 +107,15 @@ public class CodeGenerator {
 
 		}
 //------------------------------------------------------------
-public void generarDataSeg(){
+
+		public void generarDataSeg(){
 		
-		fstream.writeArchivo(".model small");
-		fstream.writeArchivo(".radix 10");
-		fstream.writeArchivo(".stack 200h");
-		fstream.writeArchivo(".data");
-		fstream.writeArchivo(";         aquí viene el segmento de identificadores variables y constantes.");
-		downloadSymbolTable();
+			fstream.writeArchivo(".model small");
+			fstream.writeArchivo(".radix 10");
+			fstream.writeArchivo(".stack 200h");
+			fstream.writeArchivo(".data");
+			fstream.writeArchivo(";         aquí viene el segmento de identificadores variables y constantes.");
+			downloadSymbolTable();
 
 
 }
@@ -131,7 +132,7 @@ public void generarDataSeg(){
 			    token=row.getToken();
 			    type =row.getType();
 			    lexeme=row.getLexeme();
-			    if ( token.compareTo("Identifier")==0 )
+			    if ( token.compareTo("identifier")==0 )
 			            if ( type.compareTo("long")==0 )
 			            	fstream.writeArchivo(lexeme + "    dd      "  +  "   0   " +    ";      identificador  long");
 			            else
@@ -153,52 +154,54 @@ public void generarDataSeg(){
 		public void generarCodigo(){
 			generarDataSeg();
 			generarCodeSeg();
+			fstream.endWrite();
 		}
-/***********************************************************************************/
-public void generarIDiv(Third third){
 
-		boolean isExtended=false;
-		Register regDndL=new Register("ax");
-		Register regDndH=new Register("dx");
-		Register regDsr=new Register("bx");
-		String opCode = "div";
-		if ( third != null){
-		    if ( (third.getType()).compareTo("long")==0 ){
-		            isExtended=true;
-		            opCode="idiv";
-		           }
-		     Operand  opL = third.getLeftOp();
-		     Operand  opR = third.getRightOp();
-		     regDndL.setExtended(isExtended);
-		     regDndH.setExtended(isExtended);
-		     regDsr.setExtended(isExtended);
-		     fstream.writeArchivo(" xor  " +  regDndH.getName() + ",  " + regDndH.getName() );
-		     if ( (!opL.isRegistro()) && (!opR.isRegistro()) ){
-		    	 fstream.writeArchivo( " mov  " + regDndL.getName() + ",  "  +  opL.getValue());
-		    	 fstream.writeArchivo( " mov  " + regDsr.getName() + ",  "  +  opR.getValue());
-		    	 runtimeTestDivByZero(regDsr);
-		    	 fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
-		     }
-		     if ( (!opL.isRegistro()) && (opR.isRegistro()) ){
-		    	 fstream.writeArchivo(" pop  "  + regDsr.getName()  );
-		            runtimeTestDivByZero(regDsr);
-		         fstream.writeArchivo(" mov  "  + regDndL.getName() +  ",   "  + opL.getValue());
-		         fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
-		     }
-		     if ( (opL.isRegistro()) && (!opR.isRegistro()) ){
-		    	 	fstream.writeArchivo(" mov  "  + regDsr.getName() +  ",   "  + opR.getValue());
-		           runtimeTestDivByZero(regDsr);
-		           fstream.writeArchivo(" pop  "  + regDndL.getName()  );
-		           fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
-		     }
-		     if ( (opL.isRegistro()) && (opR.isRegistro()) ){
-		    	 	fstream.writeArchivo(" pop  "  + regDsr.getName()  );
-		           runtimeTestDivByZero(regDsr);
-		           fstream.writeArchivo(" pop  "  + regDndL.getName()  );
-		           fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
-		     }
-		     	fstream.writeArchivo("push "   + regDndL.getName());
-		}
+/***********************************************************************************/
+		public void generarIDiv(Third third){
+
+			boolean isExtended=false;
+			Register regDndL=new Register("ax");
+			Register regDndH=new Register("dx");
+			Register regDsr=new Register("bx");
+			String opCode = "div";
+			if ( third != null){
+			    if ( (third.getType()).compareTo("long")==0 ){
+			            isExtended=true;
+			            opCode="idiv";
+			           }
+			     Operand  opL = third.getLeftOp();
+			     Operand  opR = third.getRightOp();
+			     regDndL.setExtended(isExtended);
+			     regDndH.setExtended(isExtended);
+			     regDsr.setExtended(isExtended);
+			     fstream.writeArchivo(" xor  " +  regDndH.getName() + ",  " + regDndH.getName() );
+			     if ( (!opL.isRegistro()) && (!opR.isRegistro()) ){
+			    	 fstream.writeArchivo( " mov  " + regDndL.getName() + ",  "  +  opL.getValue());
+			    	 fstream.writeArchivo( " mov  " + regDsr.getName() + ",  "  +  opR.getValue());
+			    	 runtimeTestDivByZero(regDsr);
+			    	 fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
+			     }
+			     if ( (!opL.isRegistro()) && (opR.isRegistro()) ){
+			    	 fstream.writeArchivo(" pop  "  + regDsr.getName()  );
+			            runtimeTestDivByZero(regDsr);
+			         fstream.writeArchivo(" mov  "  + regDndL.getName() +  ",   "  + opL.getValue());
+			         fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
+			     }
+			     if ( (opL.isRegistro()) && (!opR.isRegistro()) ){
+			    	 	fstream.writeArchivo(" mov  "  + regDsr.getName() +  ",   "  + opR.getValue());
+			           runtimeTestDivByZero(regDsr);
+			           fstream.writeArchivo(" pop  "  + regDndL.getName()  );
+			           fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
+			     }
+			     if ( (opL.isRegistro()) && (opR.isRegistro()) ){
+			    	 	fstream.writeArchivo(" pop  "  + regDsr.getName()  );
+			           runtimeTestDivByZero(regDsr);
+			           fstream.writeArchivo(" pop  "  + regDndL.getName()  );
+			           fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
+			     }
+			     	fstream.writeArchivo("push "   + regDndL.getName());
+			}
 }
 //------------------------------------------------------------
 
@@ -290,47 +293,47 @@ void tolongMemory(Third third){
 	   }
 }
 //-----------------------------------------------------
-void generarTolong(Third third){
+	void generarTolong(Third third){
 		
 		tolongRegister(third);
 		tolongMemory(third);
 }
 //-----------------------------------------------------
-void generarIAdd(Third third){
+	void generarIAdd(Third third){
 
-	boolean  isExtended=false;
-	Register regSrc=new Register("bx");
-	Register regDest=new Register("cx");
-	if ( third != null){
-	    if ( (third.getType()).compareTo("long")==0)
-	            isExtended=true;
-	    regSrc.setExtended( isExtended);
-	    regDest.setExtended(isExtended);
-	    fstream.writeArchivo(" ;                                                        suma.");
-	    Operand  opL = third.getLeftOp();
-	    Operand  opR = third.getRightOp();
-	    if (( !opL.isRegistro()) && (!opR.isRegistro() ) ) {
-	    	fstream.writeArchivo(" mov " + regDest.getName() +  ", " + opL.getValue() );
-	    	fstream.writeArchivo(" add "+  regDest.getName() +  ", " + opR.getValue() );
-	    }
-	    if ( ( !opL.isRegistro() ) && ( opR.isRegistro() ) ) {// ( + ,VARIABLE, REGISTRO )
-	    		fstream.writeArchivo( " pop  " +  regDest.getName() );
-	    		fstream.writeArchivo( " add   " + regDest.getName() + ", " + opL.getValue() );
-	    }
-	    if (( opL.isRegistro()) && (!opR.isRegistro() ) ) {
-	    		fstream.writeArchivo( " pop  " +  regDest.getName() );
-	    		fstream.writeArchivo( " add   " + regDest.getName() + ", " + opR.getValue() );
-	    }
-	    if (( opL.isRegistro()) && (opR.isRegistro() ) ) {// ( + ,REGISTRO,REGISTRO )
-	    		fstream.writeArchivo(" pop " + regSrc.getName());
-	    		fstream.writeArchivo(" pop " + regDest.getName());
-	    		fstream.writeArchivo("add  " + regDest.getName() + ", " + regSrc.getName() );
-	   }
-	
-	    	fstream.writeArchivo("push " + regDest.getName() );
-	    	fstream.writeArchivo( "                            ; ( + , " + regDest.getName()  + ",  " +  regSrc.getName()  +")" );
-	
-	  }
+		boolean  isExtended=false;
+		Register regSrc=new Register("bx");
+		Register regDest=new Register("cx");
+		if ( third != null){
+		    if ( (third.getType()).compareTo("long")==0)
+		            isExtended=true;
+		    regSrc.setExtended( isExtended);
+		    regDest.setExtended(isExtended);
+		    fstream.writeArchivo(" ;                                                        suma.");
+		    Operand  opL = third.getLeftOp();
+		    Operand  opR = third.getRightOp();
+		    if (( !opL.isRegistro()) && (!opR.isRegistro() ) ) {
+		    	fstream.writeArchivo(" mov " + regDest.getName() +  ", " + opL.getValue() );
+		    	fstream.writeArchivo(" add "+  regDest.getName() +  ", " + opR.getValue() );
+		    }
+		    if ( ( !opL.isRegistro() ) && ( opR.isRegistro() ) ) {// ( + ,VARIABLE, REGISTRO )
+		    		fstream.writeArchivo( " pop  " +  regDest.getName() );
+		    		fstream.writeArchivo( " add   " + regDest.getName() + ", " + opL.getValue() );
+		    }
+		    if (( opL.isRegistro()) && (!opR.isRegistro() ) ) {
+		    		fstream.writeArchivo( " pop  " +  regDest.getName() );
+		    		fstream.writeArchivo( " add   " + regDest.getName() + ", " + opR.getValue() );
+		    }
+		    if (( opL.isRegistro()) && (opR.isRegistro() ) ) {// ( + ,REGISTRO,REGISTRO )
+		    		fstream.writeArchivo(" pop " + regSrc.getName());
+		    		fstream.writeArchivo(" pop " + regDest.getName());
+		    		fstream.writeArchivo("add  " + regDest.getName() + ", " + regSrc.getName() );
+		   }
+		
+		    	fstream.writeArchivo("push " + regDest.getName() );
+		    	fstream.writeArchivo( "                            ; ( + , " + regDest.getName()  + ",  " +  regSrc.getName()  +")" );
+		
+		  }
 }
 //------------------------------------------------------------
 public void generarISub(Third third){
@@ -463,8 +466,8 @@ void generarFBranch(Third third){
 		   
 		}
 }
-//------------------------------------------------------------
-public void generarIBranch(Third third){
+//------------------------------------------------------------	
+	public void generarIBranch(Third third){
 	
 		String labelJmp,jmpType;
 		if ( ( third !=null ) ) {
@@ -474,7 +477,7 @@ public void generarIBranch(Third third){
 		 }
 }
 //------------------------------------------------------------
-public String getJmp(String type, String cond){
+	public String getJmp(String type, String cond){
 		
 			String tempJ="jmp";
 			if ( type.compareTo("uint")==0){
@@ -510,10 +513,10 @@ public String getJmp(String type, String cond){
 	}
 
 //------------------------------------------------------------
-void runtimeTestDivByZero(Register registerDsr){
+	void runtimeTestDivByZero(Register registerDsr){
 	
-	fstream.writeArchivo("cmp  " + registerDsr.getName() + ", 0h");
-	fstream.writeArchivo("jz errDivByZero");
+		fstream.writeArchivo("cmp  " + registerDsr.getName() + ", 0h");
+		fstream.writeArchivo("jz errDivByZero");
 
 }
 //------------------------------------------------------------
@@ -567,7 +570,11 @@ public void generarCodeSeg(){
 	
 	          temp =  myThirds.get(index);
 	          this.showThird(temp);
-	          if ( temp!=null) { labelDestiny = temp.getLabelDst(); if ( !labelDestiny.isEmpty() ) fstream.writeArchivo(labelDestiny + ":");  }
+	          if ( temp!=null) { 
+	        	  labelDestiny = temp.getLabelDst(); 
+	        	  if ( (labelDestiny!=null ) && (!labelDestiny.isEmpty()) ) 
+	        		  fstream.writeArchivo(labelDestiny + ":");  
+	        	  }
 	          if ( ( temp.getOperator()).compareTo("+")==0 )
 	               generarIAdd(temp);
 	          if ( (temp.getOperator()).compareTo(":=")==0 )
@@ -610,6 +617,7 @@ public void generarCodeSeg(){
 
 //------------------------------------------------------------
 public void showThird( Third  temp){
+	
 		String left,right;
         if ( temp.getLeftOp().isSalto() )
                left = "[" + (temp.getLeftOp()).getValue() + "]";

@@ -73,7 +73,7 @@ import codeGenerator.*;
 
 %%
 programa:
-        | '{' declaraciones  conjunto_sentencias'}' T_ENDOFFILE { System.out.println(" Programa aceptado con TS de :" + symbolTable.size()  + " -- Contenido : \n "  + symbolTable );}
+        | '{' declaraciones  conjunto_sentencias'}' T_ENDOFFILE { System.out.println(" Programa aceptado con TS de :" + symbolTable.size()  + " -- Contenido : \n "  + /*symbolTable*/ );}
         | '{'declaraciones'}' T_ENDOFFILE
                         //{syntaxError("Se esperan sentencias ejecutables a continuaci�n de las declaraciones.");}
         | '{' /*{ syntaxError("Se esperan declaraciones al inicio del programa.");}*/ conjunto_sentencias '}' 
@@ -488,7 +488,7 @@ public int yylex(){
   Short s = (Short) codes.get(tok.getToken());
   //System.out.println(symbolTable);
   //System.out.println("[ PARSER RECOGNIZES ] " + tok);
-  System.out.println(" PARSER - TOKEN : " + tok);
+  //System.out.println(" PARSER - TOKEN : " + tok);
   return s.intValue();
 
 } 
