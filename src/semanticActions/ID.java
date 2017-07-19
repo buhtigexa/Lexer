@@ -30,9 +30,10 @@ public class ID extends SimpleAction{
 				lexer.lexeme=lexer.lexeme.substring(0, 15);
 				}
 				lexer.lexeme=lexer.symTable.getDecorator().decorate(lexer.lexeme);
-				System.out.println("[ LEXER - name mangling applied :] " +  lexer.lexeme);
+				//System.out.println("[ LEXER - name mangling applied :] " +  lexer.lexeme);
 				if (!lexer.symTable.contains(lexer.lexeme)){
 					token=new RowIdentifier("identifier",lexer.lexeme,"");
+					lexer.symTable.add(token);
 					}
 				else
 					{

@@ -33,7 +33,7 @@ public class Constant extends SimpleAction{
 				}
 			}
 			catch(NumberFormatException e){
-				
+				e.printStackTrace();
 			}
 		return token;
 	}

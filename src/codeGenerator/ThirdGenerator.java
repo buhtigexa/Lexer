@@ -8,173 +8,180 @@ import automaton.Lexer;
 public class ThirdGenerator {
 	
 
-	protected
-		
-		Stack<Operand> operators;
-		Vector<Third> thirdList;
-		Stack<Operand> stack;
+public
+		Stack<Operand> pila;
+		Stack<Operand> operadores;
+		Vector<Third> listaTercetos;
 		Lexer lexer;
 		int index;
 		int noLabel;
+//------------------------------------------------------
+	public void syntaxError(String mensaje) {
+		//TForm1::writer("[Error] Línea " + Lexer.getNroLinea() + ": " + mensaje + ".");
+        System.out.println("[Error] Línea " +lexer.getLine()+ ": " + mensaje + ".");
+		//TForm1::incErrors();
+	}
+	
+	
+	public ThirdGenerator(Lexer l){
 
-		
-	    //public String getNewLabel(int dex){
-		//	return new String();
-		//}
-		
-		
+        index=0;
+        pila=new Stack<Operand>();
+        operadores=new Stack<Operand>();
+        lexer=l;
+        listaTercetos = new Vector<Third>();
+        noLabel=0;
 
-	    public ThirdGenerator(Lexer l){
+}
+void apilarTerceto(Operand  t){
+        pila.push(t);
+}
+Operand  desapilar(){
 
-	        index=0;
-	        stack=new Stack<Operand>();
-	        operators=new Stack<Operand>();
-	        lexer=l;
-	        thirdList = new Vector<Third>();
-	        noLabel=0;
-
-	       }
-
-	     public void stackThird(Operand t){
-	    	   stack.push(t);
-	    	 
-	     }
-	    
-	    public Operand desapilar(){
-
-        Operand temp= new Operand(-1);
-        if  (!stack.isEmpty() ) {
-                temp = stack.peek();// equals to top() method
-                stack.pop();
+        Operand  temp= new Operand(-1);
+        if (!(pila).empty()) {
+                temp = pila.peek();
+                pila.pop();
         }
         return temp;
 }
 
 
-	    public void completarSalto(boolean plus){
-        
-	    	int NoTerceto=0;
-	    	int incremento = 0;
-	    	if ( plus )
+public void completarSalto(boolean plus){
+         int NoTerceto=0;
+         int incremento = 0;
+        if ( plus )
                 incremento = 1;
-	    	
-	    	if ( operators.isEmpty()  ){
-                Operand nroTerceto = new Operand( (operators.peek() ).getPosicion() );
-                operators.pop();
+        if (!operadores.empty()){
+                Operand  nroTerceto = new Operand( (operadores.peek()).getPosicion() );
+                operadores.pop();
                    if ( nroTerceto.isSalto() )
-                        NoTerceto = nroTerceto.getPosicion();
-                     else
-                          {
-                           //TForm1::writer("[Error]" + Lexer->getNroLinea() +"  ... no se puede completar el salto.");
-                    	 	System.out.println("[Error]" + lexer.getLine() +"  ... no se puede completar el salto.");
-                          }
-                int salto = (thirdList.size())+ incremento;
-                Operand operandoSalto = new Operand(salto);
-                thirdList.get(NoTerceto).setLeftOp(operandoSalto);
+                                NoTerceto = nroTerceto.getPosicion();
+                        else
+                                {
+                                 //TForm1::writer("[Error]" + Lexer.getNroLinea() +"  ... no se puede completar el salto.");
+                                System.out.println("[Error]" + lexer.getLine() +"  ... no se puede completar el salto.");
+                                }
+                 int salto = (listaTercetos.size())+ incremento;
+                Operand  operandoSalto = new Operand(salto);
+
+
+                listaTercetos.get(NoTerceto).setLeftOp(operandoSalto);
                 }
 
-	    }
+}
 
-	    public void completarSaltoDo(boolean plus){
+public void completarSaltoDo(boolean plus){
 
-          if (!operators.isEmpty()){
-                Operand salto = new Operand((operators.peek()).getPosicion());
-                operators.pop();
-                //listaTercetos->at(listaTercetos->size()-1)->setLeft(salto);
-                thirdList.get(thirdList.size()-1).setLeftOp(salto);
+          if (!operadores.empty()){
+                Operand  salto = new Operand((operadores.peek()).getPosicion());
+                operadores.pop();
+                listaTercetos.get(listaTercetos.size()-1).setLeftOp(salto);
+              }
+
+}
+
+
+public void showTercetos(){
+
+        String NoTerceto;
+
+        //Form1.Memo5="";
+        String left;
+        String right;
+        left="";
+        right="";
+          for (  int i = 0; i < listaTercetos.size();i++){
+             NoTerceto = (Integer.toString(listaTercetos.get(i).getId() ));
+             if ( (listaTercetos.get(i) != null ) && (listaTercetos.get(i).getLeftOp().isSalto() ))
+                   left = "[" + ((listaTercetos.get(i)).getLeftOp()).getValue() + "]";
+             else  left =(listaTercetos.get(i)).getLeftOp().getValue();
+             if ( (listaTercetos.get(i) != null ) && ( (listaTercetos.get(i)).getRightOp().isSalto() ))
+                   right = "[" + (listaTercetos.get(i)).getRightOp().getValue() + "]";
+             else  right =(listaTercetos.get(i)).getRightOp().getValue();
+
+//TForm1::writer4( NoTerceto + "-( " + (listaTercetos.get(i)).getOperator() + " , " +  left + " , " + right + ")" );
+             System.out.println(NoTerceto + "-( " + (listaTercetos.get(i)).getOperator() + " , " +  left + " , " + right + "):" + listaTercetos.get(i).getType() );
           }
-	    }
-	    
-	    public void showTercetos(){
-
-	    	String NoTerceto=new String();
-	    	//Form1->Memo5->Clear();
-	        String left;
-	        String right;
-	        left="";
-	        right="";
-	         for ( int i = 0; i < thirdList.size();i++){
-	             NoTerceto = Integer.toString(thirdList.get(i).id);
-	           	 if ( (thirdList.get(i) != null ) && (thirdList.get(i).getLeftOp().isSalto()))
-	            	 left="["+thirdList.get(i).getLeftOp().getValue()+"]";
-	           	 else left=(thirdList.get(i).getLeftOp().getValue());
-	           	 
-	             if ((thirdList.get(i)!=null) && (thirdList.get(i).getRightOp().isSalto()))
-	            	 right="["+thirdList.get(i).getRightOp().getValue()+"]";
-	           	 else 
-	           		 right=(thirdList.get(i).getLeftOp().getValue());
-	             System.out.println(NoTerceto + "-( " + (thirdList.get(i).getOperator() + " , " +  left + " , " + right + ")" ));
-	             
-	         }
-	       }
+       }
 
 
-	    public Stack<Operand> getPila(){
-	    	return stack;
-	    }
+Stack<Operand  > getPila(){
+        return pila;
+}
 
-	    public Stack<Operand> getOperadores(){
-	    	return operators;
-	    }
-	    public void showPila(Stack<Operand> p){
+public Stack<Operand  > getOperadores(){
+        return operadores;
+}
+public void showPila(Stack<Operand > p){
 
-		      Stack<Operand> aux=new Stack<Operand>();
-		      String NoTerceto;
-		      if ( p!=null) {
-		        while ( !p.isEmpty() ) {
-		                 Operand op = new Operand( p.peek() );
-		                 p.pop();
-		                 aux.push(op);
-		               }
-		          }
-		
-		      if ( aux !=null)
-		          while ( !aux.isEmpty()){
-		                 Operand op= new Operand(aux.peek());
-		                 aux.pop();
-		                 p.push(op);
-		            }
-		
-		      if ( aux!=null){
-		                aux=null;
-		      }
-		}
-	    public void showOperadores(){
-	    
-	    }
+      Stack<Operand> aux=new Stack<Operand>();;
+      String NoTerceto;
+      if ( p!=null) {
+        while ( !p.empty() ) {
+                 Operand  op = new Operand( p.peek() );
+                 p.pop();
+                 aux.push(op);
+               }
+          }
 
-	    public void apilarOperando(Operand op){
-	    	if ( op!=null){
-                 operators.push(op);
-	    		}
-	    }
+      if ( aux !=null)
+          while ( !aux.empty()){
+                 Operand  op= new Operand(aux.peek());
+                 aux.pop();
+                 p.push(op);
+            }
 
-	    public int countTercetos(){
-	    	return (thirdList.size());
-	    }
+      if ( aux!=null)
+                aux=null;
 
-	    public void apilarOperador(Operand op){
-	    		apilarOperando(op);
-	    		showPila(operators);
-	    }
+}
+void showOperadores(){
 
-	    public void desapilarOperando(){
 
-	    	if ( !operators.isEmpty() )
-	    			operators.pop();
-	    	}
 
-	    public void desapilarOperador(){
-	    	desapilarOperando();
-	    }
+}
 
-	    public void generarTerceto(Third t){
-	    	//listaTercetos->at(index)=t;
-	    	thirdList.add(index, t);
-	    	index=index+1;
-	    }
+public void apilarOperando(Operand  op){
 
-	    public void generarTerceto(String op, boolean apilar){
+        if ( op!=null){
+                        operadores.push(op);
+        }
+}
+
+
+ public int countTercetos(){
+        return (listaTercetos.size());
+}
+
+
+
+void apilarOperador(Operand  op){
+      apilarOperando(op);
+      showPila(operadores);
+}
+
+public void desapilarOperando(){
+
+        if ( !operadores.empty() )
+                operadores.pop();
+       }
+
+void desapilarOperador(){
+        desapilarOperando();
+
+
+}
+
+
+public void generarTerceto(Third t){
+        //listaTercetos.get(index)=t;
+    listaTercetos.set(index, t);    
+	index=index+1;
+
+}
+
+public void generarTerceto(String op, boolean apilar){
  /********************************************
  Tercetos: BI,BF,PRINT,=,<,>,>=,<=,+,-,*,/,:=,tolong
   **********************************************/
@@ -195,24 +202,24 @@ public class ThirdGenerator {
        opRType="";
        tercetoType="";
 
-       Operand opL=new Operand();
-       Operand opR=new Operand();
+       Operand  opL=new Operand();
+       Operand  opR=new Operand();
 
 
        if ( ( !(op.compareTo(opBF)== 0) && !(op.compareTo(opBI)==0)  ) )
-             if ( !operators.isEmpty() ) {
-                        opR = new Operand(operators.peek());
+             if ( !(operadores.empty()) ){
+                        opR = new Operand(operadores.peek() );
                         opRType=getType(opR);
                         isOpR=true;
                         desapilarOperando();
                         if ( !( op.compareTo(opTolong)==0)  && !( op.compareTo(opPrint)==0 ) ) {
-                                if ( !(operators.isEmpty()) ){
-                                                opL= new Operand(operators.peek() );
+                                if ( !(operadores.empty()) ){
+                                                opL= new Operand(operadores.peek() );
                                                 opLType=getType(opL);
                                                 desapilarOperando();
-                                                isOpL=true;
+                                                     isOpL=true;
                                        }
-                          }
+                         }
                       }
 
 
@@ -232,94 +239,97 @@ public class ThirdGenerator {
               else
                    tercetoType=opRType;
        t.setType(tercetoType);
-       t.setId(thirdList.size());
+       t.setId(listaTercetos.size());
 
        if ( apilar )
-           operators.push( new Operand(thirdList.size()) );
+           operadores.push( new Operand(listaTercetos.size()) );
 
-       thirdList.add(t);
-       this.index=this.index+1;
+       listaTercetos.addElement(t);
+       index=index+1;
 
 
 
 }
-//------------------------------------------------------
 
+//------------------------------------------------------
 
 public String getType(Operand op){
   String type;
   type="";
-  if ( op != null ) {
-       if ( op.isSalto() ){
-    	   int posicion = op.getPosicion();
-           if ( ( posicion < thirdList.size()) && ( thirdList.get(posicion) )!=null) 
-        	   type=(thirdList.get(posicion)).getType();
-       		}
-            else
-            	type=op.getType();
-        }
+
+             if ( op != null ) {
+                        if ( op.isSalto() ){
+                                 int posicion = op.getPosicion();
+                                if ( ( posicion < listaTercetos.size() ) && (listaTercetos.get(posicion)!=null) )
+                                         type=(listaTercetos.get(posicion)).getType();
+
+                               }
+                        else
+                                        type=op.getType();
+                      }
 
    return type;
 }
 //------------------------------------------------------
-	public Vector<Third> getTercetos(){
-           return thirdList;
-	}
+public Vector<Third> getTercetos(){
+
+           return (listaTercetos);
+}
 //------------------------------------------------------
 public Third getTerceto(int pos){
         Third temp=null;
-        if ( pos < ((int)thirdList.size()) )
-        	temp = new Third( thirdList.get(pos) );
+        if ( pos < ((int)listaTercetos.size()) )
+               temp = new Third( listaTercetos.get(pos) );
         return temp;
 }
 //------------------------------------------------------
 public String getNewLabel(int index){
 
-        //String noJmp=(IntToStr(index)).c_str();
-        String noJmp=Integer.toString(index);
-		String temp = "label"+noJmp;
+        String noJmp=(Integer.toString(index));
+        String temp = "label"+noJmp;
         return temp;
 
 
 }
 //------------------------------------------------------
 public void labeler(String finalLabel){
-        
-		Vector<Third> myTercetos = getTercetos();
-        Third src=new Third();
-        Third dest=new Third();
-        Third prev=new Third();
-        Operand opDest=new Operand();
+        Vector<Third> myTercetos = getTercetos();
+        Third src;
+        Third dest = null;
+        Third prev = null;
+        Operand opDest;
         String label;
-        int posDest;
+         int posDest;
         int posPrev;
         String operatorTPrev;
-        int nTercetos=myTercetos.size();
+         int nTercetos=myTercetos.size();
 
         if ( myTercetos != null ){
                 nTercetos=myTercetos.size();
-                for ( int index=0;index < nTercetos; index++)  {
-                        //src =  myTercetos->at(index);
-                        src = myTercetos.get(index);
+                for (  int index=0;index < nTercetos; index++)  {
+                        src =  myTercetos.get(index);
                         posPrev = index-1;
-                        if  (src != null){
-                                if ( ( posPrev >= 0 ) && ((int) posPrev < nTercetos) ){
-                                	prev = myTercetos.get(posPrev);
-                                	operatorTPrev = prev.getOperator();
-                                    src.setOpPrevious(operatorTPrev);
-                                }
+                        if  (src != null ){
+                                if ( ( posPrev >= 0 ) && (( int) posPrev < nTercetos) ){
+                                                        prev = myTercetos.get(posPrev);
+                                                        operatorTPrev = prev.getOperator();
+                                                        src.setOpPrevious(operatorTPrev);
+
+                                                      }
                                 String i = Integer.toString(posPrev);
                                 if ( ( src.getOperator().compareTo("BF")==0 ) ||  (  src.getOperator().compareTo("BI")==0 ) ){
                                        posDest=(src.getLeftOp()).getPosicion();
-                                       String noT = Integer.toString(index);
-                                       if ( src.getOperator().compareTo("BF") == 0 ){
+                                       String noT=Integer.toString(index);
+                                       if ( src.getOperator().compareTo("BF")==0){
                                                 src.setType(prev.getType());
                                                }
-                                       else     { src.setType(dest.getType());}
+                                       else     { 
+                                    	   src.setType(dest.getType());
+                                       }
 
                                        if ( posDest < nTercetos ){
                                             dest=myTercetos.get(posDest);
-                                            label=getNewLabel(posDest); src.setLabelSrc(label); dest.setLabelDst(label);
+                                            label=getNewLabel(posDest); (src).setLabelSrc(label); dest.setLabelDst(label);
                                          }
                                         else   { src.setLabelSrc(finalLabel);
                                               }
@@ -329,10 +339,5 @@ public void labeler(String finalLabel){
                  }
         }
 }
-//------------------------------------------------------
-	public void syntaxError(String mensaje) {
-		//TForm1::writer("[Error] Línea " + Lexer->getNroLinea() + ": " + mensaje + ".");
-        System.out.println("[Error] Línea " +lexer.getLine()+ ": " + mensaje + ".");
-		//TForm1::incErrors();
-	}
+	
 }

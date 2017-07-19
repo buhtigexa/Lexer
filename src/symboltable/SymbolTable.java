@@ -25,9 +25,9 @@ public class SymbolTable {
 		return rows.size();
 	}
 	
-	public void add(Row row){
+	public void add(Object row){
 		
-		this.rows.add(row);
+		this.rows.add((Row)row);
 		//System.out.println(this);
 	}
 	

@@ -14,7 +14,18 @@ public class TString extends SimpleAction{
 	public Object execute(char c) {
 		// TODO Auto-generated method stub
 		
-		return new RowIdentifier("string", lexer.lexeme, "STRING");
+		Object token=null;
+		
+		if (!lexer.symTable.contains(lexer.lexeme)){
+			token=new RowIdentifier("string", lexer.lexeme, "string");
+			lexer.symTable.add(token);
+		}
+		else
+			token=lexer.symTable.getRow(lexer.lexeme);
+		
+		return token;
+		
+	
 	}
 
 }

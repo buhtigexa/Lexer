@@ -31,7 +31,7 @@ public class Lexer {
 	public String lexeme;
 	public final static int MaxState=18;
 	public SymbolTable symTable;
-	public NameDecorator decortator;
+	
 	
 	
 	long position;
@@ -130,7 +130,8 @@ public class Lexer {
 
 	
 	public int automaton[][]={
-																							// invalid char
+			
+	/* I MUST REVIEW THIS AUTOMATON, IT'S VERY HARD TO SEE !! 																				// invalid char
 			
 	/*		0 	  1      2     3     4     5     6     7     8      9    10     11    12     13     14    15    16     17    18    19	20	 21*/
 	

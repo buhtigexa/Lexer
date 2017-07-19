@@ -322,6 +322,7 @@ factor          :        variable
                 |       constante
                 |       conversion '(' exp_ar ')'                   {
                                                                       String operadorTerceto =((Row)$1.obj).getLexeme();
+                                                                      System.out.println(" Operador TOLONG : "  + operadorTerceto);
                                                                       codeGenerator.generarTerceto(operadorTerceto,true);
                                                                   }
 
@@ -333,11 +334,12 @@ factor          :        variable
 
 
 variable        :       T_IDENTIFIER                {      //Row *refDecl = verifyDeclaration (decorator,($1.obj));
-                                                           Row refDecl = verifyDeclaration(decorator,(Row)($1.obj));
-                                                           if ( refDecl != null ){
-                                                                        Operand op = new Operand((refDecl).getLexeme(),refDecl,symbolTable  );
-                                                                		codeGenerator.apilarOperando( op );
-                                                                }
+                                                        Row refDecl = verifyDeclaration(decorator,(Row)($1.obj));
+                                                        if ( refDecl != null ){
+                                                        	Operand op = new Operand((refDecl).getLexeme(),refDecl,symbolTable  );
+                                                            //System.out.println(" Apilando operando : " + (refDecl).getLexeme());
+                                                            codeGenerator.apilarOperando( op );
+                                                        }
                                                     }
                 
                 |       T_IDENTIFIER T_PLUS_PLUS           // THIS IS THE NEW STUFF
@@ -346,7 +348,7 @@ variable        :       T_IDENTIFIER                {      //Row *refDecl = veri
 
 
 
-constante       :       T_CONST                     {          //double val =StrToFloat (      ( ($1.obj).getLexeme() ).c_str() );
+constante       :       T_CONST                    	{          //double val =StrToFloat (      ( ($1.obj).getLexeme() ).c_str() );
                                                                double val = new Double(0.0);
                                                                try{
                                                                		val=Double.parseDouble( ((Row)($1.obj)).getLexeme() );
@@ -410,10 +412,11 @@ conversion      :       T_RW_TOLONG
 
 impresion       :       T_RW_PRINT '(' T_STRING ')' {
                                                         informarSentencia("Sentencia PRINT.");
-
                                                         Operand op = new Operand( ((Row)($3.obj)).getLexeme(),($3.obj),symbolTable );
                                                         codeGenerator.apilarOperando( op );
                                                         codeGenerator.generarTerceto(((Row)($1.obj)).getToken(),false);
+                                                        
+                                                        System.out.println(" Operandos : " +  ((Row)$1.obj).getLexeme()  + "  "   + ((Row)$3.obj).getLexeme()  );
 
                                                   }
 
@@ -478,12 +481,14 @@ public int yylex(){
       return x;
    }
   
-  symbolTable.add(tok);
-  //System.out.println(symbolTable);
+  //symbolTable.add(tok);
+  
 
   yylval = new ParserVal(tok);
   Short s = (Short) codes.get(tok.getToken());
+  //System.out.println(symbolTable);
   //System.out.println("[ PARSER RECOGNIZES ] " + tok);
+  System.out.println(" PARSER - TOKEN : " + tok);
   return s.intValue();
 
 } 
@@ -577,7 +582,7 @@ Row verifyDeclaration (NameDecorator decorer, Row ptrSymTable ) {
                 lexeme =  decorer.getDecorado();
                 //newName= lexeme + "_" +  (IntToStr(decorer.nroAmbito)).c_str() + "_" + (IntToStr(decorer.nroAnidamiento)).c_str();
                 newName= lexeme + "_" +  Integer.toString(decorer.nroAmbito) + "_" + Integer.toString(decorer.nroAnidamiento);
-                System.out.println(" NewName : "  + newName);
+                ////System.out.println(" NewName : "  + newName);
 				ptr=symbolTable.getRow(newName);
                 if ( ( ptr !=null ) && (ptr.isEmptyType() ) ){
                         //newName=lexeme + "_" +  (IntToStr(zero)).c_str() + "_" + (IntToStr(zero)).c_str();

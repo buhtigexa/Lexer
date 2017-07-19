@@ -16,7 +16,7 @@ public class Token extends SimpleAction {
 		
 		Object token = null;
 		token = new RowToken(lexer.lexeme);
-		//System.out.println(token);
+		
 		return token;
 		
 	}
