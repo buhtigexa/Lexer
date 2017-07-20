@@ -155,6 +155,10 @@ public class CodeGenerator {
 /***********************************************************************************/
 		public void generarIDiv(Third third){
 
+			
+			// mov  eaux,   a_0_0
+			
+			
 			boolean isExtended=false;
 			Register regDndL=new Register("ax");
 			Register regDndH=new Register("dx");
@@ -206,7 +210,7 @@ void generarIMul(Third third){
 		boolean  isExtended=false;
 		String opCode="mul";
 		Register regMulH = new Register("dx");
-		Register regMulL= new Register("aux");
+		Register regMulL= new Register("ax");
 		Register regMdr= new Register("cx");
 		
 		if ( third != null){
@@ -219,6 +223,9 @@ void generarIMul(Third third){
 		    regMulH.setExtended(isExtended);
 		    regMulL.setExtended(isExtended);
 		    regMdr.setExtended(isExtended);
+		    
+		    
+		    
 		    if ((!opL.isRegistro()) && (!opR.isRegistro() ) ) {          //  (/,VARIABLE,VARIABLE)
 		    	fstream.writeArchivo("mov  " + regMulL.getName() + ", "  + opL.getValue() );
 		    	fstream.writeArchivo("mov  " + regMdr.getName() + ",  " + opR.getValue() );
@@ -565,7 +572,12 @@ public void generarCodeSeg(){
 	          fstream.writeArchivo("\n");
 	
 	          temp =  myThirds.get(index);
-	          //this.showThird(temp);
+	          
+	          ///////
+	          
+	          showThird(temp);
+	          ///////
+	          
 	          if ( temp!=null) { 
 	        	  labelDestiny = temp.getLabelDst(); 
 	        	  if ( (labelDestiny!=null ) && (!labelDestiny.isEmpty()) ) 

@@ -11,12 +11,22 @@ public class Register {
 	
 	public String getName() {
 		if (isExtended){
+			
+			if ((name.compareTo("aux"))==0){
+				System.out.println("Register : " + name);
+			}
 			return "e"+name;
 		}
 		return name;
 	}
 
 	public void setName(String name) {
+		
+		
+		if ((name.compareTo("aux"))==0){
+			System.out.println("Register : " + name);
+		}
+	
 		
 		this.name = name;
 		this.free=true;
@@ -25,6 +35,9 @@ public class Register {
 
 	public Register(String name){
 		
+		if ((name.compareTo("aux"))==0){
+			System.out.println("Register : " + name);
+		}
 		this.name = name;
 		this.free=true;
 		this.isExtended=false;
