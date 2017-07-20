@@ -19,7 +19,6 @@ import semanticActions.TComment;
 import semanticActions.TString;
 import semanticActions.Token;
 import semanticActions.WhiteChar;
-import symboltable.NameDecorator;
 import symboltable.Row;
 import symboltable.SymbolTable;
 

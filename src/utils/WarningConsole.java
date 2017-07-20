@@ -4,8 +4,8 @@ import automaton.Lexer;
 
 public class WarningConsole extends Console{
 
-	public WarningConsole(String path, String consoleName) {
-		super(path, consoleName);
+	public WarningConsole(String path, String consoleName, Lexer l) {
+		super(path, consoleName,l);
 		// TODO Auto-generated constructor stub
 	}
 

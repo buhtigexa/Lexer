@@ -4,8 +4,8 @@ import automaton.Lexer;
 
 public class ErrorConsole extends Console{
 
-	public ErrorConsole(String path,String consoleName) {
-		super(path,consoleName);
+	public ErrorConsole(String path,String consoleName, Lexer l) {
+		super(path,consoleName,l);
 		
 		
 	}

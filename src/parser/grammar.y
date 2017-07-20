@@ -38,6 +38,7 @@ import java.util.Hashtable;
 import automaton.Lexer;
 import symboltable.*;
 import codeGenerator.*;
+import utils.*;
 
 
 %}
@@ -439,10 +440,8 @@ int noEnvironment;
 int maxNest;
 NameDecorator decorator;
 String tipo_identificador;
-
-
 ThirdGenerator codeGenerator;
-
+Console console;
 String token;
 String stringEmpty;
 
@@ -451,12 +450,13 @@ Lexer lex ;
 SymbolTable symbolTable;
 String type; //Used in declarations
 
-public void load(Lexer lex,SymbolTable st,ThirdGenerator codeGenerator,NameDecorator decorator){
+public void load(Lexer lex,SymbolTable st,ThirdGenerator codeGenerator,NameDecorator decorator,Console console){
 
 	this.symbolTable= st ;
 	this.lex = lex ;
 	this.codeGenerator=codeGenerator;
 	this.decorator=decorator;
+	this.console=console;
 }
 
 public int yyerror(String s){
@@ -546,8 +546,7 @@ que las variables ya se encuentran en la tabla de simbolos desde el proceso de t
 void syntaxError(String mensaje) {
 	//TForm1::writer("[Error] Línea " + Lexer->getNroLinea() + ": " + mensaje + ".");
     //TForm1::incErrors();
-	System.out.println("[Error] Línea " + lex.getLine() + ": " + mensaje + ".");
-	lex.errors++;
+	console.show(mensaje);
 }
 
 void informarSentencia(String mensaje) {
