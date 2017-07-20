@@ -68,23 +68,16 @@ public class CodeGenerator {
 		String count=Integer.toString(this.countAux);
 		temp = "aux_" + count;
 		if ( isExtended )
-			//fstream.writeArchivo( temp +  "   dd     0");
+			
 			fstream.writeArchivo( temp +  "   dd     0");
 		else
-			//fstream.writeArchivo( temp  + "   dw     0");
+			
 			fstream.writeArchivo( temp  + "   dw     0");
 		
 			return temp;
 		}
 
-		/*public void fstream.writeArchivo(String txt) {
-			String tabs = "";
-			for ( int i = 0; i < identation; i++)
-			    tabs += "    ";
-			
-			fileAsm << tabs + txt << endl;
-		}
-		*/
+		
 //------------------------------------------------------------
 
 		public void addIdentacion() {
@@ -122,6 +115,7 @@ public class CodeGenerator {
 //------------------------------------------------------------
 
 		public void downloadSymbolTable(){
+			
 			String token,type,lexeme,strAddr;
 			int n =symbolTable.size();
 			Row row=null;
@@ -137,10 +131,10 @@ public class CodeGenerator {
 			            	fstream.writeArchivo(lexeme + "    dd      "  +  "   0   " +    ";      identificador  long");
 			            else
 			            	fstream.writeArchivo(lexeme + "    dw      "  +  "   0   " +    ";      identificador  uint");
-			    if ( token.compareTo("String")==0 ){
-			            //strAddr=IntToStr(i).c_str();
+			    if ( token.compareTo("string")==0 ){
+			            
 			            strAddr=Integer.toString(i);
-			    		strNum="String"+ strAddr;
+			    		strNum="string"+ strAddr;
 			    		fstream.writeArchivo(strNum    +   "       db      "       +   "'" + lexeme + "',10,13,'$'");
 			          }
 			   }
@@ -151,6 +145,7 @@ public class CodeGenerator {
 		}
 		
 //------------------------------------------------------------
+		
 		public void generarCodigo(){
 			generarDataSeg();
 			generarCodeSeg();
@@ -183,19 +178,20 @@ public class CodeGenerator {
 			    	 fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
 			     }
 			     if ( (!opL.isRegistro()) && (opR.isRegistro()) ){
+			    	 
 			    	 fstream.writeArchivo(" pop  "  + regDsr.getName()  );
-			            runtimeTestDivByZero(regDsr);
+			         runtimeTestDivByZero(regDsr);
 			         fstream.writeArchivo(" mov  "  + regDndL.getName() +  ",   "  + opL.getValue());
 			         fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
 			     }
 			     if ( (opL.isRegistro()) && (!opR.isRegistro()) ){
-			    	 	fstream.writeArchivo(" mov  "  + regDsr.getName() +  ",   "  + opR.getValue());
+			    	   fstream.writeArchivo(" mov  "  + regDsr.getName() +  ",   "  + opR.getValue());
 			           runtimeTestDivByZero(regDsr);
 			           fstream.writeArchivo(" pop  "  + regDndL.getName()  );
 			           fstream.writeArchivo(opCode + "    "    +  regDsr.getName());
 			     }
 			     if ( (opL.isRegistro()) && (opR.isRegistro()) ){
-			    	 	fstream.writeArchivo(" pop  "  + regDsr.getName()  );
+			    	   fstream.writeArchivo(" pop  "  + regDsr.getName()  );
 			           runtimeTestDivByZero(regDsr);
 			           fstream.writeArchivo(" pop  "  + regDndL.getName()  );
 			           fstream.writeArchivo(opCode + "    "    +  regDsr.getName());

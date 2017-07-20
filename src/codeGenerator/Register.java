@@ -10,6 +10,9 @@ public class Register {
 	 boolean isExtended;
 	
 	public String getName() {
+		if (isExtended){
+			return "e"+name;
+		}
 		return name;
 	}
 

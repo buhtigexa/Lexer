@@ -4,31 +4,27 @@ import java.util.Vector;
 
 public class RegisterBank {
 
-	Vector<Register> myRegisters;
+	public Vector<Register> myRegisters;
 
 
-	RegisterBank(){
-		
-        this.myRegisters=new Vector<Register>();
-
-	}
-
-
-	void addRegister( int pos,Register r){
-	        
-		if ( myRegisters.size() > pos ){
-	            myRegisters.set(pos,r);
-	        }
-	            
+	
+	public RegisterBank(){
+	        this.myRegisters  = new Vector<Register>();
 	}
 	
 	
-	void addRegister(Register r){
-	        myRegisters.add(r);
+	public void addRegister(int pos,Register r){
+	        if ( myRegisters.size() > pos )
+	             myRegisters.set(pos, r);
 	}
 	
 	
-	int  getPosicion(String r){
+	public void addRegister(Register r){
+	        myRegisters.addElement(r);
+	}
+	
+	
+	public int  getPosicion(String r){
 	
 	 if ( (r.compareTo("ax")==0) ||   ( r.compareTo("eax")==0) )
 	        return 3;
@@ -43,25 +39,25 @@ public class RegisterBank {
 	}
 	
 	
-	int  getPosicion(Register r){
+	public int  getPosicion(Register r){
 	        return this.getPosicion(r.getName());
 	}
 	
-	Register getRegister(Register r){
+	public Register getRegister(Register r){
 	        return this.getRegister(r.getName());
 	}
 	
 	
-	Register getRegister( int posReg){
+	public Register getRegister(int posReg){
 	        Register temp = null;
 	        if (  posReg < this.myRegisters.size() )
 	              temp = this.myRegisters.get(posReg);
 	        return temp;
 	}
 	
-	Register getRegister(String strRegname){
+	public Register getRegister(String strRegname){
 	        Register temp = null;
-	        for (  int index = 0; index < this.myRegisters.size(); index++){
+	        for ( int index = 0; index < this.myRegisters.size(); index++){
 	                temp =this.myRegisters.get(index);
 	                if ( strRegname.compareTo(temp.getName())==0)
 	                        return temp;
@@ -71,57 +67,57 @@ public class RegisterBank {
 	
 	
 	
-	int isFree(){
+	public int isFree(){
 	
-	         int maxReg = this.myRegisters.size();
-	        for (  int index = 0; index < maxReg; index++)
+	        int maxReg = this.myRegisters.size();
+	        for ( int index = 0; index < maxReg; index++)
 	                if ( (myRegisters.get(index)).isFree() )
 	                      return ((int)index);
 	        return -1;
 	}
 	
-	
-	boolean  thisFree(){
+	/*
+	public boolean thisFree(){
 	        if ( this.isFree() >=0 )
 	                return true;
 	        return false;
 	}
 	
-	
-	void setBusy( int pos){
+	*/
+	public void setBusy(int pos){
 	        if ( pos < myRegisters.size() ){
 	                  (myRegisters.get(pos)).setBusy();
 	                  }
 	}
 	
 	
-	void setBusy(Register r){
+	public void setBusy(Register r){
 	        int pos=this.getPosicion(r);
 	        (     this.myRegisters.get(  pos  )     ) .setBusy();
 	}
 	
 	
-	void freeRegister( int pos){
+	public void freeRegister(int pos){
 	        if ( pos < myRegisters.size() )
 	                  (myRegisters.get(pos)).freeRegister();
 	}
 	
 	
 	
-	void freeRegister(String reg){
+	public void freeRegister(String reg){
 	
 	        int pos = this.getPosicion(reg);
 	        if ((  pos >= 0 ) && (pos < (int)myRegisters.size() ) )
 	                (myRegisters.get(pos)).freeRegister();
 	}
 	
-	void freeRegister( Register r  ){
+	public void freeRegister( Register r  ){
 	            this.freeRegister( r.getName() );
 	}
 	
 	
 	
-	Register getDifferent( String r ){
+	public Register getDifferent( String r ){
 	
 	        int pos = this.getPosicion(r);
 	        int free = this.isFree();
@@ -132,8 +128,8 @@ public class RegisterBank {
 	                return temp;          // devuelve el registro libre solicitado
 	                }
 	
-	        else {           int maxReg = this.myRegisters.size();
-	                        for (   int index = 0; index < maxReg; index++)
+	        else {          int maxReg = this.myRegisters.size();
+	                        for (  int index = 0; index < maxReg; index++)
 	                                if ( ( pos != index ) && ( (myRegisters.get(index)).isFree()) ) {
 	                                                temp = this.myRegisters.get(index);
 	                                                this.myRegisters.get(index).setBusy();
@@ -149,13 +145,15 @@ public class RegisterBank {
 	}
 	
 	
-	Register getDifferent( Register r ){
+	public Register getDifferent( Register r ){
 	
 	       return this.getDifferent(r.getName());
 	}
 	
 	
-	
+
+
+
 	
 	
 	
