@@ -73,7 +73,7 @@ import codeGenerator.*;
 
 %%
 programa:
-        | '{' declaraciones  conjunto_sentencias'}' T_ENDOFFILE { System.out.println(" Programa aceptado con TS de :" + symbolTable.size()  + " -- Contenido : \n "  + /*symbolTable*/ );}
+        | '{' declaraciones  conjunto_sentencias'}' T_ENDOFFILE { System.out.println(" Programa aceptado con TS de :" + symbolTable.size()  + " -- Contenido : \n "   /* + symbolTable*/ );}
         | '{'declaraciones'}' T_ENDOFFILE
                         //{syntaxError("Se esperan sentencias ejecutables a continuaci�n de las declaraciones.");}
         | '{' /*{ syntaxError("Se esperan declaraciones al inicio del programa.");}*/ conjunto_sentencias '}' 
@@ -231,7 +231,7 @@ condicion       :       '('comparacion')'            {
 
 
 comparacion     :       comparacion sgn_cmp exp_ar   {  codeGenerator.generarTerceto( ((Row)($2.obj)).getLexeme(),true);
-                                                        codeGenerator.showTercetos();
+                                                        //codeGenerator.showTercetos();
                                                       }
 
 
@@ -239,7 +239,7 @@ comparacion     :       comparacion sgn_cmp exp_ar   {  codeGenerator.generarTer
 
                 |       exp_ar sgn_cmp exp_ar        {
                                                        codeGenerator.generarTerceto(((Row)($2.obj)).getLexeme(),true);
-                                                         codeGenerator.showTercetos();
+                                                        // codeGenerator.showTercetos();
                                                      }
 
                 |       exp_ar error exp_ar
@@ -322,7 +322,7 @@ factor          :        variable
                 |       constante
                 |       conversion '(' exp_ar ')'                   {
                                                                       String operadorTerceto =((Row)$1.obj).getLexeme();
-                                                                      System.out.println(" Operador TOLONG : "  + operadorTerceto);
+                                                                      //System.out.println(" Operador TOLONG : "  + operadorTerceto);
                                                                       codeGenerator.generarTerceto(operadorTerceto,true);
                                                                   }
 
@@ -416,7 +416,7 @@ impresion       :       T_RW_PRINT '(' T_STRING ')' {
                                                         codeGenerator.apilarOperando( op );
                                                         codeGenerator.generarTerceto(((Row)($1.obj)).getToken(),false);
                                                         
-                                                        System.out.println(" Operandos : " +  ((Row)$1.obj).getLexeme()  + "  "   + ((Row)$3.obj).getLexeme()  );
+                                                        //System.out.println(" Operandos : " +  ((Row)$1.obj).getLexeme()  + "  "   + ((Row)$3.obj).getLexeme()  );
 
                                                   }
 

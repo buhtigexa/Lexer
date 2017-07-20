@@ -33,10 +33,10 @@ public
         noLabel=0;
 
 }
-void apilarTerceto(Operand  t){
+	public void apilarTerceto(Operand  t){
         pila.push(t);
 }
-Operand  desapilar(){
+	public Operand  desapilar(){
 
         Operand  temp= new Operand(-1);
         if (!(pila).empty()) {
@@ -47,10 +47,10 @@ Operand  desapilar(){
 }
 
 
-public void completarSalto(boolean plus){
+	public void completarSalto(boolean plus){
          int NoTerceto=0;
          int incremento = 0;
-        if ( plus )
+         if ( plus )
                 incremento = 1;
         if (!operadores.empty()){
                 Operand  nroTerceto = new Operand( (operadores.peek()).getPosicion() );
@@ -106,13 +106,39 @@ public void showTercetos(){
        }
 
 
-Stack<Operand  > getPila(){
-        return pila;
-}
+	public String toString(){
 
-public Stack<Operand  > getOperadores(){
+		String str="";
+		String NoTerceto="";
+		String left;
+        String right;
+        left="";
+        right="";
+          for (  int i = 0; i < listaTercetos.size();i++){
+             NoTerceto = (Integer.toString(listaTercetos.get(i).getId() ));
+             if ( (listaTercetos.get(i) != null ) && (listaTercetos.get(i).getLeftOp().isSalto() ))
+                   left = "[" + ((listaTercetos.get(i)).getLeftOp()).getValue() + "]";
+             else  left =(listaTercetos.get(i)).getLeftOp().getValue();
+             if ( (listaTercetos.get(i) != null ) && ( (listaTercetos.get(i)).getRightOp().isSalto() ))
+                   right = "[" + (listaTercetos.get(i)).getRightOp().getValue() + "]";
+             else  right =(listaTercetos.get(i)).getRightOp().getValue();
+
+//TForm1::writer4( NoTerceto + "-( " + (listaTercetos.get(i)).getOperator() + " , " +  left + " , " + right + ")" );
+            str+="\n  " + NoTerceto + "-( " + (listaTercetos.get(i)).getOperator() + " , " +  left + " , " + right + "):" + listaTercetos.get(i).getType();
+          }
+          
+          return str;
+
+		
+	}
+
+	public Stack<Operand  > getPila(){
+        return pila;
+	}
+
+	public Stack<Operand  > getOperadores(){
         return operadores;
-}
+	}
 public void showPila(Stack<Operand > p){
 
       Stack<Operand> aux=new Stack<Operand>();;

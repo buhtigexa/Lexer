@@ -558,7 +558,7 @@ public void generarCodeSeg(){
 	fstream.writeArchivo("                  int 21h ");
 	fstream.writeArchivo("                  jmp exit_code ");
 	fstream.writeArchivo("start_code:");
-	this.tGenerator.showTercetos();
+	//this.tGenerator.showTercetos();
 	Third  temp;
 	String labelDestiny;
 	if ( myThirds != null ){
@@ -569,7 +569,7 @@ public void generarCodeSeg(){
 	          fstream.writeArchivo("\n");
 	
 	          temp =  myThirds.get(index);
-	          this.showThird(temp);
+	          //this.showThird(temp);
 	          if ( temp!=null) { 
 	        	  labelDestiny = temp.getLabelDst(); 
 	        	  if ( (labelDestiny!=null ) && (!labelDestiny.isEmpty()) ) 
@@ -627,7 +627,7 @@ public void showThird( Third  temp){
          else  right =(temp).getRightOp().getValue();
          	String i= Integer.toString((temp.getId()));
          	//TForm1::writer5( i  +  "  ( " + (temp).getOperator() + " ,  " +  left + " ,  " + right + " ) " );// + "- Src:   " + temp.getLabelSrc()  + " -Dest:   "  + temp.getLabelDst() + "-OpPrev:   "  + temp.getOpprev());
-         	System.out.println(i  +  "  ( " + (temp).getOperator() + " ,  " +  left + " ,  " + right + " ) ");
+         	System.out.println(i  +  "  ( " + (temp).getOperator() + " ,  " +  left + " ,  " + right + " )- "  + temp.getType());
 }
 //------------------------------------------------------------
 
