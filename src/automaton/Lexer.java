@@ -38,7 +38,7 @@ public class Lexer {
 	
 	public static boolean eof;
 	
-	public int line,column,errors,warnings;
+	public static int line,column,errors,warnings;
 	
 	public int getLine() {
 		return line;

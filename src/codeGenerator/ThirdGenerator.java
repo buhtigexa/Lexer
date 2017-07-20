@@ -59,7 +59,7 @@ public
                                 NoTerceto = nroTerceto.getPosicion();
                         else
                                 {
-                                 //TForm1::writer("[Error]" + Lexer.getNroLinea() +"  ... no se puede completar el salto.");
+                                //TForm1::writer("[Error]" + Lexer.getNroLinea() +"  ... no se puede completar el salto.");
                                 System.out.println("[Error]" + lexer.getLine() +"  ... no se puede completar el salto.");
                                 }
                  int salto = (listaTercetos.size())+ incremento;
