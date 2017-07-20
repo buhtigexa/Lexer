@@ -11,11 +11,6 @@ public class Register {
 	
 	public String getName() {
 		if (isExtended){
-			/*
-			if ((name.compareTo("aux"))==0){
-				System.out.println("Register : " + name);
-			}
-			*/
 			return "e"+name;
 		}
 		return name;

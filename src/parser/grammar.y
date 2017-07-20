@@ -544,8 +544,7 @@ que las variables ya se encuentran en la tabla de simbolos desde el proceso de t
 //void yyerror(String msj) {}
 
 void syntaxError(String mensaje) {
-	//TForm1::writer("[Error] Línea " + Lexer->getNroLinea() + ": " + mensaje + ".");
-    //TForm1::incErrors();
+	
 	console.show(mensaje);
 }
 

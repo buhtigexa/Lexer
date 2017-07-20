@@ -250,6 +250,7 @@ void generarIMul(Third third){
 		}
 }
 //-----------------------------------------------------
+/*
 void tolongRegister(Third third){
 
 		Register regAux=new Register("cx");
@@ -272,6 +273,44 @@ void tolongRegister(Third third){
 		        }
 		}
 }
+*/
+
+	public void tolongRegister(Third third){
+		
+		Register regAux=new Register("cx");
+		Register regSrc=new Register("bx");
+			if ( third != null ){
+			        Operand opL = third.getRightOp();
+			        
+			        
+			        /////
+			        Operand opR = third.getLeftOp();
+			        if (opR != null){
+			        	System.out.println(" OPERANDO IZQIOERDP TOLONG " + opR.getValue()  + "  ");
+				        showThird(third);
+
+			        }
+			        /////
+			        
+			        if (  opL.isRegistro() ){
+			        	fstream.writeArchivo(";                                         tolong register ");
+			        	fstream.writeArchivo(" pop  " + regSrc.getName()  + ";  sacando el registro a extender");
+                        if  (opL.getType().compareTo("uint")==0  ) {
+                        	fstream.writeArchivo(" ;                        el registro es uint.");
+                        	regAux.setExtended();
+                        	fstream.writeArchivo(" xor    " + regAux.getName()   + ",   " + regAux.getName());
+			                regAux.setExtended(false);
+			                fstream.writeArchivo(" mov    "   +  regAux.getName()  +  ", " +  regSrc.getName());
+			                regSrc.setExtended();
+			                regAux.setExtended();
+			                fstream.writeArchivo("mov " + regSrc.getName() + ",  " + regAux.getName());
+                        	}
+                        fstream.writeArchivo(" push " + regSrc.getName() );
+			            }
+			}
+		
+	
+	}
 
 //-----------------------------------------------------
 void tolongMemory(Third third){
