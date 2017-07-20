@@ -17,9 +17,8 @@ public
 		int noLabel;
 //------------------------------------------------------
 	public void syntaxError(String mensaje) {
-		//TForm1::writer("[Error] Línea " + Lexer.getNroLinea() + ": " + mensaje + ".");
-        System.out.println("[Error] Línea " +lexer.getLine()+ ": " + mensaje + ".");
-		//TForm1::incErrors();
+		
+        Lexer.showError(mensaje);
 	}
 	
 	
@@ -59,8 +58,8 @@ public
                                 NoTerceto = nroTerceto.getPosicion();
                         else
                                 {
-                                //TForm1::writer("[Error]" + Lexer.getNroLinea() +"  ... no se puede completar el salto.");
-                                System.out.println("[Error]" + lexer.getLine() +"  ... no se puede completar el salto.");
+                                String mensaje="no se puede completar el salto.";
+                                Lexer.showError(mensaje);
                                 }
                  int salto = (listaTercetos.size())+ incremento;
                 Operand  operandoSalto = new Operand(salto);
@@ -100,7 +99,6 @@ public void showTercetos(){
                    right = "[" + (listaTercetos.get(i)).getRightOp().getValue() + "]";
              else  right =(listaTercetos.get(i)).getRightOp().getValue();
 
-//TForm1::writer4( NoTerceto + "-( " + (listaTercetos.get(i)).getOperator() + " , " +  left + " , " + right + ")" );
              System.out.println(NoTerceto + "-( " + (listaTercetos.get(i)).getOperator() + " , " +  left + " , " + right + "):" + listaTercetos.get(i).getType() );
           }
        }
@@ -123,7 +121,6 @@ public void showTercetos(){
                    right = "[" + (listaTercetos.get(i)).getRightOp().getValue() + "]";
              else  right =(listaTercetos.get(i)).getRightOp().getValue();
 
-//TForm1::writer4( NoTerceto + "-( " + (listaTercetos.get(i)).getOperator() + " , " +  left + " , " + right + ")" );
             str+="\n  " + NoTerceto + "-( " + (listaTercetos.get(i)).getOperator() + " , " +  left + " , " + right + "):" + listaTercetos.get(i).getType();
           }
           
@@ -259,7 +256,8 @@ public void generarTerceto(String op, boolean apilar){
 
       if ( (isOpR) && (isOpL) )
            if (  opRType.compareTo(opLType) != 0 ){
-                         syntaxError("Tipos de datos incomparables: Se requiere conversión explícita.");
+                         String mensaje="Tipos de datos incomparables: Se requiere conversión explícita.";
+                         Lexer.showError(mensaje);
                          tercetoType="operands don't match";
                         }
               else

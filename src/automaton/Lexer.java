@@ -1,8 +1,10 @@
 package automaton;
 
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.util.Hashtable;
 
@@ -30,7 +32,7 @@ public class Lexer {
 	public String lexeme;
 	public final static int MaxState=18;
 	public SymbolTable symTable;
-	
+
 	
 	
 	long position;
@@ -127,6 +129,11 @@ public class Lexer {
 	
 	public Hashtable<String, String> reservedWords;
 
+	public static PrintWriter errorPrinter;
+	public static PrintWriter warningPrinter;
+	
+	public File errFile, warFile;
+	
 	
 	public int automaton[][]={
 			
@@ -226,7 +233,24 @@ public class Lexer {
 	
 	
 	
-	public Lexer(String path,SymbolTable symTable){
+	public Lexer(String path,SymbolTable symTable,String errorFile,String warningFile){
+		
+		
+		errFile=new File(errorFile);
+		warFile=new File(warningFile);
+		
+		try {
+			errorPrinter=new PrintWriter(errFile);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			warningPrinter=new PrintWriter(warFile);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		setUp(symTable);
 		try {
@@ -238,6 +262,7 @@ public class Lexer {
 	}
 	
 	public boolean isReservedWord(String lexeme){
+		
 		if (reservedWords.containsKey(lexeme)){
 			return true;
 		}
@@ -360,8 +385,8 @@ public class Lexer {
 				e_i=automaton[e_i][code];
 				token=currentAction.execute(c);
 				if (map(c)==INVALID_CHAR){
-					errors++;
-					System.out.println("[Error: Caracter inválido- linea,columna] : " + line + " , "  + column + "  " + c );
+					String message="Caracter inválido "  + c;
+					showError(message);
 				}
 				if ((e_i==ef) && (token==null)){
 					 e_i=e0;
@@ -402,9 +427,11 @@ public class Lexer {
 		
 	}
 	
-	protected void setUp(SymbolTable symTable){
+	public void setUp(SymbolTable symTable){
 		
 		this.symTable=symTable;
+		
+		
 		
 		eof=false;
 		
@@ -428,7 +455,25 @@ public class Lexer {
 		
 	}
 	
+	public static void showWarning(String message){
+		
+		String warningTxt = "\n"  +  "(" + line + " , " + column + " ) - [ WARNING ]  :" + message;
+		warnings++;
+		warningPrinter.write(warningTxt);
+	}
 	
+
+	public static void showError(String message){
+		
+		String errorTxt = "\n"  +  "(" + line + " , " + column + " ) - [ WARNING ]  :" + message;
+		errors++;
+		errorPrinter.write(errorTxt);
+	}
 	
-	
+	public static void saveMessages(){
+		
+		errorPrinter.close();
+		warningPrinter.close();
+		
+	}
 }

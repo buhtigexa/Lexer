@@ -13,15 +13,18 @@ public  class Console {
 	public String text;
 	public int identation;
 	public String name;
+	public static int errors;
+	public static int warnings;
 	public Lexer lexer;
-	
-	public Console(String path,String consoleName, Lexer lexer){
+	public Console(String path,String consoleName,Lexer lexer){
 		
 		
+		this.lexer=lexer;
 		this.name=consoleName;
 		text = new String();
 		identation=0;
-		this.lexer=lexer;
+		errors=0;
+		warnings=0;
 		file = new File(path);
 		try {
 			printWriter=new PrintWriter(file);
@@ -42,6 +45,7 @@ public  class Console {
 		
 		text="\n " + name   + "  (" + lexer.line + ","  + lexer.column + ") :  " + m;
 		printWriter.write(text);
+		System.out.println(text);
 	}
 }
 
