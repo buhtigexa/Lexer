@@ -1,10 +1,12 @@
 
 
 import parser.Parser;
-import parser.ParserVal;
-import symboltable.Row;
+import symboltable.NameDecorator;
 import symboltable.SymbolTable;
+import utils.MyFStream;
 import automaton.Lexer;
+import codeGenerator.GeneradorASM;
+import codeGenerator.ThirdGenerator;
 
 public class Test {
 
@@ -12,17 +14,32 @@ public class Test {
 	 * @param args
 	 */
 	
-	public void setUp(String s){
+	
+	
+	public void setUp(String file){
 		
+
+		MyFStream fstream = new MyFStream(file+".asm");
 		
-		SymbolTable symbolTable = new SymbolTable();
-		Lexer lexer = new Lexer(s,symbolTable);
-			
+		NameDecorator nameDecorator=new NameDecorator();
+		SymbolTable symbolTable = new SymbolTable(nameDecorator);
+		Lexer lexer = new Lexer(file,symbolTable);
+		ThirdGenerator thirdGenerator=new ThirdGenerator(lexer);
+		
+				
 		Parser parser = new Parser();
-		parser.load(lexer, symbolTable);
+		parser.load(lexer, symbolTable,thirdGenerator,nameDecorator);
 		parser.run();
+		GeneradorASM generadorASM=new GeneradorASM( thirdGenerator, symbolTable,fstream);
+
 		
-		System.out.println("-----------Programa aceptado : -------- "  + s +  " Errors : " + lexer.errors);
+		
+		generadorASM.generarCodigo();
+
+		System.out.println("-----------Programa aceptado : -------- "  + file +  " Errors : " + lexer.errors);
+		
+		System.out.println(thirdGenerator);
+		System.out.println(symbolTable);
 		
 	
 	}
@@ -42,11 +59,9 @@ public class Test {
 				
 		};
 		
-		for (int i=0;i< 5;i++){
-			t.setUp(programas[i]);
-		}
 		
-		t.setUp("/home/marcelo/workspace/test_files/errdivByZero.txt");
+		t.setUp(programas[0]);
+		
 		
 		
 		
