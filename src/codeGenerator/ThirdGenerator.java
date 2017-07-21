@@ -256,9 +256,12 @@ public void generarTerceto(String op, boolean apilar){
 
       if ( (isOpR) && (isOpL) )
            if (  opRType.compareTo(opLType) != 0 ){
-                         String mensaje="Tipos de datos incomparables: Se requiere conversión explícita.";
-                         Lexer.showError(mensaje);
-                         tercetoType="operands don't match";
+        	   			
+        	   			System.out.println("------------------------------------------------------------");
+        	   			System.out.println("("  + op.toString()  + " , " + opL.getValue() + "[" + opL.getType() + "]" + "  , "  + opR.getValue() +"[" + opR.getType() +"]   Type :" +  t.getType() +") ");
+                        String mensaje="Tipos de datos incomparables: Se requiere conversión explícita.";
+                        Lexer.showError(mensaje);
+                        tercetoType="operands don't match";
                         }
               else
                    tercetoType=opRType;

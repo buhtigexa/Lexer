@@ -393,10 +393,10 @@ public class Lexer {
 				currentAction=actions[e_i][code];
 				e_i=automaton[e_i][code];
 				token=currentAction.execute(c);
-				if (map(c)==INVALID_CHAR){
-					String message="Caracter inválido "  + c;
-					showError(message);
-				}
+				//if (map(c)==INVALID_CHAR){
+				//	String message="Caracter inválido "  + c + "codigo de caracter :" + (short)c;
+				//	showError(message);
+				//}
 				if ((e_i==ef) && (token==null)){
 					 e_i=e0;
 				}

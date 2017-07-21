@@ -27,6 +27,7 @@ public class WhiteChar extends SimpleAction{
 		// Carriage return \r   \n\r tiene sentido en windows
 		if (code == 13){
 			lexer.column=0;
+			//lexer.line++;
 		}
 		
 		return null;

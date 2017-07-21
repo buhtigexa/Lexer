@@ -678,7 +678,7 @@ public void showThird( Third  temp){
          	String i= Integer.toString((temp.getId()));
          	//TForm1::writer5( i  +  "  ( " + (temp).getOperator() + " ,  " +  left + " ,  " + right + " ) " );// + "- Src:   " + temp.getLabelSrc()  + " -Dest:   "  + temp.getLabelDst() + "-OpPrev:   "  + temp.getOpprev());
          	String mensaje=i  +  "  ( " + (temp).getOperator() + " ,  " +  left + " ,  " + right + " )- "  + temp.getType();
-         	Lexer.showMessage(mensaje);
+         	//Lexer.showMessage(mensaje);
 }
 //------------------------------------------------------------
 
