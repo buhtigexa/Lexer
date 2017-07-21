@@ -1,5 +1,8 @@
 package symboltable;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Vector;
 
 
@@ -8,15 +11,24 @@ public class SymbolTable {
 	
 	public Vector<Row> rows;
 	public NameDecorator decorator;
+	public File fileTable;
+	public PrintWriter printWriter;
 	
 	public NameDecorator getDecorator() {
 		return decorator;
 	}
 
-	public SymbolTable(NameDecorator decorator){
+	public SymbolTable(NameDecorator decorator,String path){
 		
 		rows=new Vector<Row>();
 		this.decorator=decorator;
+		fileTable=new File(path);
+		try {
+			printWriter=new PrintWriter(fileTable);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -34,14 +46,12 @@ public class SymbolTable {
 	
 	public String toString(){
 	
-		System.out.println("------------------- Symbol Table Starts ------------------------------------");
 		String str=new String();
 		
 		for (int i=0; i< rows.size();i++){
 			System.out.println(rows.get(i));
 		}
 		
-		System.out.println("------------------- Symbol Table Ends ------------------------------------");
 		return str;
 		
 	}
@@ -78,6 +88,16 @@ public class SymbolTable {
                 if ( rows.get(i).getLexeme().compareTo(str)==0)
                         return i;
         return -1;
+	}
+	
+	public void saveTable(){
+		
+		String str=new String();
+			for (int i=0; i< rows.size();i++){
+				str=rows.get(i).toString() + "\n";
+				printWriter.write(str);
+		}
+		printWriter.close();
 	}
 }
 
