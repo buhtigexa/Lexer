@@ -12,8 +12,8 @@ public class IllegalCharacter extends SimpleAction {
 	@Override
 	public Object execute(char c) {
 		// TODO Auto-generated method stub
-		System.out.println("[Error ] caracter ilegal " + c);
-		lexer.errors++;
+		String mensaje="[Error ] caracter ilegal " + c;
+		Lexer.showError(mensaje);
 		return null;
 	}
 

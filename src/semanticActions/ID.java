@@ -25,12 +25,11 @@ public class ID extends SimpleAction{
 			// aplicar namemangling : si no está en TS ,agregar.
 			// 						: si está en TS, retornar.
 			if (lexer.lexeme.length()>15){
-				lexer.warnings++;
-				System.out.println("Identificador muy largo , se trunca : " +  lexer.lexeme.substring(0, 15));
+				String mensaje="Identificador muy largo , se trunca : " +  lexer.lexeme.substring(0, 15);
+				Lexer.showWarning(mensaje);
 				lexer.lexeme=lexer.lexeme.substring(0, 15);
 				}
 				lexer.lexeme=lexer.symTable.getDecorator().decorate(lexer.lexeme);
-				//System.out.println("[ LEXER - name mangling applied :] " +  lexer.lexeme);
 				if (!lexer.symTable.contains(lexer.lexeme)){
 					token=new RowIdentifier("identifier",lexer.lexeme,"");
 					lexer.symTable.add(token);

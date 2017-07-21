@@ -12,7 +12,8 @@ public class TComment extends SimpleAction{
 	@Override
 	public Object execute(char c) {
 		// TODO Auto-generated method stub
-		System.out.println("[COMMENT :] "+lexer.lexeme);
+		String mensaje="[COMMENT :] "+lexer.lexeme;
+		Lexer.showMessage(mensaje);
 		return null;
 	}
 

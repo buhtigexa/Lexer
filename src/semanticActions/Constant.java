@@ -17,8 +17,8 @@ public class Constant extends SimpleAction{
 		try{
 			double x = Double.parseDouble(lexer.lexeme);
 			if ( (x-1) > 2147483647){
-				lexer.errors++;
-				System.out.println("Constante :" + lexer.lexeme + " fuera de rango "); 
+				String mensaje="Constante : " +lexer.lexeme + " fuera de rango "; 
+				Lexer.showError(mensaje);
 			}
 			else
 				{

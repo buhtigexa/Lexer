@@ -465,11 +465,17 @@ public class Lexer {
 
 	public static void showError(String message){
 		
-		String errorTxt = "\n"  +  "(" + line + " , " + column + " ) - [ WARNING ]  :" + message;
+		String errorTxt = "\n"  +  "(" + line + " , " + column + " ) - [ ERROR ]  :" + message;
 		errors++;
 		errorPrinter.write(errorTxt);
 	}
 	
+	
+	public static void showMessage(String message){
+
+		String msgTxt = "\n"  +  "(" + line + " , " + column + " ) - [ INFO ]  :" + message;
+		
+	}
 	public static void saveMessages(){
 		
 		errorPrinter.close();
