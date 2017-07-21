@@ -132,6 +132,10 @@ public class Lexer {
 	public static PrintWriter errorPrinter;
 	public static PrintWriter warningPrinter;
 	
+	public static boolean printWarning;
+	public static boolean printError;
+	public static boolean printMsg;
+	
 	public File errFile, warFile;
 	
 	
@@ -233,22 +237,27 @@ public class Lexer {
 	
 	
 	
-	public Lexer(String path,SymbolTable symTable,String errorFile,String warningFile){
+	public Lexer(String path,SymbolTable symTable,String errorFile,String warningFile,boolean printMsg,boolean printError,boolean printWarning){
 		
 		
 		errFile=new File(errorFile);
 		warFile=new File(warningFile);
 		
+		this.printMsg=printMsg;
+		this.printError=printError;
+		this.printWarning=printWarning;
+		
 		try {
 			errorPrinter=new PrintWriter(errFile);
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
+		
 			e1.printStackTrace();
 		}
 		try {
 			warningPrinter=new PrintWriter(warFile);
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
+			
+			
 			e1.printStackTrace();
 		}
 		
@@ -401,7 +410,7 @@ public class Lexer {
 		catch(IOException e){
 		}
 		
-		//System.out.println("[ LEXER - TOKEN  ] " + token);
+		
 		return token;
 		
 	}
@@ -421,7 +430,7 @@ public class Lexer {
 		try {
 			raf.seek(position);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
@@ -457,24 +466,32 @@ public class Lexer {
 	
 	public static void showWarning(String message){
 		
-		String warningTxt = "\n"  +  "(" + line + " , " + column + " ) - [ WARNING ]  :" + message;
+		String warningTxt = "\n -[WARNING]"  +  " linea:columna (" + line + " , " + column + ") :" + message;
 		warnings++;
 		warningPrinter.write(warningTxt);
+		if (printWarning){
+			System.out.println(warningTxt);
+		}
 	}
 	
 
 	public static void showError(String message){
 		
-		String errorTxt = "\n"  +  "(" + line + " , " + column + " ) - [ ERROR ]  :" + message;
+		String errorTxt = "\n -[ERROR]"  +  "linea:columna (" + line + " , " + column + " ) :" + message;
 		errors++;
 		errorPrinter.write(errorTxt);
+		if (printError){
+			System.out.println(errorTxt);
+		}
 	}
 	
 	
 	public static void showMessage(String message){
 
-		String msgTxt = "\n"  +  "(" + line + " , " + column + " ) - [ INFO ]  :" + message;
-		
+		String msgTxt = "\n  -[INFO] "  +  "linea:columna (" + line + " , " + column + " ) :" + message;
+		if (printMsg){
+			System.out.println(msgTxt);
+		}
 	}
 	public static void saveMessages(){
 		

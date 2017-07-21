@@ -2,6 +2,8 @@ package codeGenerator;
 
 import java.util.Vector;
 
+import automaton.Lexer;
+
 import symboltable.Row;
 import symboltable.SymbolTable;
 import utils.MyFStream;
@@ -284,6 +286,7 @@ void tolongRegister(Third third){
 			        
 			        
 			        /////
+			        /*
 			        Operand opR = third.getLeftOp();
 			        if (opR != null){
 			        	System.out.println(" OPERANDO IZQIOERDP TOLONG " + opR.getValue()  + "  ");
@@ -291,7 +294,7 @@ void tolongRegister(Third third){
 
 			        }
 			        /////
-			        
+			        */
 			        if (  opL.isRegistro() ){
 			        	fstream.writeArchivo(";                                         tolong register ");
 			        	fstream.writeArchivo(" pop  " + regSrc.getName()  + ";  sacando el registro a extender");
@@ -674,7 +677,8 @@ public void showThird( Third  temp){
          else  right =(temp).getRightOp().getValue();
          	String i= Integer.toString((temp.getId()));
          	//TForm1::writer5( i  +  "  ( " + (temp).getOperator() + " ,  " +  left + " ,  " + right + " ) " );// + "- Src:   " + temp.getLabelSrc()  + " -Dest:   "  + temp.getLabelDst() + "-OpPrev:   "  + temp.getOpprev());
-         	System.out.println(i  +  "  ( " + (temp).getOperator() + " ,  " +  left + " ,  " + right + " )- "  + temp.getType());
+         	String mensaje=i  +  "  ( " + (temp).getOperator() + " ,  " +  left + " ,  " + right + " )- "  + temp.getType();
+         	Lexer.showMessage(mensaje);
 }
 //------------------------------------------------------------
 

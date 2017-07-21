@@ -549,16 +549,14 @@ void syntaxError(String mensaje) {
 }
 
 void informarSentencia(String mensaje) {
-	//TForm1::writer("Línea " + Lexer->getNroLinea() + ": " + mensaje + ".");
-	System.out.println("Línea " + lex.getLine() + ": " + mensaje + ".");
+  Lexer.showMessage(mensaje);
 }
 
 
 
 void updateDeclaration ( Row symbolTableRow, String identifierType) {
         if ( ( symbolTableRow != null ) && ( !symbolTableRow.isEmptyType() ) ){
-                //TForm1::writer("L�nea " + Lexer.getLine() + ":  El identificador  " +   symbolTableRow.getLexeme()+ "  ya ha sido declarado.");
-        		System.out.println("L�nea " + lex.getLine() + ":  El identificador  " +   symbolTableRow.getLexeme()+ "  ya ha sido declarado.");
+                Lexer.showMessage("  El identificador  " +   symbolTableRow.getLexeme()+ "  ya ha sido declarado.");
         }
         else
         if ( symbolTableRow != null )
