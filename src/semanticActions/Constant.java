@@ -22,7 +22,7 @@ public class Constant extends SimpleAction{
 			}
 			else
 				{
-				if ((x >=0) && (x<= 65535)){
+				if ((x >=0) && (x< 65536)){
 					token = new RowConst("const",lexer.lexeme,"uint");
 					lexer.symTable.add((Row)token);
 					}

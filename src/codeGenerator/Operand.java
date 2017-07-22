@@ -15,8 +15,9 @@ public class Operand {
 
 
 
- public Operand(Row tsV,SymbolTable st){
+ public Operand(Object obj,SymbolTable st){
  
+	Row tsV = (Row)obj;
     if ( tsV!=null){
         value=tsV.getLexeme();
         tsValue=tsV;

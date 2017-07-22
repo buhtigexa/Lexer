@@ -33,6 +33,7 @@ public
 
 }
 	public void apilarTerceto(Operand  t){
+		
         pila.push(t);
 }
 	public Operand  desapilar(){
@@ -174,7 +175,7 @@ public void apilarOperando(Operand  op){
 
 
  public int countTercetos(){
-        return (listaTercetos.size());
+        return ( listaTercetos.size() );
 }
 
 
@@ -190,7 +191,7 @@ public void desapilarOperando(){
                 operadores.pop();
        }
 
-void desapilarOperador(){
+public void desapilarOperador(){
         desapilarOperando();
 
 
@@ -261,7 +262,7 @@ public void generarTerceto(String op, boolean apilar){
         	   			System.out.println("("  + op.toString()  + " , " + opL.getValue() + "[" + opL.getType() + "]" + "  , "  + opR.getValue() +"[" + opR.getType() +"]   Type :" +  t.getType() +") ");
                         String mensaje="Tipos de datos incomparables: Se requiere conversión explícita.";
                         Lexer.showError(mensaje);
-                        tercetoType="operands don't match";
+                        tercetoType="tipos incompatibles";
                         }
               else
                    tercetoType=opRType;

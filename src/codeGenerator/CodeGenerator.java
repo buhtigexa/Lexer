@@ -154,7 +154,7 @@ public class CodeGenerator {
 			fstream.endWrite();
 		}
 
-/***********************************************************************************/
+//------------------------------------------------------------
 		public void generarIDiv(Third third){
 
 			
@@ -252,31 +252,6 @@ void generarIMul(Third third){
 		}
 }
 //-----------------------------------------------------
-/*
-void tolongRegister(Third third){
-
-		Register regAux=new Register("cx");
-		Register regSrc=new Register("bx");
-		if ( third != null){
-		    Operand  opL = third.getRightOp();
-		    if (  opL.isRegistro() ){
-		    	fstream.writeArchivo(";                                         tolong register ");
-		    	fstream.writeArchivo(" pop  " + regSrc.getName()  + ";            sacando el registro a extender");
-		                       if  (  opL.getType().compareTo("uint")==0  ) {
-		                    	   	fstream.writeArchivo(" ;                        el registro es uint.");
-		                            regAux.setExtended();
-		                            fstream.writeArchivo(" xor    " + regAux.getName()   + ",   " + regAux.getName());
-		                            regAux.setExtended(false);
-		                            fstream.writeArchivo(" mov    "   +  regAux.getName()  +  ", " +  regSrc.getName());
-		                            regSrc.setExtended(); regAux.setExtended();
-		                            fstream.writeArchivo("mov " + regSrc.getName() + ",  " + regAux.getName());
-		                    }
-		                       	fstream.writeArchivo(" push " + regSrc.getName() );
-		        }
-		}
-}
-*/
-
 	public void tolongRegister(Third third){
 		
 		Register regAux=new Register("cx");
@@ -445,7 +420,8 @@ public void generarIAssign(Third third){
 //------------------------------------------------------------
 public void generarPrint(Third third){
 
-		String strAddr,strAux;
+		String strAddr="";
+		String strAux="";
 		int i=0;
 		if (third != null){
 	            i=this.symbolTable.indexSymbol((third.getRightOp()).getValue());
@@ -608,7 +584,7 @@ public void generarCodeSeg(){
 	String labelDestiny;
 	if ( myThirds != null ){
 	    tGenerator.labeler("exit_code");
-	     int nThirds=myThirds.size();
+	    int nThirds=myThirds.size();
 	    for (  int index=0;index < nThirds; index++)  {
 	
 	          fstream.writeArchivo("\n");
@@ -676,9 +652,11 @@ public void showThird( Third  temp){
               right = "[" + (temp).getRightOp().getValue() + "]";
          else  right =(temp).getRightOp().getValue();
          	String i= Integer.toString((temp.getId()));
-         	//TForm1::writer5( i  +  "  ( " + (temp).getOperator() + " ,  " +  left + " ,  " + right + " ) " );// + "- Src:   " + temp.getLabelSrc()  + " -Dest:   "  + temp.getLabelDst() + "-OpPrev:   "  + temp.getOpprev());
+         	if (Integer.parseInt(i)==0){
+         		System.out.println("");
+         	}
          	String mensaje=i  +  "  ( " + (temp).getOperator() + " ,  " +  left + " ,  " + right + " )- "  + temp.getType();
-         	//Lexer.showMessage(mensaje);
+         	Lexer.showMessage(mensaje);
 }
 //------------------------------------------------------------
 
