@@ -1,0 +1,36 @@
+{
+
+  uint i,j,k;
+  long a,b;
+  
+	print(' comienzo del programa.');
+  j:=5;
+	do
+		{
+			j:=j-1;
+			print('-----bucle externo.');
+			i:=1;
+			do
+				{
+					i:=i+1;
+					print(' ---------------------bucle anidado middle.');
+					k:=5;
+					do
+						{
+						k:=k-1;
+						print('--------------------anidado mas deep.');
+						}
+					while ( k > 0);
+				}
+			while ( i <= 5);
+		}
+   while (	j > 0 );
+   print(' resta final.');	
+   b:=tolong(2);
+   a:=tolong(1);
+   a:=a-b;
+   print('fin del programa.');		
+
+
+
+}
