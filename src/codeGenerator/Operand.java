@@ -5,15 +5,22 @@ import symboltable.SymbolTable;
 
 public class Operand {
 
-	String value;
-    Row tsValue;
+	public String value;
+    public Row tsValue;
     boolean salto;
     int posicion;
-    String type;
-    SymbolTable symbolTable;
+    public String type;
+    public SymbolTable symbolTable;
     boolean reg;
 
-
+public String toString(){
+	
+	String str="";
+	
+	str="Value: " + value + "  Row : " + tsValue  + " Type : " + type;  
+	return str;
+	
+}
 
  public Operand(Object obj,SymbolTable st){
  
@@ -117,6 +124,7 @@ public SymbolTable getSymbolTable() {
 
 public String getType(){
 
+	/*
 	String tempType="";
     if (!(isSalto()) && ( (tsValue) != null )   ){
     	Row f =  symbolTable.getRow(value);
@@ -127,6 +135,17 @@ public String getType(){
       else if ( isSalto() )
     	tempType=Integer.toString(getPosicion());
     return tempType;
- }
+	*/
+	String tempType="";
+    if (!(isSalto()) && ( (tsValue) != null )   ){
+    	    tempType = tsValue.getType();
+    		}
+      
+      else if ( isSalto() )
+    	tempType=Integer.toString(getPosicion());
+    return tempType;
+
+
+}
 }
 
