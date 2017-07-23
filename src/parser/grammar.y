@@ -334,9 +334,33 @@ variable        :       T_IDENTIFIER                          {
                                                                     thirdGenerator.apilarOperando( op );
                                                                 }
                                                               }
-                
-                |       T_IDENTIFIER T_PLUS_PLUS           // THIS IS THE NEW STUFF
 
+                
+                |       T_IDENTIFIER T_PLUS_PLUS           {  
+                                                              Row row1 = verifyDeclaration (decorator,($1.obj));
+                                                              Operand op1 = new Operand(row1.getLexeme(),row1,symbolTable  );
+                                                              thirdGenerator.apilarOperando( op1 );
+                                                              
+                                                              Row row2 = new RowConst("const","1","long");
+                                                              row2.setType("long");
+                                                              symbolTable.add(row2);
+                                                              
+                                                              Operand op2 = new Operand(row2.getLexeme(),row2,symbolTable);
+
+                                                              op2.type="long";
+
+                                                              System.out.println(" Operando 2  : " + op2);
+
+                                                              thirdGenerator.apilarOperando(op2);
+                                                              thirdGenerator.generarTerceto("+",true);   
+                                                              
+                                                              Row row3 = verifyDeclaration (decorator,($1.obj));
+                                                              Operand op3 = new Operand(row3.getLexeme(),row3,symbolTable  );
+                                                              thirdGenerator.apilarOperando( op3 );
+                                                              
+                                                              thirdGenerator.generarTerceto(":=",true); 
+                                                             
+                                                            }
                 ;
 
 
@@ -345,7 +369,7 @@ constante       :       T_CONST                     { long val = 0;
                                                       Row row= (Row)$1.obj;
                                                       try {
                                                             val = Long.parseLong(row.getLexeme());
-                                                            if ( (val+1) > 2147483647 )
+                                                            if ( val > 2147483647 )
                                                                  syntaxError(" Constante long " + row.getLexeme() + "  fuera de rango.");
                                                               else {
                                                                       Operand op = new Operand(row.getLexeme(),row,symbolTable);
@@ -364,7 +388,7 @@ constante       :       T_CONST                     { long val = 0;
                                                          Row row= (Row)$2.obj;
                                                          try {
                                                               val = Long.parseLong(row.getLexeme());
-                                                              if ( val > 2147483648 )
+                                                              if ( (val-1) > 2147483647 )
                                                                   syntaxError(" Constante long    -" + row.getLexeme() +  "  fuera de rango.");
                                                               else    {
                                                                         String lexCTE="-"+ row.getLexeme();

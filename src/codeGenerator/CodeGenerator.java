@@ -655,8 +655,11 @@ public void showThird( Third  temp){
          	if (Integer.parseInt(i)==0){
          		System.out.println("");
          	}
-         	String mensaje=i  +  "  ( " + (temp).getOperator() + " ,  " +  left + " ,  " + right + " )- "  + temp.getType();
-         	Lexer.showMessage(mensaje);
+         	String message="\n " + i  +  "  ( " + (temp).getOperator() + " ,  " +  left + " ,  " + right + " )- "  + temp.getType() + "\n";
+         	Lexer.showMessage(message);
+         	message="\n TERCETO -  "  + temp.getOperator()  + " \n "  + 	temp.getLeftOp() + "  \n " + temp.getRightOp()  + "\n";
+            
+         	Lexer.showMessage(message);
 }
 //------------------------------------------------------------
 

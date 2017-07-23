@@ -410,7 +410,7 @@ public class Lexer {
 		catch(IOException e){
 		}
 		
-		System.out.println("\n\n[LEXER] "  + token);
+		//System.out.println("\n\n[LEXER] "  + token);
 		return token;
 		
 	}

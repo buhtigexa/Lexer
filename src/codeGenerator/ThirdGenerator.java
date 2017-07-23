@@ -100,7 +100,12 @@ public void showTercetos(){
                    right = "[" + (listaTercetos.get(i)).getRightOp().getValue() + "]";
              else  right =(listaTercetos.get(i)).getRightOp().getValue();
 
-             System.out.println(NoTerceto + "-( " + (listaTercetos.get(i)).getOperator() + " , " +  left + " , " + right + "):" + listaTercetos.get(i).getType() );
+             //System.out.println(NoTerceto + "-( " + (listaTercetos.get(i)).getOperator() + " , " +  left + " , " + right + "):" + listaTercetos.get(i).getType() );
+             //System.out.println(" -----------------------------------------------------------------------");
+             //System.out.println("TERCETO "  + listaTercetos.get(i).getOperator()  + "  "  + 	listaTercetos.get(i).getLeftOp() + listaTercetos.get(i).getRightOp());
+             String message="TERCETO "  + listaTercetos.get(i).getOperator()  + "  "  + 	listaTercetos.get(i).getLeftOp() + listaTercetos.get(i).getRightOp();
+             Lexer.showMessage(message);
+             
           }
        }
 
@@ -244,7 +249,10 @@ public void generarTerceto(String op, boolean apilar){
                                                      isOpL=true;
                                        }
                          }
-                      }
+                        Lexer.showMessage(" OPERANDO 1 : " + opR);
+                        Lexer.showMessage(" OPERANDO 2 : " + opL);
+                        
+             }
 
 
       Third t = new Third(op,opL,opR);
@@ -257,7 +265,6 @@ public void generarTerceto(String op, boolean apilar){
 
       if ( (isOpR) && (isOpL) )
            if (  opRType.compareTo(opLType) != 0 ){
-        	   			
         	   			System.out.println("------------------------------------------------------------");
         	   			System.out.println("("  + op.toString()  + " , " + opL.getValue() + "[" + opL.getType() + "]" + "  , "  + opR.getValue() +"[" + opR.getType() +"]   Type :" +  t.getType() +") ");
                         String mensaje="Tipos de datos incomparables: Se requiere conversión explícita.";
@@ -266,6 +273,8 @@ public void generarTerceto(String op, boolean apilar){
                         }
               else
                    tercetoType=opRType;
+      
+      
        t.setType(tercetoType);
        t.setId(listaTercetos.size());
 
@@ -281,6 +290,83 @@ public void generarTerceto(String op, boolean apilar){
 
 //------------------------------------------------------
 
+public void generarTerceto_plus_plus(String op, boolean apilar){
+	 /********************************************
+	 Tercetos: BI,BF,PRINT,=,<,>,>=,<=,+,-,*,/,:=,tolong
+	  **********************************************/
+	       String opBF="BF";
+	       String opBI="BI";
+	       String opPrint="print";
+	       String opTolong="tolong";
+	       String opMul="*";
+	       String opLType;
+	       String opRType;
+	       String tercetoType;
+	       boolean isOpR, isOpL;
+
+	       isOpR=false;
+	       isOpL=false;
+
+	       opLType="";
+	       opRType="";
+	       tercetoType="";
+
+	       Operand  opL=new Operand();
+	       Operand  opR=new Operand();
+
+
+	       if ( ( !(op.compareTo(opBF)== 0) && !(op.compareTo(opBI)==0)  ) )
+	             if ( !(operadores.empty()) ){
+	                        opR = new Operand(operadores.peek() );
+	                        opRType=getType(opR);
+	                        isOpR=true;
+	                        desapilarOperando();
+	                        if ( !( op.compareTo(opTolong)==0)  && !( op.compareTo(opPrint)==0 ) ) {
+	                                if ( !(operadores.empty()) ){
+	                                                opL= new Operand(operadores.peek() );
+	                                                opLType=getType(opL);
+	                                                desapilarOperando();
+	                                                     isOpL=true;
+	                                       }
+	                         }
+	                      }
+
+
+	      Third t = new Third(op,opL,opR);
+
+
+
+	      if  ( op.compareTo(opTolong)==0)   {
+	              tercetoType="long";
+	             }
+
+	      if ( (isOpR) && (isOpL) )
+	           if (  opRType.compareTo(opLType) != 0 ){
+	        	   			
+	        	   			System.out.println("------------------------------------------------------------");
+	        	   			System.out.println("("  + op.toString()  + " , " + opL.getValue() + "[" + opL.getType() + "]" + "  , "  + opR.getValue() +"[" + opR.getType() +"]   Type :" +  t.getType() +") ");
+	                        String mensaje="Tipos de datos incomparables: Se requiere conversión explícita.";
+	                        Lexer.showError(mensaje);
+	                        tercetoType="tipos incompatibles";
+	                        }
+	              else
+	                   tercetoType=opRType;
+	      
+	      
+	       t.setType(tercetoType);
+	       t.setId(listaTercetos.size());
+
+	       if ( apilar )
+	           operadores.push( new Operand(listaTercetos.size()) );
+
+	       listaTercetos.addElement(t);
+	       index=index+1;
+
+
+
+	}
+
+//------------------------------------------------------
 public String getType(Operand op){
   String type;
   type="";
