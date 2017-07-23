@@ -332,7 +332,7 @@ public void generarTerceto_plus_plus(String op, boolean apilar){
 	                      }
 
 
-	      Third t = new Third(op,opL,opR);
+	      Third t = new Third(op,opR,opL);
 
 
 

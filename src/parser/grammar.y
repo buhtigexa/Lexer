@@ -349,7 +349,7 @@ variable        :       T_IDENTIFIER                          {
 
                                                               op2.type="long";
 
-                                                              System.out.println(" Operando 2  : " + op2);
+                                                              //System.out.println(" Operando 2  : " + op2);
 
                                                               thirdGenerator.apilarOperando(op2);
                                                               thirdGenerator.generarTerceto("+",true);   
@@ -358,7 +358,7 @@ variable        :       T_IDENTIFIER                          {
                                                               Operand op3 = new Operand(row3.getLexeme(),row3,symbolTable  );
                                                               thirdGenerator.apilarOperando( op3 );
                                                               
-                                                              thirdGenerator.generarTerceto(":=",true); 
+                                                              thirdGenerator.generarTerceto_plus_plus(":=",true); 
                                                              
                                                             }
                 ;
