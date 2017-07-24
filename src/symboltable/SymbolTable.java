@@ -39,7 +39,7 @@ public class SymbolTable {
 	
 	public void add(Object row){
 		
-		this.rows.add((Row)row);
+		this.rows.addElement((Row)row);
 		//System.out.println(this);
 	}
 	

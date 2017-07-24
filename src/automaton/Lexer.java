@@ -237,7 +237,7 @@ public class Lexer {
 	
 	
 	
-	public Lexer(String path,SymbolTable symTable,String errorFile,String warningFile,boolean printMsg,boolean printError,boolean printWarning){
+	public Lexer(String path,SymbolTable symTable,String errorFile,String warningFile,boolean printMsg,boolean printWarning,boolean printError){
 		
 		
 		errFile=new File(errorFile);
@@ -454,6 +454,7 @@ public class Lexer {
 		reservedWords.put("while","while");
 		reservedWords.put("print","print");
 		reservedWords.put("tolong","tolong");
+		reservedWords.put("touint","touint");
 		position=0;
 	
 		

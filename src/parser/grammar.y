@@ -37,7 +37,7 @@ package parser;
 import java.util.Hashtable;
 import automaton.Lexer;
 import symboltable.*;
-import codeGenerator.*;
+import generadorCodigo.*;
 import utils.*;
 
 
@@ -173,7 +173,7 @@ sentencia       : { informarSentencia("Sentencia IF."); } if
                 ;
 
 
-asignacion      :        lado_izquierdo T_ASSIGN exp_ar      { thirdGenerator.generarTerceto(":=",false); }   
+asignacion      :        lado_izquierdo T_ASSIGN exp_ar      { /* generadorTercetos.generarTerceto(":=",false); */ }   
 
 
                 |        lado_izquierdo T_EQ exp_ar             
@@ -182,10 +182,11 @@ asignacion      :        lado_izquierdo T_ASSIGN exp_ar      { thirdGenerator.ge
                 |        lado_izquierdo error                                   ;
 
 
-if              :       T_RW_IF condicion            {  thirdGenerator.generarTerceto("BF",true);
+if              :       T_RW_IF condicion            {  /*generadorTercetos.generarTerceto("BF",true);
+                                                        */
                                                      }
 
-                                         bloque       { thirdGenerator.completarSalto(true); }
+                                         bloque       { /*generadorTercetos.completarSalto(true); */}
                                                 else
 
 
@@ -196,13 +197,16 @@ if              :       T_RW_IF condicion            {  thirdGenerator.generarTe
 
 
 
-else            :       T_RW_ELSE                        {  
-                                                            thirdGenerator.generarTerceto("BI",true);
+else            :       T_RW_ELSE                        {  /*
+                                                            generadorTercetos.generarTerceto("BI",true);
+                                                          */
                                                          }
 
                                    bloque               {
-                                                          thirdGenerator.completarSalto(false);
-                                                          thirdGenerator.showPila(thirdGenerator.getOperadores());
+                                                          /*
+                                                          generadorTercetos.completarSalto(false);
+                                                          generadorTercetos.showPila(generadorTercetos.getOperadores());
+                                                          */
                                                         }
 
                 |       T_RW_ELSE error                 { syntaxError("Sentencia IF-ELSE:Se espera sentencia o bloque de sentencias."); }
@@ -213,27 +217,31 @@ else            :       T_RW_ELSE                        {
 
 
 condicion       :       '('comparacion')'            {
-                                                       thirdGenerator.showPila(thirdGenerator.getOperadores());
-                                                       thirdGenerator.desapilarOperando();
+                                                      /*
+                                                       generadorTercetos.showPila(generadorTercetos.getOperadores());
+                                                       generadorTercetos.desapilarOperando();
+                                                      */
                                                      }
 
                 |        '(' error ')'               {syntaxError("Se esperaba ( ) en lugar de { }");}
                 ;
 
 
-comparacion     :       comparacion sgn_cmp exp_ar   {  
+comparacion     :       comparacion sgn_cmp exp_ar   {  /*
                                                           Row row = (Row)$2.obj;
-                                                          thirdGenerator.generarTerceto(row.getLexeme(),true);
-                                                          thirdGenerator.showTercetos();
+                                                          generadorTercetos.generarTerceto(row.getLexeme(),true);
+                                                          generadorTercetos.showTercetos();
+                                                        */
                                                        }
 
 
                 |       comparacion error  exp_ar    { syntaxError("Operador de comparación no válido.");}
 
-                |       exp_ar sgn_cmp exp_ar        {
+                |       exp_ar sgn_cmp exp_ar        { /*
                                                          Row row = (Row)$2.obj;
-                                                         thirdGenerator.generarTerceto(row.getLexeme(),true);
-                                                         thirdGenerator.showTercetos();
+                                                         generadorTercetos.generarTerceto(row.getLexeme(),true);
+                                                         generadorTercetos.showTercetos();
+                                                      */
                                                      }
 
                 |       exp_ar error exp_ar
@@ -246,30 +254,31 @@ bloque          :       '{' sentencias '}'
 
 
 
-do              :       T_RW_DO                                 {         
+do              :       T_RW_DO                                 {
+                                                                  /*
 
-                                                                  Operand op = new Operand( thirdGenerator.countTercetos() );
-                                                                  thirdGenerator.apilarOperando( op );
+                                                                  Operand op = new Operand( generadorTercetos.countTercetos() );
+                                                                  generadorTercetos.apilarOperando(op);
+                                                                  generadorTercetos.apilarOperando(op);
+                                                                    
+                                                                    */
 
                                                                 }
                                bloque
                                       while
 
-                |       T_RW_DO error  while      { syntaxError("Sentencia DO WHILE:Bloque de sentencias erroneo.");}
+                |       T_RW_DO error  while      { syntaxError("Sentencia DO WHILE:Bloque de sentencias erroneo.");  }
                 |       T_RW_DO while             { syntaxError("Sentencia DO WHILE:Se espera bloque de sentencias.");}
                 ;
 
 
-while           :      T_RW_WHILE condicion       {
-                                                        thirdGenerator.generarTerceto("BF",true);
+while           :      T_RW_WHILE condicion       { /*
+                                                        generadorTercetos.generarTerceto("BF",true);
+                                                        generadorTercetos.completarSalto(true);
+                                                        generadorTercetos.generarTerceto("BI",false);
+                                                        generadorTercetos.completarSaltoDo(true);
 
-                                                        thirdGenerator.completarSalto(true);
-
-
-                                                        thirdGenerator.generarTerceto("BI",false);
-
-                                                        thirdGenerator.completarSaltoDo(true);
-
+                                                        */
                                                         }
 
 
@@ -291,32 +300,63 @@ sgn_cmp         :       T_GT
                 ;
 
 
-exp_ar          :       exp_ar '+' term  {  thirdGenerator.generarTerceto("+",true); }
+exp_ar          :       exp_ar '+' term           {  
+                                                      
+                                                      Terceto terceto = new Terceto ("+",$1.obj,$3.obj);
+                                                      System.out.println(terceto);
+                                                      generadorTercetos.add(terceto);
+                                                      $$.obj=terceto;
 
-                |       exp_ar '-' term  {  thirdGenerator.generarTerceto("-",true); }
+                                                  }
 
-                |       term             { $$=$1;}
+
+                |       exp_ar '-' term           {  
+                                                      Terceto terceto = new Terceto ("+",$1.obj,$3.obj);
+                                                      System.out.println(terceto);
+                                                      generadorTercetos.add(terceto);
+                                                      $$.obj=terceto;
+
+                                                    }
+
+                |       term             {    $$=$1;   }
 
                 |       exp_ar '+' error { syntaxError("Expresión aritmética: Operando no válido."); }
                 |       exp_ar '-' error { syntaxError("Expresión aritmética: Operando no válido."); }
                 ;
 
 
-term            :       term '*' factor {  thirdGenerator.generarTerceto("*",true); }
-                |       term '/' factor {  thirdGenerator.generarTerceto("/",true); }
-                |       factor
+term            :       term '*' factor {  
+                                          Terceto terceto = new Terceto ("*",$1.obj,$3.obj);
+                                          System.out.println(terceto);
+                                          generadorTercetos.add(terceto);
+                                          $$.obj=terceto;
+                                        }
+
+                |       term '/' factor { 
+                                            Terceto terceto = new Terceto ("/",$1.obj,$3.obj);
+                                            System.out.println(terceto);
+                                            generadorTercetos.add(terceto);
+                                            $$.obj=terceto; 
+                                          }
+
+                |       factor          { $$=$1; }
                 |       term '*' error { syntaxError("Expresión aritmética: Operando no válido."); }
                 |       term '/' error { syntaxError("Expresión aritmética: Operando no válido."); }
                 ;
 
 
 
-factor          :       variable
-                |       constante
-                |       conversion '(' exp_ar ')'                 { 
-                                                                      Row row = (Row)($1.obj);
-                                                                      String operadorTerceto =row.getToken();
-                                                                      thirdGenerator.generarTerceto(operadorTerceto,true);
+
+factor          :       variable                                 {  $$ = $1;   }
+                |       constante                                {  $$ = $1;   }
+                |       conversion '(' exp_ar ')'                 
+                                                                  {  
+                                                                    Row token=(Row)$1.obj;
+                                                                    Terceto terceto = new Terceto (token.getToken(),null,$3.obj);
+                                                                    System.out.println(terceto);
+                                                                    generadorTercetos.add(terceto);
+                                                                    $$.obj=terceto;   
+                                                                    
                                                                   }
 
                 | '('exp_ar')'                                 {
@@ -326,46 +366,33 @@ factor          :       variable
                 ;
 
 
-variable        :       T_IDENTIFIER                          { 
-
-                                                                Row row = verifyDeclaration (decorator,($1.obj));
-                                                                if ( row != null ){
-                                                                    Operand op = new Operand(row.getLexeme(),row,symbolTable  );
-                                                                    thirdGenerator.apilarOperando( op );
-                                                                }
-                                                              }
+variable        :       T_IDENTIFIER                          {  
+                                                               
+                                                               Row row = verifyDeclaration (decorator,($1.obj));
+                                                               $$.obj=row;
+                                                               
+                                                               }
 
                 
                 |       T_IDENTIFIER T_PLUS_PLUS           {  
-                                                              Row row1 = verifyDeclaration (decorator,($1.obj));
-                                                              Operand op1 = new Operand(row1.getLexeme(),row1,symbolTable  );
-                                                              thirdGenerator.apilarOperando( op1 );
+                                                              Row constant = new RowConst("const","1","long");
+                                                              Terceto terceto_plus = new Terceto ("+",$1.obj,constant);
+                                                              generadorTercetos.add(terceto_plus);
+                                                              Terceto terceto= new Terceto (":=",$1.obj,terceto_plus);
+                                                              generadorTercetos.add(terceto);
+                                                              System.out.println(terceto);
+                                                              $$.obj=terceto;
                                                               
-                                                              Row row2 = new RowConst("const","1","long");
-                                                              row2.setType("long");
-                                                              symbolTable.add(row2);
-                                                              
-                                                              Operand op2 = new Operand(row2.getLexeme(),row2,symbolTable);
 
-                                                              op2.type="long";
-
-                                                              //System.out.println(" Operando 2  : " + op2);
-
-                                                              thirdGenerator.apilarOperando(op2);
-                                                              thirdGenerator.generarTerceto("+",true);   
-                                                              
-                                                              Row row3 = verifyDeclaration (decorator,($1.obj));
-                                                              Operand op3 = new Operand(row3.getLexeme(),row3,symbolTable  );
-                                                              thirdGenerator.apilarOperando( op3 );
-                                                              
-                                                              thirdGenerator.generarTerceto_plus_plus(":=",true); 
-                                                             
                                                             }
                 ;
 
 
 
-constante       :       T_CONST                     { long val = 0;
+constante       :       T_CONST                     {  $$=$1;
+
+                                                      /*     
+                                                      long val = 0;
                                                       Row row= (Row)$1.obj;
                                                       try {
                                                             val = Long.parseLong(row.getLexeme());
@@ -373,17 +400,21 @@ constante       :       T_CONST                     { long val = 0;
                                                                  syntaxError(" Constante long " + row.getLexeme() + "  fuera de rango.");
                                                               else {
                                                                       Operand op = new Operand(row.getLexeme(),row,symbolTable);
-                                                                      thirdGenerator.apilarOperando(op);
-                                                                      thirdGenerator.showPila(thirdGenerator.getOperadores());
+                                                                      generadorTercetos.apilarOperando(op);
+                                                                      generadorTercetos.showPila(generadorTercetos.getOperadores());
                                                                      }
                                                           
                                                         }
                                                         catch(NumberFormatException e){
                                                           e.printStackTrace();
                                                           } 
+                                                      
+                                                      */
                                                       }
 
                 |       '-' T_CONST                 {
+                                                         /*
+
                                                          long val = 0;
                                                          Row row= (Row)$2.obj;
                                                          try {
@@ -397,8 +428,8 @@ constante       :       T_CONST                     { long val = 0;
                                                                         Row reference=symbolTable.getRow(lexCTE);
                                                                         if ( reference != null ){
                                                                                Operand op = new Operand(reference.getLexeme(),reference,symbolTable);
-                                                                               thirdGenerator.apilarOperando(op);
-                                                                               thirdGenerator.showPila(thirdGenerator.getOperadores());
+                                                                               generadorTercetos.apilarOperando(op);
+                                                                               generadorTercetos.showPila(generadorTercetos.getOperadores());
 
                                                                           }
                                                                     }
@@ -407,6 +438,9 @@ constante       :       T_CONST                     { long val = 0;
                                                                     e.printStackTrace();
                                                               }
 
+                                                      */
+
+                                                     
                                                      }
 
                 
@@ -420,8 +454,9 @@ tipo            :       T_RW_UINT             { tipo_identificador = "uint"; }
                 |       T_RW_LONG             { tipo_identificador = "long"; }
                 ;
 
-conversion      :       T_RW_TOLONG
+conversion      :       T_RW_TOLONG           { $$ = $1; }                
                 ;
+
 
 
                              
@@ -429,16 +464,28 @@ conversion      :       T_RW_TOLONG
 
 
 impresion       :       T_RW_PRINT '(' T_STRING ')' { 
+                                                      
+                                                      Row token  = (Row)$1.obj;
+                                                      Row lexema = (Row)$3.obj;
+
+                                                      Operando opD = new Operando(lexema,false,0);
+
+                                                      Terceto terceto = new Terceto(token.getToken(),null,opD);
+
+                                                      generadorTercetos.add(terceto);
+                                                      System.out.println(terceto);
+
+                                                      /*
                                                       Row row1 =((Row)$1.obj);
                                                       Row row2 =((Row)$2.obj);
                                                       Row row3 =((Row)$3.obj);
                                                       Row row4 =((Row)$4.obj);
                                                       System.out.println( " REGLA  : T_RW_PRINT '(' T_STRING ')'  \n\n" + row1   +   " "  +  row2  +  "  "  +  row3  + "   "  + row4 ); 
                                                       Operand op = new Operand( row3.getLexeme(), row3, symbolTable );
-                                                      thirdGenerator.apilarOperando( op );
-                                                      thirdGenerator.generarTerceto( row1.getLexeme() ,false);
+                                                      //generadorTercetos.apilarOperando( op );
+                                                      generadorTercetos.generarTerceto( row1.getLexeme() ,true);
 
-                                                    }
+                                                    */}
 
                 |       T_RW_PRINT '['T_STRING']'   { syntaxError("Sentencia PRINT:Se espera ( y ) en lugar de [ ]."); }
                 |       T_RW_PRINT '{'T_STRING'}'   { syntaxError("Sentencia PRINT:Se espera ( y ) en lugar de { }."); }
@@ -459,8 +506,8 @@ int noEnvironment;
 int maxNest;
 NameDecorator decorator;
 String tipo_identificador;
-ThirdGenerator thirdGenerator;
-
+GeneradorTercetos generadorTercetos;
+int i;
 String token;
 String stringEmpty;
 
@@ -469,11 +516,12 @@ Lexer lex ;
 SymbolTable symbolTable;
 String type; //Used in declarations
 
-public void load(Lexer lex,SymbolTable st,ThirdGenerator thirdGenerator,NameDecorator decorator){
+public void load(Lexer lex,SymbolTable st,GeneradorTercetos generadorTercetos,NameDecorator decorator){
 
+i=0;
 	this.symbolTable= st ;
 	this.lex = lex ;
-	this.thirdGenerator=thirdGenerator;
+	this.generadorTercetos=generadorTercetos;
 	this.decorator=decorator;
   nest = 0;
   maxNest= 10;
@@ -510,14 +558,14 @@ public int yylex(){
   Short s = (Short) codes.get(tok.getToken());
   //System.out.println(symbolTable);
   //System.out.println("[ PARSER RECOGNIZES ] " + tok);
-  //System.out.println(" PARSER - TOKEN : " + tok);
+  System.out.println(" PARSER - TOKEN : " + tok);
   return s.intValue();
   */
   
   boolean eof=false;
   eof=lex.endOfFile();
   Row row= (Row)lex.getToken();
-  
+
   Short code=0;
   
   if (row==null){
@@ -537,7 +585,7 @@ public int yylex(){
         code= codes.get(row.getToken());
       }
 
-    System.out.println("PARSER LEXER  : "  + row  );
+  //  System.out.println("PARSER LEXER  : "  + row  );
     System.out.println("PARSER PARSER :"   + row  +  " CODE : "  +  codes.get(row.getToken()) );
     return code.intValue();
 } 

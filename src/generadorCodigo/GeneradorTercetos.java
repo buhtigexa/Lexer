@@ -2,17 +2,22 @@ package generadorCodigo;
 
 import java.util.ArrayList;
 
+import automaton.Lexer;
+
 
 
 public class GeneradorTercetos {
 
-	ArrayList<Terceto> tercetos;
-
+	public ArrayList<Terceto> tercetos;
+	public Lexer lexer;
 	
-	public GeneradorTercetos(){
+	public GeneradorTercetos(Lexer l){
 		
+		this.lexer=l;
 		tercetos = new ArrayList<Terceto>();
+	
 	}
+	
 	public void crearTerceto(String operador, Operando opI, Operando opD){
 		
 		
@@ -23,7 +28,11 @@ public class GeneradorTercetos {
 	
 	public void add(Terceto t){
 		
+		t.setId(tercetos.size());
 		tercetos.add(t);
+		
+
+		
 	}
 	
 
@@ -31,7 +40,7 @@ public class GeneradorTercetos {
 		
 		String str="";
 		for (Terceto t: tercetos){
-			str+="\n  " + t.toString();
+			str+="\n  " + t.getId() + ") " + t.toString();
 		}
 		return str;
 	}
