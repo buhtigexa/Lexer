@@ -6,6 +6,8 @@ public class Terceto {
 	public Object opI;
 	public String operador;
 	public int id;
+	public String type;
+	public Storage storage;
 	
 	
 	public int getId() {

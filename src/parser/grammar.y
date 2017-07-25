@@ -436,7 +436,7 @@ constante       :       T_CONST                     {
                                                         }
                                                         catch(NumberFormatException e){
                                                           e.printStackTrace();
-                                                          } 
+                                                        } 
                                                       
                                                       $$.obj=row;
                                                       System.out.println(" Constante  : "  +  $$.obj);
