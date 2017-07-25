@@ -8,6 +8,7 @@ public class Referencia extends Operando{
 	public Referencia(int referencia){
 		
 		this.nroTerceto=referencia;
+	
 	}
 	
 	public String toString(){
@@ -15,7 +16,7 @@ public class Referencia extends Operando{
 		String str="";
 		str=" [ "  + nroTerceto +  " ] ";
 		return str;
-		
+	
 	}
 	
 	protected Terceto getTerceto(){
@@ -31,4 +32,9 @@ public class Referencia extends Operando{
 		return getTerceto().getType();
 	}
 
+	public boolean isAsignacion(){
+		
+		Terceto t = getTerceto();
+		return (t.operador.compareTo(":=")==0);
+	}
 }

@@ -29,7 +29,7 @@ public abstract class Row extends Operando{
 	
 	public String toString(){
 		
-		return "<<< TOKEN: " + token + " LEXEME: " + lexeme + " TYPE: " + type  + ">>>";
+		return "< TOKEN: " + token + " LEXEME: " + lexeme + " TYPE: " + type  + ">";
 		//return "[ " + lexeme  + " ]";
 	}
 	

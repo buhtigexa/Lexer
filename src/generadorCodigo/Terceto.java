@@ -1,10 +1,17 @@
 package generadorCodigo;
 
-public class Terceto extends Operando {
+public class Terceto {
 
 	public Object opD;
 	public Object opI;
 	public String operador;
+	public boolean isAsignacion;
+	
+	public String getOperador() {
+		return operador;
+	}
+
+
 	public int id;
 	public String type;
 	
@@ -30,16 +37,33 @@ public class Terceto extends Operando {
 		this.id = id;
 	}
 
-
+	
+	
 	public Terceto(String operador,Object opI, Object opD){
+		
 		super();
+		setUp(operador, opI, opD);
+		
+	}
+		
+	public void setUp(String operador,Object opI,Object opD){
+		
+
 		this.operador=operador;
 		this.opD=opD;
 		this.opI=opI;
 		this.type=new String();
+		this.isAsignacion=isAsignacion();
 		
 	}
 	
+	public boolean isAsignacion(){
+		
+		if (operador.compareTo(":=")==0){
+			this.isAsignacion=true;
+		}
+		return isAsignacion;
+	}
 	
 	public String toString(){
 		
@@ -69,7 +93,7 @@ public class Terceto extends Operando {
 			opDstr=new Referencia( ((Terceto)opD).getId() );
 		}
 		
-		str= "[ (" + operador  + ") "+ opIstr.toString()  + "   ---   "  + opDstr.toString()  + " --type : <" + type +">]";
+		str= id +" [ (" + operador  + ") "+ opIstr.toString()  + "   ---   "  + opDstr.toString()  + " --type : <" + type +">]";
 		
 		//str="[ (" + operador  + ") "+ opI  + "   ---   "  + opD + " --type : <" + type +">]";
 		return str;

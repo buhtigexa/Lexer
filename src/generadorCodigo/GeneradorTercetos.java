@@ -14,14 +14,13 @@ public class GeneradorTercetos {
 	public static ArrayList<Terceto> tercetos;
 	public Lexer lexer;
 	public Stack<Object> pila;
-	public CheckTipos fijaTipos;
 	
 	public GeneradorTercetos(Lexer l){
 		
 		this.lexer=l;
 		tercetos = new ArrayList<Terceto>();
 		pila=new Stack<Object>();
-		fijaTipos=new CheckTipos();
+		
 	}
 	
 	
@@ -41,22 +40,38 @@ public class GeneradorTercetos {
 		
 		t.setId(tercetos.size());
 		tercetos.add(t);
+		System.out.println("...................................................................................................");
+		System.out.println(" TERCETO :"  +t.getId()  + "  "  + t   +  "Asignacion :"  +  t.isAsignacion()  +  ""   + t.opI.getClass()  + " "  +  t.opD.getClass()  +  "\n");  
 		
-		try {
-			if (fijaTipos.isOk(t)){
-				t.setType(((Operando)t.opD).getType());
-			}
-			else{
-					Lexer.showError("Tipos diferentes . Se requiere conversión explícita ");
-			}
+	}
+	
+	protected void checkearTipos(Terceto t) {
+		
+		Operando opI=(Operando) t.opI;
+		Operando opD=(Operando) t.opD;
+		
+		System.out.println("TERCETO NRO : " + t.getId()   + " OPERANDOS :  "  +  opI.getClass()  +  "     "   + opD.getClass() );
+
+		try { 
+		
+		if (opI.getType().compareToIgnoreCase(opD.getType())!=0){
+			Lexer.showError("Tipos incompatibles . Se requiere conversión explícita");
 		}
-		catch(NullPointerException e){
-			System.out.println(t);
+		else
+			t.setType(opI.getType());
+		}
+		catch( ClassCastException e){
 			e.printStackTrace();
 		}
 	}
-	
+
+
+
+
+
 	public int getNextTercetoId(){
+		
+		// La cantidad de tercetos contada desde cero . Pero también el número de terceto siguiente.
 		
 		return tercetos.size();
 	}
@@ -79,7 +94,7 @@ public class GeneradorTercetos {
 	
 	public Terceto getTerceto(int id){
 		
-		Terceto t=null;
+	
 		return tercetos.get(id);
 		
 	}
