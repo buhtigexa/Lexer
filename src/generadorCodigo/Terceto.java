@@ -30,23 +30,29 @@ public class Terceto {
 	public String toString(){
 		
 		String str="";
-		String opIstr="";
-		String opDstr="";
-		if (opI!=null){
-			opIstr="["+opI.toString()+"]";
-		}
-		if (opD !=null){
-			opDstr="["+opD.toString()+"]";
-		}
+		Object opIstr=null;
+		Object opDstr=null;
+		
+		
+		//if (opI!=null){
+			
+			opIstr="["+opI+"]";
+		//}
+			
+		//if (opD !=null){
+		
+			opDstr="["+opD+"]";
+		//}
+		
 		if ( opI instanceof Terceto){
-			opIstr="["+Integer.toString(((Terceto)opI).getId())+"]";
+			opIstr=new Referencia( ((Terceto)opI).getId() );
 		}
 		
 		if ( opD instanceof Terceto){
-			opDstr="["+Integer.toString(((Terceto)opD).getId())+"]";
+			opDstr=new Referencia( ((Terceto)opD).getId() );
 		}
 		
-		str= "[ (" + operador  + ") "+ opIstr  + "   ---   "  + opDstr  + "  ]";
+		str= "[ (" + operador  + ") "+ opIstr.toString()  + "   ---   "  + opDstr.toString()  + "  ]";
 		return str;
 	}
 	
