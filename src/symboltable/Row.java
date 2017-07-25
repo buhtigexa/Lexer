@@ -1,6 +1,8 @@
 package symboltable;
 
-public abstract class Row {
+import generadorCodigo.Operando;
+
+public abstract class Row extends Operando{
 
 	protected String token;
 	protected String lexeme;
@@ -28,7 +30,7 @@ public abstract class Row {
 	public String toString(){
 		
 		return "<<< TOKEN: " + token + " LEXEME: " + lexeme + " TYPE: " + type  + ">>>";
-		
+		//return "[ " + lexeme  + " ]";
 	}
 	
 	public boolean isEmptyType(){

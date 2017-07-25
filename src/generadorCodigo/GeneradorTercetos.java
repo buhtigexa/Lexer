@@ -3,21 +3,25 @@ package generadorCodigo;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import chequeadorDeTipos.CheckTipos;
+
 import automaton.Lexer;
 
 
 
 public class GeneradorTercetos {
 
-	public ArrayList<Terceto> tercetos;
+	public static ArrayList<Terceto> tercetos;
 	public Lexer lexer;
 	public Stack<Object> pila;
+	public CheckTipos fijaTipos;
 	
 	public GeneradorTercetos(Lexer l){
 		
 		this.lexer=l;
 		tercetos = new ArrayList<Terceto>();
 		pila=new Stack<Object>();
+		fijaTipos=new CheckTipos();
 	}
 	
 	
@@ -28,6 +32,7 @@ public class GeneradorTercetos {
 		
 		
 		Terceto terceto = new Terceto(operador,opI,opD);
+	
 		tercetos.add(terceto);
 	}
 	
@@ -37,6 +42,18 @@ public class GeneradorTercetos {
 		t.setId(tercetos.size());
 		tercetos.add(t);
 		
+		try {
+			if (fijaTipos.isOk(t)){
+				t.setType(((Operando)t.opD).getType());
+			}
+			else{
+					Lexer.showError("Tipos diferentes . Se requiere conversión explícita ");
+			}
+		}
+		catch(NullPointerException e){
+			System.out.println(t);
+			e.printStackTrace();
+		}
 	}
 	
 	public int getNextTercetoId(){

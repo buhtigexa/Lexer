@@ -192,8 +192,8 @@ asignacion      :        lado_izquierdo T_ASSIGN exp_ar      {
 if              :       T_RW_IF condicion           {  
                                                           // acá pasa la condición :
                                                           // se genera el BF y se apila .
-
-                                                          Terceto terceto=new Terceto("BF",null,null);
+                                                         
+                                                          Terceto terceto=new Terceto("BF",new Completable(),new Completable());
                                                           generadorTercetos.apilar(terceto);
                                                           generadorTercetos.add(terceto);
                                                           $$.obj=terceto;   
@@ -204,7 +204,7 @@ if              :       T_RW_IF condicion           {
                                          bloque       { 
                                                           
                                                           Terceto BF=(Terceto)generadorTercetos.desapilar();
-                                                          Terceto BI = new Terceto("BI",null,null);
+                                                          Terceto BI = new Terceto("BI",new Completable(),new Completable());
                                                           generadorTercetos.add(BI);
                                                           generadorTercetos.apilar(BI);
                                                           Referencia salto_false=new Referencia(generadorTercetos.getNextTercetoId());
@@ -297,8 +297,9 @@ do              :       T_RW_DO                                 {
 
 
 while           :      T_RW_WHILE condicion       { 
-                                                    Terceto BF=new Terceto("BF",null,null);
-                                                    Terceto BI=new Terceto("BI",null,null);
+
+                                                    Terceto BF=new Terceto("BF",new Completable(),new Completable());
+                                                    Terceto BI=new Terceto("BI",new Completable(),new Completable());
                                                     generadorTercetos.add(BF);
                                                     generadorTercetos.add(BI);
                                                     Referencia salto_false=new Referencia(generadorTercetos.getNextTercetoId());
@@ -384,7 +385,7 @@ factor          :       variable                                 {  $$ = $1;   }
                 |       conversion '(' exp_ar ')'                 
                                                                   {  
                                                                     Row token=(Row)$1.obj;
-                                                                    Terceto terceto = new Terceto (token.getToken(),null,$3.obj);
+                                                                    Terceto terceto = new Terceto (token.getToken(),new Completable(),$3.obj);
                                                                     System.out.println(terceto);
                                                                     generadorTercetos.add(terceto);
                                                                     $$.obj=terceto;   
@@ -407,6 +408,10 @@ variable        :       T_IDENTIFIER                          {
 
                 
                 |       T_IDENTIFIER T_PLUS_PLUS           {  
+                                                              Row id = (Row)$1.obj;
+                                                              if (id.getType().compareTo("long")!=0){
+                                                                Lexer.showError("La operación ++ , sólo está permitida para tipos long .");
+                                                              }
                                                               Row constant = new RowConst("const","1","long");
                                                               Terceto terceto_plus = new Terceto ("+",$1.obj,constant);
                                                               generadorTercetos.add(terceto_plus);
@@ -494,8 +499,7 @@ impresion       :       T_RW_PRINT '(' T_STRING ')' {
                                                       
                                                       Row token  = (Row)$1.obj;
                                                       Row lexema = (Row)$3.obj;
-                                                      Operando opD = new Operando(lexema,false,0);
-                                                      Terceto terceto = new Terceto(token.getToken(),null,opD);
+                                                      Terceto terceto = new Terceto(token.getToken(),new Completable(),lexema);
                                                       generadorTercetos.add(terceto);
                                                       System.out.println(terceto);
 
@@ -600,7 +604,7 @@ public int yylex(){
       }
 
   //  System.out.println("PARSER LEXER  : "  + row  );
-    System.out.println("PARSER PARSER :"   + row  +  " CODE : "  +  codes.get(row.getToken()) );
+    //System.out.println("PARSER PARSER :"   + row  +  " CODE : "  +  codes.get(row.getToken()) );
     return code.intValue();
 } 
 
