@@ -177,7 +177,7 @@ asignacion      :        lado_izquierdo T_ASSIGN exp_ar      {
                                                                   Row token=(Row)$2.obj;
                                                                   Terceto terceto = new Terceto (token.getToken(),(Row)$1.obj,$3.obj);
                                                                   generadorTercetos.add(terceto);
-                                                                  System.out.println(terceto);
+                                                                  //System.out.println(terceto);
                                                                   $$.obj=(Row)$1.obj;
 
 
@@ -257,7 +257,7 @@ comparacion     :       comparacion sgn_cmp exp_ar   {
                                                           Row operador = (Row)$2.obj;
                                                           Terceto terceto = new Terceto(operador.getToken(),$1.obj,$3.obj);
                                                           generadorTercetos.add(terceto);
-                                                          System.out.println(terceto);
+                                                          //System.out.println(terceto);
                                                           //$$.obj=terceto;
                                                           $$.obj=new Referencia(terceto.getId());
                                                        }
@@ -269,7 +269,7 @@ comparacion     :       comparacion sgn_cmp exp_ar   {
                                                           Row operador = (Row)$2.obj;
                                                           Terceto terceto = new Terceto(operador.getToken(),$1.obj,$3.obj);
                                                           generadorTercetos.add(terceto);
-                                                          System.out.println(terceto);
+                                                          //System.out.println(terceto);
                                                           //$$.obj=terceto;
                                                           $$.obj=new Referencia(terceto.getId());
                                                      }
@@ -337,7 +337,7 @@ sgn_cmp         :       T_GT
 exp_ar          :       exp_ar '+' term           {  
                                                       
                                                       Terceto terceto = new Terceto ("+",$1.obj,$3.obj);
-                                                      System.out.println(terceto);
+                                                      //System.out.println(terceto);
                                                       generadorTercetos.add(terceto);
                                                       $$.obj=new Referencia(terceto.getId());
                                                   }
@@ -345,7 +345,7 @@ exp_ar          :       exp_ar '+' term           {
 
                 |       exp_ar '-' term           {  
                                                       Terceto terceto = new Terceto ("-",$1.obj,$3.obj);
-                                                      System.out.println(terceto);
+                                                      //System.out.println(terceto);
                                                       generadorTercetos.add(terceto);
                                                       $$.obj=new Referencia(terceto.getId());
 
@@ -362,14 +362,14 @@ exp_ar          :       exp_ar '+' term           {
 
 term            :       term '*' factor {  
                                           Terceto terceto = new Terceto ("*",$1.obj,$3.obj);
-                                          System.out.println(terceto);
+                                          //System.out.println(terceto);
                                           generadorTercetos.add(terceto);
                                           $$.obj=new Referencia(terceto.getId());
                                         }
 
                 |       term '/' factor { 
                                             Terceto terceto = new Terceto ("/",$1.obj,$3.obj);
-                                            System.out.println(terceto);
+                                           // System.out.println(terceto);
                                             generadorTercetos.add(terceto);
                                             $$.obj=new Referencia(terceto.getId());
                                           }
@@ -391,7 +391,7 @@ factor          :       variable                                 {  $$ = $1;   }
                                                                   {  
                                                                     Row token=(Row)$1.obj;
                                                                     Terceto terceto = new Terceto (token.getToken(),new Completable(),$3.obj);
-                                                                    System.out.println(terceto);
+                                                                    //System.out.println(terceto);
                                                                     generadorTercetos.add(terceto);
                                                                     //$$.obj=terceto;   
                                                                     $$.obj=new Referencia(terceto.getId());
@@ -422,7 +422,7 @@ variable        :       T_IDENTIFIER                          {
                                                               generadorTercetos.add(terceto_plus);
                                                               Terceto terceto= new Terceto (":=",$1.obj,new Referencia(terceto_plus.getId()));
                                                               generadorTercetos.add(terceto);
-                                                              System.out.println(terceto);
+                                                              //System.out.println(terceto);
                                                               //$$.obj=terceto;
                                                               $$.obj=new Referencia(terceto.getId());
 
@@ -449,7 +449,7 @@ constante       :       T_CONST                     {
                                                         } 
                                                       
                                                       $$.obj=row;
-                                                      System.out.println(" Constante  : "  +  $$.obj);
+                                                     // System.out.println(" Constante  : "  +  $$.obj);
 
 
                                                       }
@@ -475,7 +475,7 @@ constante       :       T_CONST                     {
                                                                 }
 
                                                          $$.obj=row;       
-                                                         System.out.println(" Constante negativa : "  +  $$.obj);
+                                                        // System.out.println(" Constante negativa : "  +  $$.obj);
 
                                                      
                                                      }
@@ -506,7 +506,7 @@ impresion       :       T_RW_PRINT '(' T_STRING ')' {
                                                       Row lexema = (Row)$3.obj;
                                                       Terceto terceto = new Terceto(token.getToken(),new Completable(),lexema);
                                                       generadorTercetos.add(terceto);
-                                                      System.out.println(terceto);
+                                                      //System.out.println(terceto);
 
                                                       }
 

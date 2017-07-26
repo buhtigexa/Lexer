@@ -40,35 +40,80 @@ public class GeneradorTercetos {
 		
 		t.setId(tercetos.size());
 		tercetos.add(t);
-		System.out.println("...................................................................................................");
-		System.out.println(" TERCETO :"  +t.getId()  + "  "  + t   +  "Asignacion :"  +  t.isAsignacion()  +  ""   + t.opI.getClass()  + " "  +  t.opD.getClass()  +  "\n");  
-		
+		update(t);
+		checkearTipos(t);
+	
 	}
 	
 	protected void checkearTipos(Terceto t) {
 		
-		Operando opI=(Operando) t.opI;
-		Operando opD=(Operando) t.opD;
+		Operando opI = (Operando)t.opI;
+		Operando opD = (Operando)t.opD;
 		
-		System.out.println("TERCETO NRO : " + t.getId()   + " OPERANDOS :  "  +  opI.getClass()  +  "     "   + opD.getClass() );
-
-		try { 
+		String typeI="";
+		String typeD="";
 		
-		if (opI.getType().compareToIgnoreCase(opD.getType())!=0){
-			Lexer.showError("Tipos incompatibles . Se requiere conversión explícita");
+		if (!opI.isReferencia())
+			typeI=opI.getType();
+		
+		if (!opD.isReferencia())
+			typeD=opD.getType();
+		
+		if (opI.isReferencia() && !(t.isSalto())){
+			Terceto referenciado=tercetos.get(((Referencia)opI).nroTerceto);
+			typeI=referenciado.getType();
+		}
+		
+		if (opD.isReferencia() && !(t.isSalto()) ){
+			Terceto referenciado=tercetos.get(((Referencia)opD).nroTerceto);
+			typeD=referenciado.getType();
+		}
+		
+		if (t.operador.compareTo("tolong")==0){
+			t.setType("long");
+			return;
+		}
+		
+		if (typeD.compareTo(typeI)==0){
+			t.setType(typeI);
 		}
 		else
-			t.setType(opI.getType());
-		}
-		catch( ClassCastException e){
-			e.printStackTrace();
-		}
+			Lexer.showError("Error de tipos, se requiere conversión explícita");
+		
 	}
 
-
-
-
-
+	
+	public void updateAllReferences(){
+		
+		for (Terceto t: tercetos){
+			update(t);
+		}
+	}
+	
+	protected void update(Terceto terceto){
+		
+		Referencia ref =null;
+		Terceto referenciado =null;
+		if (((Operando)terceto.opI).isReferencia){
+			ref = (Referencia)terceto.opI;
+			referenciado =tercetos.get(ref.nroTerceto);
+			if (referenciado.isAsignacion){
+				//System.out.println(" Rerencia --->" + referenciado.opI);
+				terceto.opI =(Operando) referenciado.opI;
+				
+			}
+			
+		}
+			if (((Operando)terceto.opD).isReferencia){
+				ref=(Referencia)terceto.opD;
+				referenciado=tercetos.get(ref.nroTerceto);
+				if (referenciado.isAsignacion()){
+					terceto.opD=(Operando)referenciado.opI;
+				}
+			}
+		
+	}
+	
 	public int getNextTercetoId(){
 		
 		// La cantidad de tercetos contada desde cero . Pero también el número de terceto siguiente.

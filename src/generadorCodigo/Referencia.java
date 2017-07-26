@@ -8,7 +8,7 @@ public class Referencia extends Operando{
 	public Referencia(int referencia){
 		
 		this.nroTerceto=referencia;
-	
+		isReferencia=true;
 	}
 	
 	public String toString(){
