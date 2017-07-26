@@ -4,8 +4,15 @@ package generadorCodigo;
 public abstract class Operando {
 	
 	
+	public boolean isReferencia;
+	
+	public  boolean isReferencia() {
+		return isReferencia;
+	}
 
 	public Operando(){
+		
+		isReferencia=false;
 		
 	}
 	

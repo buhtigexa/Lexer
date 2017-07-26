@@ -5,7 +5,7 @@ public class RowToken extends Row{
 	public RowToken(String token) {
 
 		super(token);
-	
+		isReferencia=false;
 	}
 
 	@Override
@@ -21,6 +21,8 @@ public class RowToken extends Row{
 		return "";
 	
 	}
+
+	
 
 
 }

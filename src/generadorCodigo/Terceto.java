@@ -12,6 +12,10 @@ public class Terceto {
 	}
 
 
+	public boolean isSalto(){
+		
+		return (operador.compareTo("BF")==0) || (operador.compareTo("BI")==0);
+	}
 	public int id;
 	public String type;
 	

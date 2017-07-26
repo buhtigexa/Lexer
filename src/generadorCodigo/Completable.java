@@ -2,6 +2,11 @@ package generadorCodigo;
 
 public class Completable extends Operando {
 
+	
+	public Completable(){
+		super();
+		
+	}
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
