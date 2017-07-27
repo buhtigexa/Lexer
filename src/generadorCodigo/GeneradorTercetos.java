@@ -1,5 +1,8 @@
 package generadorCodigo;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -14,12 +17,23 @@ public class GeneradorTercetos {
 	public static ArrayList<Terceto> tercetos;
 	public Lexer lexer;
 	public Stack<Object> pila;
+	public PrintWriter printWriter;
+	public File fileTercetos;
 	
-	public GeneradorTercetos(Lexer l){
+	public GeneradorTercetos(Lexer l,String tercetosFile){
 		
 		this.lexer=l;
 		tercetos = new ArrayList<Terceto>();
 		pila=new Stack<Object>();
+		
+		
+		fileTercetos = new File(tercetosFile);
+		try {
+			printWriter=new PrintWriter(fileTercetos);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -204,6 +218,16 @@ public class GeneradorTercetos {
         String temp = "label"+noJmp;
         return temp;
 
-
-}
+	}
+	
+	public void saveTercetos(){
+		
+		String str="";
+		for (Terceto t:tercetos){
+			str="\n "  + t.toString();
+			printWriter.write(str);
+		}
+		
+		printWriter.close();
+	}
 }

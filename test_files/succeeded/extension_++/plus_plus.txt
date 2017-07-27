@@ -1,0 +1,14 @@
+{
+	
+  long x, b;
+  uint a , c ;
+
+	x++;
+	x:=x+++555555;
+	
+	a:=a + c + 3;
+
+
+	print(' cartelito ');
+
+}

@@ -1,0 +1,37 @@
+< TOKEN: identifier LEXEME: a_0_0 TYPE: long>
+< TOKEN: identifier LEXEME: b_0_0 TYPE: long>
+< TOKEN: identifier LEXEME: c_0_0 TYPE: long>
+< TOKEN: identifier LEXEME: d_0_0 TYPE: uint>
+< TOKEN: identifier LEXEME: e_0_0 TYPE: uint>
+< TOKEN: identifier LEXEME: f_0_0 TYPE: uint>
+< TOKEN: identifier LEXEME: i_0_0 TYPE: uint>
+< TOKEN: identifier LEXEME: index_0_0 TYPE: uint>
+< TOKEN: const LEXEME: 1 TYPE: uint>
+< TOKEN: string LEXEME:  mensaje dentro del while TYPE: string>
+< TOKEN: const LEXEME: 1 TYPE: uint>
+< TOKEN: const LEXEME: 100 TYPE: uint>
+< TOKEN: string LEXEME: i=10,saliendo del while TYPE: string>
+< TOKEN: identifier LEXEME: d_1_1 TYPE: long>
+< TOKEN: identifier LEXEME: e_1_1 TYPE: long>
+< TOKEN: identifier LEXEME: f_1_1 TYPE: long>
+< TOKEN: identifier LEXEME: i_1_1 TYPE: long>
+< TOKEN: identifier LEXEME: w_1_1 TYPE: long>
+< TOKEN: identifier LEXEME: a_1_1 TYPE: uint>
+< TOKEN: identifier LEXEME: b_1_1 TYPE: uint>
+< TOKEN: identifier LEXEME: c_1_1 TYPE: uint>
+< TOKEN: identifier LEXEME: index_1_1 TYPE: >
+< TOKEN: const LEXEME: 0 TYPE: uint>
+< TOKEN: const LEXEME: 45 TYPE: uint>
+< TOKEN: const LEXEME: 44 TYPE: uint>
+< TOKEN: const LEXEME: 4 TYPE: uint>
+< TOKEN: const LEXEME: 44 TYPE: uint>
+< TOKEN: const LEXEME: 7 TYPE: uint>
+< TOKEN: string LEXEME:  do while dentro de un ambito TYPE: string>
+< TOKEN: const LEXEME: -1 TYPE: long>
+< TOKEN: const LEXEME: -10 TYPE: long>
+< TOKEN: string LEXEME: es verdad:i > tolong(0)+tolong(index) TYPE: string>
+< TOKEN: string LEXEME: es falso: i > tolong(0)+tolong(index) TYPE: string>
+< TOKEN: const LEXEME: 1 TYPE: uint>
+< TOKEN: const LEXEME: 0 TYPE: uint>
+< TOKEN: const LEXEME: 9 TYPE: uint>
+< TOKEN: string LEXEME:  Fin del programa TYPE: string>
