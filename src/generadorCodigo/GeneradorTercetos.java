@@ -74,12 +74,14 @@ public class GeneradorTercetos {
 			return;
 		}
 		
-		if (typeD.compareTo(typeI)==0){
+		if (typeD.compareTo(typeI)==0 ){
 			t.setType(typeI);
 		}
-		else
-			Lexer.showError("Error de tipos, se requiere conversión explícita");
-		
+		else{
+			if (t.operador.compareTo("print")!=0){
+				Lexer.showError("Error de tipos, se requiere conversión explícita:  " + t );
+			 }
+			}
 	}
 
 	
