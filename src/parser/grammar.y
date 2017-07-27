@@ -198,7 +198,7 @@ if              :       T_RW_IF condicion           {
                                                           generadorTercetos.apilar(terceto);
                                                           generadorTercetos.add(terceto);
                                                           //$$.obj=terceto;   
-                                                          $$.obj=new Referencia(terceto.getId());
+                                                          $$.obj=new Referencia(this.generadorTercetos,terceto.getId());
                                                     }
 
 
@@ -208,7 +208,7 @@ if              :       T_RW_IF condicion           {
                                                           Terceto BI = new Terceto("BI",new Completable(),new Completable());
                                                           generadorTercetos.add(BI);
                                                           generadorTercetos.apilar(BI);
-                                                          Referencia salto_false=new Referencia(generadorTercetos.getNextTercetoId());
+                                                          Referencia salto_false=new Referencia(this.generadorTercetos,generadorTercetos.getNextTercetoId());
                                                           generadorTercetos.completarTerceto(BF,salto_false);
 
                                                       }
@@ -230,7 +230,7 @@ else            :       T_RW_ELSE                        {
                                                           // acá se completa el statement
                                                           // se desapila y se completa el BI
                                                           Terceto BI=(Terceto)generadorTercetos.desapilar();
-                                                          Referencia salto_true=new Referencia(generadorTercetos.getNextTercetoId());
+                                                          Referencia salto_true=new Referencia(this.generadorTercetos,generadorTercetos.getNextTercetoId());
                                                           generadorTercetos.completarTerceto(BI,salto_true);
                                                           
                                                         }
@@ -259,7 +259,7 @@ comparacion     :       comparacion sgn_cmp exp_ar   {
                                                           generadorTercetos.add(terceto);
                                                           //System.out.println(terceto);
                                                           //$$.obj=terceto;
-                                                          $$.obj=new Referencia(terceto.getId());
+                                                          $$.obj=new Referencia(this.generadorTercetos,terceto.getId());
                                                        }
 
 
@@ -271,7 +271,7 @@ comparacion     :       comparacion sgn_cmp exp_ar   {
                                                           generadorTercetos.add(terceto);
                                                           //System.out.println(terceto);
                                                           //$$.obj=terceto;
-                                                          $$.obj=new Referencia(terceto.getId());
+                                                          $$.obj=new Referencia(this.generadorTercetos,terceto.getId());
                                                      }
 
                 |       exp_ar error exp_ar
@@ -286,7 +286,7 @@ bloque          :       '{' sentencias '}'
 
 do              :       T_RW_DO                                 {
                                                                  
-                                                                 Referencia inicio_loop = new Referencia(generadorTercetos.getNextTercetoId());
+                                                                 Referencia inicio_loop = new Referencia(this.generadorTercetos,generadorTercetos.getNextTercetoId());
                                                                  generadorTercetos.apilar(inicio_loop);
 
 
@@ -305,7 +305,7 @@ while           :      T_RW_WHILE condicion       {
                                                     Terceto BI=new Terceto("BI",new Completable(),new Completable());
                                                     generadorTercetos.add(BF);
                                                     generadorTercetos.add(BI);
-                                                    Referencia salto_false=new Referencia(generadorTercetos.getNextTercetoId());
+                                                    Referencia salto_false=new Referencia(this.generadorTercetos,generadorTercetos.getNextTercetoId());
                                                     Referencia inicio_loop=(Referencia)generadorTercetos.desapilar();
                                                     generadorTercetos.completarTerceto(BF,salto_false);
                                                     generadorTercetos.completarTerceto(BI,inicio_loop);
@@ -339,7 +339,7 @@ exp_ar          :       exp_ar '+' term           {
                                                       Terceto terceto = new Terceto ("+",$1.obj,$3.obj);
                                                       //System.out.println(terceto);
                                                       generadorTercetos.add(terceto);
-                                                      $$.obj=new Referencia(terceto.getId());
+                                                      $$.obj=new Referencia(this.generadorTercetos,terceto.getId());
                                                   }
 
 
@@ -347,7 +347,7 @@ exp_ar          :       exp_ar '+' term           {
                                                       Terceto terceto = new Terceto ("-",$1.obj,$3.obj);
                                                       //System.out.println(terceto);
                                                       generadorTercetos.add(terceto);
-                                                      $$.obj=new Referencia(terceto.getId());
+                                                      $$.obj=new Referencia(this.generadorTercetos,terceto.getId());
 
                                                     }
 
@@ -364,14 +364,14 @@ term            :       term '*' factor {
                                           Terceto terceto = new Terceto ("*",$1.obj,$3.obj);
                                           //System.out.println(terceto);
                                           generadorTercetos.add(terceto);
-                                          $$.obj=new Referencia(terceto.getId());
+                                          $$.obj=new Referencia(this.generadorTercetos,terceto.getId());
                                         }
 
                 |       term '/' factor { 
                                             Terceto terceto = new Terceto ("/",$1.obj,$3.obj);
                                            // System.out.println(terceto);
                                             generadorTercetos.add(terceto);
-                                            $$.obj=new Referencia(terceto.getId());
+                                            $$.obj=new Referencia(this.generadorTercetos,terceto.getId());
                                           }
 
                 |       factor          { 
@@ -394,7 +394,7 @@ factor          :       variable                                 {  $$ = $1;   }
                                                                     //System.out.println(terceto);
                                                                     generadorTercetos.add(terceto);
                                                                     //$$.obj=terceto;   
-                                                                    $$.obj=new Referencia(terceto.getId());
+                                                                    $$.obj=new Referencia(this.generadorTercetos,terceto.getId());
                                                                   }
 
                 | '('exp_ar')'                                 {
@@ -420,11 +420,11 @@ variable        :       T_IDENTIFIER                          {
                                                               Row constant = new RowConst("const","1","long");
                                                               Terceto terceto_plus = new Terceto ("+",$1.obj,constant);
                                                               generadorTercetos.add(terceto_plus);
-                                                              Terceto terceto= new Terceto (":=",$1.obj,new Referencia(terceto_plus.getId()));
+                                                              Terceto terceto= new Terceto (":=",$1.obj,new Referencia(this.generadorTercetos,terceto_plus.getId()));
                                                               generadorTercetos.add(terceto);
                                                               //System.out.println(terceto);
                                                               //$$.obj=terceto;
-                                                              $$.obj=new Referencia(terceto.getId());
+                                                              $$.obj=new Referencia(this.generadorTercetos,terceto.getId());
 
                                                             }
                 ;

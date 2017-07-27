@@ -6,6 +6,13 @@ public class Terceto {
 	public Object opI;
 	public String operador;
 	public boolean isAsignacion;
+	public Object result;
+	
+	// solo para etiquetado
+	public String labelSrc;
+	public String labelDst;
+	public String operadorAnterior;
+	///
 	
 	public String getOperador() {
 		return operador;
@@ -58,6 +65,8 @@ public class Terceto {
 		this.opI=opI;
 		this.type=new String();
 		this.isAsignacion=isAsignacion();
+		this.labelDst="";
+		this.labelSrc="";
 		
 	}
 	
@@ -88,7 +97,7 @@ public class Terceto {
 		
 			opDstr="["+opD+"]";
 		//}
-		
+		/*
 		if ( opI instanceof Terceto){
 			opIstr=new Referencia( ((Terceto)opI).getId() );
 		}
@@ -96,10 +105,28 @@ public class Terceto {
 		if ( opD instanceof Terceto){
 			opDstr=new Referencia( ((Terceto)opD).getId() );
 		}
+		*/
+			
+		//str= id +" [ (" + operador  + ") "+ opIstr.toString()  + "   ---   "  + opDstr.toString()  + " --type : <" + type +">]";
 		
-		str= id +" [ (" + operador  + ") "+ opIstr.toString()  + "   ---   "  + opDstr.toString()  + " --type : <" + type +">]";
+		if (opI instanceof Referencia){
+			opIstr=" [ "  + ((Referencia)opI).nroTerceto + " ] ";/*==> "  + ((Referencia)opI).getTerceto();*/
+		}
+		else {
+			opIstr= opI.toString();
+		}
+		
+		if (opD instanceof Referencia){
+			opDstr=" [ "  + ((Referencia)opD).nroTerceto + " ]" ;/*==> "  + ((Referencia)opD).getTerceto();*/
+		}
+		else {
+			opDstr= opD.toString();
+		}
 		
 		//str="[ (" + operador  + ") "+ opI  + "   ---   "  + opD + " --type : <" + type +">]";
+		
+		str= id +" [ (" + operador  + ") "+ opIstr.toString()  + "   ---   "  + opDstr.toString()  + " --type : <" + type +">]";
+
 		return str;
 	}
 	

@@ -33,7 +33,7 @@ public class MyFStream {
 		
 	}
 	
-	public void writeArchivo(String txt) {
+	public void write(String txt) {
 		
 		String tabs = "";
 		fileAsm="";
@@ -42,7 +42,7 @@ public class MyFStream {
 		fileAsm+=tabs + txt;
 		fileAsm+="\n";
 		printWriter.write(fileAsm);
-		System.out.println(txt);
+		System.out.println(fileAsm);
 		
 		
 	}

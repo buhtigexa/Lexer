@@ -152,5 +152,56 @@ public class GeneradorTercetos {
 		}
 		return str;
 	}
+	
+	
+	public void etiquetador(String finalLabel){
+	
+		Terceto src=null;
+		int posTercetoAnterior=-1;
+		Terceto tercetoAnterior=null;
+		String operadorAnterior="";
+		String label="";
+		Terceto tercetoDestino=null;
+		
+		for (int i=0; i < tercetos.size() ;i++){
+			src=tercetos.get(i);
+			posTercetoAnterior=i-1;
+			if (src!=null) {
+				if (posTercetoAnterior >=0){
+					tercetoAnterior=tercetos.get(posTercetoAnterior);
+					operadorAnterior=tercetoAnterior.operador;
+					src.operadorAnterior=operadorAnterior;
+					
+				}
+				if (src.operador.compareTo("BF")==0 || src.operador.compareTo("BI")==0){
+					Referencia salto = (Referencia) src.opI;
+					int destino=salto.nroTerceto;
+					if (src.operador.compareTo("BF")==0){
+						src.type=tercetos.get(posTercetoAnterior).type;
+					}
+						else
+						src.type=tercetos.get(destino).type;
+					
+					if (destino < tercetos.size()){
+						tercetoDestino=tercetos.get(destino);
+						label=getNewLabel(destino);
+						src.labelSrc=label;
+						tercetoDestino.labelDst=label;
+					}
+					else
+						src.labelSrc=finalLabel;
+						}
+				}
+		}
+	}
+	
+	
+	public String getNewLabel(int index){
 
+        String noJmp=Integer.toString(index);
+        String temp = "label"+noJmp;
+        return temp;
+
+
+}
 }

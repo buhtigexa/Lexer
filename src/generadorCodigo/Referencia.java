@@ -5,10 +5,11 @@ public class Referencia extends Operando{
 	public int nroTerceto;
 	public static GeneradorTercetos generadorTercetos;
 	
-	public Referencia(int referencia){
+	public Referencia(GeneradorTercetos generadorTercetos,int referencia){
 		
 		this.nroTerceto=referencia;
 		isReferencia=true;
+		this.generadorTercetos=generadorTercetos;
 	}
 	
 	public String toString(){
@@ -37,4 +38,6 @@ public class Referencia extends Operando{
 		Terceto t = getTerceto();
 		return (t.operador.compareTo(":=")==0);
 	}
+	
+	
 }
