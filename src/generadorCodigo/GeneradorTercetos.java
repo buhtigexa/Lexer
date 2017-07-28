@@ -93,7 +93,7 @@ public class GeneradorTercetos {
 		}
 		else{
 			if (t.operador.compareTo("print")!=0){
-				Lexer.showError("Error de tipos, se requiere conversión explícita:  " + t );
+				Lexer.showError("Error de tipos, se requiere conversión explícita:  " );
 			 }
 			}
 	}
@@ -189,6 +189,7 @@ public class GeneradorTercetos {
 					src.operadorAnterior=operadorAnterior;
 					
 				}
+				try {
 				if (src.operador.compareTo("BF")==0 || src.operador.compareTo("BI")==0){
 					Referencia salto = (Referencia) src.opI;
 					int destino=salto.nroTerceto;
@@ -208,9 +209,12 @@ public class GeneradorTercetos {
 						src.labelSrc=finalLabel;
 						}
 				}
+				catch (ClassCastException e){
+					
+				}
 		}
 	}
-	
+	}
 	
 	public String getNewLabel(int index){
 

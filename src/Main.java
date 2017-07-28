@@ -4,6 +4,7 @@ import generadorAssembler.GeneradorAssembler;
 import generadorCodigo.GeneradorTercetos;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import parser.Parser;
 import symboltable.NameDecorator;
@@ -98,12 +99,7 @@ public class Main {
 		}
 		
 		
-		/*
-		String programa="/home/marcelo/workspace/Lexer/test_files/succeeded/extension_++/loop.txt";
-		String asmDir ="/home/marcelo/workspace/Lexer/generated/";
-		String outputDir="/home/marcelo/workspace/Lexer/output/";
 		
-		*/
 	
 		String programa=args[0];
 		String asmDir=args[1];
@@ -144,10 +140,19 @@ public class Main {
 			}
 		
 		
-	
-		File file = new File(programa);
+		File file = null;
+		
+		
+		file = new File(programa);
+
+		if (!file.exists()){
+			System.out.println(" No hay programa para compilar .");
+			return;
+		}
 		
 		t.setUp(file,asmDir,outputDir);
+			
+		
 		
 		
 		

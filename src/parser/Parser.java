@@ -850,7 +850,7 @@ boolean doaction;
       {
       if (yyerrflag==0)
         {
-        yyerror("syntax error");
+        yyerror(/*"syntax error"*/"");
         yynerrs++;
         }
       if (yyerrflag < 3) //low error count?
@@ -860,7 +860,7 @@ boolean doaction;
           {
           if (stateptr<0)   //check for under & overflow here
             {
-            yyerror("stack underflow. aborting...");  //note lower case 's'
+            yyerror(""/*stack underflow. aborting..."*/);  //note lower case 's'
             return 1;
             }
           yyn = yysindex[state_peek(0)];
@@ -881,7 +881,7 @@ boolean doaction;
               debug("error recovery discarding state "+state_peek(0)+" ");
             if (stateptr<0)   //check for under & overflow here
               {
-              yyerror("Stack underflow. aborting...");  //capital 'S'
+              yyerror(""/*Stack underflow. aborting..."*/);  //capital 'S'
               return 1;
               }
             state_pop();

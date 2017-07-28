@@ -1,0 +1,39 @@
+{
+
+  uint i , j ;
+  long a , b , k;
+  
+	k:=65536;
+	i:=2;
+    j:=1;
+
+
+	do{
+		print('bucle externo');
+		j:=j+1;
+		do
+		{
+		print('bucle anidado middle');					
+		a:=a++;
+		k:=k+++tolong(2);
+		do
+			{
+			if ( k++ < 65550) 
+				print ('  K menor que 70000');
+			else
+				print(' K es MAYOR que 70000');
+			print('anidado mas deep');
+			k++;
+			i:=i+1;
+			}
+			while ( k < 65700);
+				}
+		while ( i <= 4);
+	}
+	while (	j < 5 );
+   	print(' Fuera de los bucles ');	
+   	b:=tolong(2);
+   	a:=tolong(1);
+   	a:=a+b;
+   	print( ' fin del programa ' );		
+}
