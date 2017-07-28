@@ -1,15 +1,15 @@
 
 
-import java.io.File;
-
 import generadorAssembler.GeneradorAssembler;
 import generadorCodigo.GeneradorTercetos;
+
+import java.io.File;
+
 import parser.Parser;
 import symboltable.NameDecorator;
 import symboltable.SymbolTable;
 import utils.MyFStream;
 import automaton.Lexer;
-import java.nio.file.Files;
 
 public class Main {
 
@@ -22,7 +22,7 @@ public class Main {
 	public void setUp(File fileToParse,String generatedPath,String output){
 		
 		String fileName= fileToParse.getName();
-		MyFStream fstream = new MyFStream(generatedPath+"/"+fileName+".asm");
+		MyFStream fstream = new MyFStream(generatedPath+"/"+fileName.replace(".txt", ".asm").toLowerCase());
 		
 		String symbolFile=output+"/symbolTable.txt";
 		String errorFile =output+"/errors.txt";
@@ -43,14 +43,17 @@ public class Main {
 
 		generadorASM.generarCodigo();
 
-		System.out.println("-----------Programa aceptado : -------- "  + fileToParse +  " Errors : " + lexer.errors);
+		System.out.println("\n Compilando ... "+  fileToParse +  " con Errors : " + lexer.errors);
 		
 		
 		
 		Lexer.saveMessages();
 		symbolTable.saveTable();
-		System.out.println(generadorTercetos);
 		
+		/*
+		System.out.println(symbolTable);
+		System.out.println(generadorTercetos);
+		*/
 	
 	}
 	
@@ -95,13 +98,20 @@ public class Main {
 		}
 		
 		
-		
-		String programa="/home/marcelo/workspace/Lexer/test_files/succeeded/extension_++/errdivByZero.txt";
+		/*
+		String programa="/home/marcelo/workspace/Lexer/test_files/succeeded/extension_++/loop.txt";
 		String asmDir ="/home/marcelo/workspace/Lexer/generated/";
 		String outputDir="/home/marcelo/workspace/Lexer/output/";
 		
+		*/
+	
+		String programa=args[0];
+		String asmDir=args[1];
+		String outputDir=args[2];
+		
 		
 		File asm = new File(asmDir);
+		
 		
 		if (!asm.exists()){
 			boolean result=false;
@@ -133,11 +143,7 @@ public class Main {
 			    }
 			}
 		
-		/*
-		String programa=args[0];
-		String asmDir=args[1];
-		String outputDir=args[2];
-	*/
+		
 	
 		File file = new File(programa);
 		

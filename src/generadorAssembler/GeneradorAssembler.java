@@ -115,14 +115,11 @@ void generarDataSeg(){
 
 public void downloadSymbolTable(){
 
-
-
-
      String token,type,lexeme,strAddr;
      int n =symbolTable.size();
      Row fila=null;
      addIdentacion();
-     writeArchivo(" DATOS DE LA TABLA DE SIMBOLOS ");
+     writeArchivo("; DATOS DE LA TABLA DE SIMBOLOS ");
         for (int i = 0; i < n ; i++ ){
                 fila = symbolTable.getRow(i);
                 token=fila.getToken();
@@ -565,7 +562,7 @@ void generarCodeSeg(){
                       temp =  myTercetos.get(index);
                       
                       	/****** solo impresión */
-                      System.out.println(temp);
+                      //System.out.println(temp);
                       writeArchivo("; " + temp.toString() + "\n");
                       
                       /*** solo impresion */ 
