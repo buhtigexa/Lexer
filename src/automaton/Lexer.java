@@ -478,9 +478,13 @@ public class Lexer {
 
 	public static void showError(String message){
 		
-		String errorTxt = "\n -[ERROR]"  +  "linea:columna (" + line + " , " + column + " ) :" + message;
-		errors++;
-		errorPrinter.write(errorTxt);
+		String errorTxt ="";
+		
+		if (message!=""|| !message.isEmpty()){
+			errorTxt = "\n -[ERROR]"  +  "linea:columna (" + line + " , " + column + " ) :" + message;
+			errors++;
+		}
+			errorPrinter.write(errorTxt);
 		if (printError){
 			System.out.println(errorTxt);
 		}
