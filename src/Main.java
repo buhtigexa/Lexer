@@ -4,7 +4,6 @@ import generadorAssembler.GeneradorAssembler;
 import generadorCodigo.GeneradorTercetos;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import parser.Parser;
 import symboltable.NameDecorator;
@@ -23,7 +22,10 @@ public class Main {
 	public void setUp(File fileToParse,String generatedPath,String output){
 		
 		String fileName= fileToParse.getName();
-		MyFStream fstream = new MyFStream(generatedPath+"/"+fileName.replace(".txt", ".asm").toLowerCase());
+		if (fileName.length()>8){
+			fileName=fileName.substring(0, 7);
+		}
+		MyFStream fstream = new MyFStream(generatedPath+"/"+  fileName.replace(".txt", ".asm").toLowerCase());
 		
 		String symbolFile=output+"/symbolTable.txt";
 		String errorFile =output+"/errors.txt";
