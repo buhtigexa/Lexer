@@ -24,6 +24,7 @@ public class Main {
 		String fileName= fileToParse.getName();
 		if (fileName.length()>8){
 			fileName=fileName.substring(0, 7);
+			fileName=fileName + ".txt";
 		}
 		MyFStream fstream = new MyFStream(generatedPath+"/"+  fileName.replace(".txt", ".asm").toLowerCase());
 		
@@ -46,7 +47,7 @@ public class Main {
 
 		generadorASM.generarCodigo();
 
-		System.out.println("\n Compilando ... "+  fileToParse +  " con Errors : " + lexer.errors);
+		System.out.println("\n Compilando ... "+  fileToParse +  " con Errors : " + Lexer.errors);
 		
 		
 		
@@ -83,16 +84,7 @@ public class Main {
 		System.out.println(" ---------------------------------------------------------------- ");
 		
 		
-		String programas[]={
-				
-				"/home/marcelo/workspace/Lexer/test_files/succeeded/extension_++/plus_plus.txt",
-				"/home/marcelo/workspace/Lexer/test_files/succeeded/extension_++/loop.txt",
-				"/home/marcelo/workspace/Lexer/test_files/succeeded/extension_++/tp2-ambitos-32-ok.txt",
-				"/home/marcelo/workspace/Lexer/test_files/succeeded/extension_++/entrega1.txt",
-				"/home/marcelo/workspace/Lexer/test_files/succeeded/extension_++/errUnsignedSub.txt",
-				"/home/marcelo/workspace/Lexer/test_files/succeeded/extension_++/errdivByZero.txt"
-				
-		};
+	
 	
 		if (args.length!=3){
 			System.out.println(" Error - Faltan argumentos ");
