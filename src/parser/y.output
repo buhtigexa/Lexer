@@ -1,0 +1,2121 @@
+   0  $accept : programa $end
+
+   1  programa :
+   2           | '{' declaraciones conjunto_sentencias '}' T_ENDOFFILE
+   3           | '{' declaraciones '}' T_ENDOFFILE
+   4           | '{' conjunto_sentencias '}' T_ENDOFFILE
+   5           | declaracion_sentencia T_ENDOFFILE
+   6           | declaraciones conjunto_sentencias T_ENDOFFILE
+
+   7  declaracion_sentencia : declaracion
+   8                        | sentencia
+
+   9  declaraciones : declaracion
+  10                | declaraciones declaracion
+
+  11  declaracion : d_variable
+
+  12  d_variable : tipo lista_identificadores ';'
+  13             | tipo lista_identificadores error
+  14             | tipo error
+
+  15  lista_identificadores : T_IDENTIFIER
+  16                        | lista_identificadores ',' T_IDENTIFIER
+  17                        | lista_identificadores T_IDENTIFIER
+
+  18  conjunto_sentencias : sentencia
+
+  19  $$1 :
+
+  20  conjunto_sentencias : conjunto_sentencias $$1 '{' ambito '}'
+
+  21  $$2 :
+
+  22  conjunto_sentencias : $$2 '{' ambito '}'
+  23                      | conjunto_sentencias sentencia
+  24                      | conjunto_sentencias declaracion
+
+  25  sentencias : sentencia
+  26             | sentencias sentencia
+
+  27  $$3 :
+
+  28  ambito : $$3 declaraciones conjunto_sentencias
+
+  29  $$4 :
+
+  30  ambito : $$4 conjunto_sentencias
+  31         | error
+
+  32  $$5 :
+
+  33  sentencia : $$5 if
+  34            | asignacion ';'
+  35            | do ';'
+  36            | impresion ';'
+  37            | asignacion
+  38            | impresion
+  39            | do
+
+  40  asignacion : lado_izquierdo T_ASSIGN exp_ar
+  41             | lado_izquierdo T_EQ exp_ar
+  42             | lado_izquierdo T_ASSIGN error
+  43             | lado_izquierdo T_EQ error
+  44             | lado_izquierdo error
+
+  45  $$6 :
+
+  46  $$7 :
+
+  47  if : T_RW_IF condicion $$6 bloque $$7 else
+  48     | T_RW_IF condicion error else
+  49     | T_RW_IF error bloque else
+  50     | T_RW_IF error else
+
+  51  $$8 :
+
+  52  else : T_RW_ELSE $$8 bloque
+  53       | T_RW_ELSE error
+  54       | error
+
+  55  condicion : '(' comparacion ')'
+  56            | '(' error ')'
+
+  57  comparacion : comparacion sgn_cmp exp_ar
+  58              | comparacion error exp_ar
+  59              | exp_ar sgn_cmp exp_ar
+  60              | exp_ar error exp_ar
+
+  61  bloque : '{' sentencias '}'
+  62         | sentencia
+  63         | '{' declaraciones sentencias '}'
+
+  64  $$9 :
+
+  65  do : T_RW_DO $$9 bloque while
+  66     | T_RW_DO error while
+  67     | T_RW_DO while
+
+  68  while : T_RW_WHILE condicion
+  69        | T_RW_WHILE error
+
+  70  lado_izquierdo : variable
+
+  71  sgn_cmp : T_GT
+  72          | T_EQ
+  73          | T_LT
+  74          | T_BEQ
+  75          | T_GEQ
+  76          | T_ASSIGN
+  77          | T_DISTINCT
+
+  78  exp_ar : exp_ar '+' term
+  79         | exp_ar '-' term
+  80         | term
+  81         | exp_ar '+' error
+  82         | exp_ar '-' error
+
+  83  term : term '*' factor
+  84       | term '/' factor
+  85       | factor
+  86       | term '*' error
+  87       | term '/' error
+
+  88  factor : variable
+  89         | constante
+  90         | conversion '(' exp_ar ')'
+  91         | '(' exp_ar ')'
+
+  92  variable : T_IDENTIFIER
+  93           | T_IDENTIFIER T_PLUS_PLUS
+
+  94  constante : T_CONST
+  95            | '-' T_CONST
+
+  96  tipo : T_RW_UINT
+  97       | T_RW_LONG
+
+  98  conversion : T_RW_TOLONG
+
+  99  impresion : T_RW_PRINT '(' T_STRING ')'
+ 100            | T_RW_PRINT '[' T_STRING ']'
+ 101            | T_RW_PRINT '{' T_STRING '}'
+ 102            | T_RW_PRINT '(' T_STRING error
+ 103            | T_RW_PRINT error
+
+state 0
+	$accept : . programa $end  (0)
+	programa : .  (1)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	'{'  shift 6
+	$end  reduce 1
+	T_RW_IF  reduce 32
+
+	programa  goto 7
+	declaraciones  goto 8
+	declaracion_sentencia  goto 9
+	declaracion  goto 10
+	sentencia  goto 11
+	d_variable  goto 12
+	tipo  goto 13
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 1
+	variable : T_IDENTIFIER .  (92)
+	variable : T_IDENTIFIER . T_PLUS_PLUS  (93)
+
+	T_PLUS_PLUS  shift 20
+	error  reduce 92
+	T_IDENTIFIER  reduce 92
+	T_RW_IF  reduce 92
+	T_RW_ELSE  reduce 92
+	T_RW_DO  reduce 92
+	T_RW_PRINT  reduce 92
+	T_RW_WHILE  reduce 92
+	T_RW_LONG  reduce 92
+	T_RW_UINT  reduce 92
+	T_GT  reduce 92
+	T_EQ  reduce 92
+	T_LT  reduce 92
+	T_BEQ  reduce 92
+	T_GEQ  reduce 92
+	T_ASSIGN  reduce 92
+	T_DISTINCT  reduce 92
+	T_ENDOFFILE  reduce 92
+	'+'  reduce 92
+	'-'  reduce 92
+	'*'  reduce 92
+	'/'  reduce 92
+	'{'  reduce 92
+	'}'  reduce 92
+	';'  reduce 92
+	')'  reduce 92
+
+
+state 2
+	do : T_RW_DO . $$9 bloque while  (65)
+	do : T_RW_DO . error while  (66)
+	do : T_RW_DO . while  (67)
+	$$9 : .  (64)
+
+	error  shift 21
+	T_RW_WHILE  shift 22
+	T_IDENTIFIER  reduce 64
+	T_RW_IF  reduce 64
+	T_RW_DO  reduce 64
+	T_RW_PRINT  reduce 64
+	'{'  reduce 64
+
+	$$9  goto 23
+	while  goto 24
+
+
+state 3
+	impresion : T_RW_PRINT . '(' T_STRING ')'  (99)
+	impresion : T_RW_PRINT . '[' T_STRING ']'  (100)
+	impresion : T_RW_PRINT . '{' T_STRING '}'  (101)
+	impresion : T_RW_PRINT . '(' T_STRING error  (102)
+	impresion : T_RW_PRINT . error  (103)
+
+	error  shift 25
+	'{'  shift 26
+	'('  shift 27
+	'['  shift 28
+	.  error
+
+
+state 4
+	tipo : T_RW_LONG .  (97)
+
+	.  reduce 97
+
+
+state 5
+	tipo : T_RW_UINT .  (96)
+
+	.  reduce 96
+
+
+state 6
+	programa : '{' . declaraciones conjunto_sentencias '}' T_ENDOFFILE  (2)
+	programa : '{' . declaraciones '}' T_ENDOFFILE  (3)
+	programa : '{' . conjunto_sentencias '}' T_ENDOFFILE  (4)
+	$$2 : .  (21)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	T_RW_IF  reduce 32
+	'{'  reduce 21
+
+	declaraciones  goto 29
+	conjunto_sentencias  goto 30
+	declaracion  goto 31
+	sentencia  goto 32
+	d_variable  goto 12
+	tipo  goto 13
+	$$2  goto 33
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 7
+	$accept : programa . $end  (0)
+
+	$end  accept
+
+
+state 8
+	programa : declaraciones . conjunto_sentencias T_ENDOFFILE  (6)
+	declaraciones : declaraciones . declaracion  (10)
+	$$2 : .  (21)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	T_RW_IF  reduce 32
+	'{'  reduce 21
+
+	conjunto_sentencias  goto 34
+	declaracion  goto 35
+	sentencia  goto 32
+	d_variable  goto 12
+	tipo  goto 13
+	$$2  goto 33
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 9
+	programa : declaracion_sentencia . T_ENDOFFILE  (5)
+
+	T_ENDOFFILE  shift 36
+	.  error
+
+
+state 10
+	declaracion_sentencia : declaracion .  (7)
+	declaraciones : declaracion .  (9)
+
+	T_IDENTIFIER  reduce 9
+	T_RW_IF  reduce 9
+	T_RW_DO  reduce 9
+	T_RW_PRINT  reduce 9
+	T_RW_LONG  reduce 9
+	T_RW_UINT  reduce 9
+	T_ENDOFFILE  reduce 7
+	'{'  reduce 9
+
+
+state 11
+	declaracion_sentencia : sentencia .  (8)
+
+	.  reduce 8
+
+
+state 12
+	declaracion : d_variable .  (11)
+
+	.  reduce 11
+
+
+state 13
+	d_variable : tipo . lista_identificadores ';'  (12)
+	d_variable : tipo . lista_identificadores error  (13)
+	d_variable : tipo . error  (14)
+
+	error  shift 37
+	T_IDENTIFIER  shift 38
+	.  error
+
+	lista_identificadores  goto 39
+
+
+state 14
+	sentencia : $$5 . if  (33)
+
+	T_RW_IF  shift 40
+	.  error
+
+	if  goto 41
+
+
+state 15
+	sentencia : asignacion . ';'  (34)
+	sentencia : asignacion .  (37)
+
+	';'  shift 42
+	error  reduce 37
+	T_IDENTIFIER  reduce 37
+	T_RW_IF  reduce 37
+	T_RW_ELSE  reduce 37
+	T_RW_DO  reduce 37
+	T_RW_PRINT  reduce 37
+	T_RW_WHILE  reduce 37
+	T_RW_LONG  reduce 37
+	T_RW_UINT  reduce 37
+	T_ENDOFFILE  reduce 37
+	'{'  reduce 37
+	'}'  reduce 37
+
+
+state 16
+	sentencia : do . ';'  (35)
+	sentencia : do .  (39)
+
+	';'  shift 43
+	error  reduce 39
+	T_IDENTIFIER  reduce 39
+	T_RW_IF  reduce 39
+	T_RW_ELSE  reduce 39
+	T_RW_DO  reduce 39
+	T_RW_PRINT  reduce 39
+	T_RW_WHILE  reduce 39
+	T_RW_LONG  reduce 39
+	T_RW_UINT  reduce 39
+	T_ENDOFFILE  reduce 39
+	'{'  reduce 39
+	'}'  reduce 39
+
+
+state 17
+	sentencia : impresion . ';'  (36)
+	sentencia : impresion .  (38)
+
+	';'  shift 44
+	error  reduce 38
+	T_IDENTIFIER  reduce 38
+	T_RW_IF  reduce 38
+	T_RW_ELSE  reduce 38
+	T_RW_DO  reduce 38
+	T_RW_PRINT  reduce 38
+	T_RW_WHILE  reduce 38
+	T_RW_LONG  reduce 38
+	T_RW_UINT  reduce 38
+	T_ENDOFFILE  reduce 38
+	'{'  reduce 38
+	'}'  reduce 38
+
+
+state 18
+	asignacion : lado_izquierdo . T_ASSIGN exp_ar  (40)
+	asignacion : lado_izquierdo . T_EQ exp_ar  (41)
+	asignacion : lado_izquierdo . T_ASSIGN error  (42)
+	asignacion : lado_izquierdo . T_EQ error  (43)
+	asignacion : lado_izquierdo . error  (44)
+
+	error  shift 45
+	T_EQ  shift 46
+	T_ASSIGN  shift 47
+	.  error
+
+
+state 19
+	lado_izquierdo : variable .  (70)
+
+	.  reduce 70
+
+
+state 20
+	variable : T_IDENTIFIER T_PLUS_PLUS .  (93)
+
+	.  reduce 93
+
+
+state 21
+	do : T_RW_DO error . while  (66)
+
+	T_RW_WHILE  shift 22
+	.  error
+
+	while  goto 48
+
+
+state 22
+	while : T_RW_WHILE . condicion  (68)
+	while : T_RW_WHILE . error  (69)
+
+	error  shift 49
+	'('  shift 50
+	.  error
+
+	condicion  goto 51
+
+
+state 23
+	do : T_RW_DO $$9 . bloque while  (65)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	'{'  shift 52
+	T_RW_IF  reduce 32
+
+	sentencia  goto 53
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	bloque  goto 54
+	variable  goto 19
+
+
+state 24
+	do : T_RW_DO while .  (67)
+
+	.  reduce 67
+
+
+state 25
+	impresion : T_RW_PRINT error .  (103)
+
+	.  reduce 103
+
+
+state 26
+	impresion : T_RW_PRINT '{' . T_STRING '}'  (101)
+
+	T_STRING  shift 55
+	.  error
+
+
+state 27
+	impresion : T_RW_PRINT '(' . T_STRING ')'  (99)
+	impresion : T_RW_PRINT '(' . T_STRING error  (102)
+
+	T_STRING  shift 56
+	.  error
+
+
+state 28
+	impresion : T_RW_PRINT '[' . T_STRING ']'  (100)
+
+	T_STRING  shift 57
+	.  error
+
+
+state 29
+	programa : '{' declaraciones . conjunto_sentencias '}' T_ENDOFFILE  (2)
+	programa : '{' declaraciones . '}' T_ENDOFFILE  (3)
+	declaraciones : declaraciones . declaracion  (10)
+	$$2 : .  (21)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	'}'  shift 58
+	T_RW_IF  reduce 32
+	'{'  reduce 21
+
+	conjunto_sentencias  goto 59
+	declaracion  goto 35
+	sentencia  goto 32
+	d_variable  goto 12
+	tipo  goto 13
+	$$2  goto 33
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 30
+	programa : '{' conjunto_sentencias . '}' T_ENDOFFILE  (4)
+	conjunto_sentencias : conjunto_sentencias . $$1 '{' ambito '}'  (20)
+	conjunto_sentencias : conjunto_sentencias . sentencia  (23)
+	conjunto_sentencias : conjunto_sentencias . declaracion  (24)
+	$$1 : .  (19)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	'}'  shift 60
+	T_RW_IF  reduce 32
+	'{'  reduce 19
+
+	declaracion  goto 61
+	sentencia  goto 62
+	d_variable  goto 12
+	tipo  goto 13
+	$$1  goto 63
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 31
+	declaraciones : declaracion .  (9)
+
+	.  reduce 9
+
+
+state 32
+	conjunto_sentencias : sentencia .  (18)
+
+	.  reduce 18
+
+
+state 33
+	conjunto_sentencias : $$2 . '{' ambito '}'  (22)
+
+	'{'  shift 64
+	.  error
+
+
+state 34
+	programa : declaraciones conjunto_sentencias . T_ENDOFFILE  (6)
+	conjunto_sentencias : conjunto_sentencias . $$1 '{' ambito '}'  (20)
+	conjunto_sentencias : conjunto_sentencias . sentencia  (23)
+	conjunto_sentencias : conjunto_sentencias . declaracion  (24)
+	$$1 : .  (19)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	T_ENDOFFILE  shift 65
+	T_RW_IF  reduce 32
+	'{'  reduce 19
+
+	declaracion  goto 61
+	sentencia  goto 62
+	d_variable  goto 12
+	tipo  goto 13
+	$$1  goto 63
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 35
+	declaraciones : declaraciones declaracion .  (10)
+
+	.  reduce 10
+
+
+state 36
+	programa : declaracion_sentencia T_ENDOFFILE .  (5)
+
+	.  reduce 5
+
+
+state 37
+	d_variable : tipo error .  (14)
+
+	.  reduce 14
+
+
+state 38
+	lista_identificadores : T_IDENTIFIER .  (15)
+
+	.  reduce 15
+
+
+state 39
+	d_variable : tipo lista_identificadores . ';'  (12)
+	d_variable : tipo lista_identificadores . error  (13)
+	lista_identificadores : lista_identificadores . ',' T_IDENTIFIER  (16)
+	lista_identificadores : lista_identificadores . T_IDENTIFIER  (17)
+
+	error  shift 66
+	T_IDENTIFIER  shift 67
+	';'  shift 68
+	','  shift 69
+	.  error
+
+
+state 40
+	if : T_RW_IF . condicion $$6 bloque $$7 else  (47)
+	if : T_RW_IF . condicion error else  (48)
+	if : T_RW_IF . error bloque else  (49)
+	if : T_RW_IF . error else  (50)
+
+	error  shift 70
+	'('  shift 50
+	.  error
+
+	condicion  goto 71
+
+
+state 41
+	sentencia : $$5 if .  (33)
+
+	.  reduce 33
+
+
+state 42
+	sentencia : asignacion ';' .  (34)
+
+	.  reduce 34
+
+
+state 43
+	sentencia : do ';' .  (35)
+
+	.  reduce 35
+
+
+state 44
+	sentencia : impresion ';' .  (36)
+
+	.  reduce 36
+
+
+state 45
+	asignacion : lado_izquierdo error .  (44)
+
+	.  reduce 44
+
+
+state 46
+	asignacion : lado_izquierdo T_EQ . exp_ar  (41)
+	asignacion : lado_izquierdo T_EQ . error  (43)
+
+	error  shift 72
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	exp_ar  goto 77
+	variable  goto 78
+	term  goto 79
+	factor  goto 80
+	constante  goto 81
+	conversion  goto 82
+
+
+state 47
+	asignacion : lado_izquierdo T_ASSIGN . exp_ar  (40)
+	asignacion : lado_izquierdo T_ASSIGN . error  (42)
+
+	error  shift 83
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	exp_ar  goto 84
+	variable  goto 78
+	term  goto 79
+	factor  goto 80
+	constante  goto 81
+	conversion  goto 82
+
+
+state 48
+	do : T_RW_DO error while .  (66)
+
+	.  reduce 66
+
+
+state 49
+	while : T_RW_WHILE error .  (69)
+
+	.  reduce 69
+
+
+state 50
+	condicion : '(' . comparacion ')'  (55)
+	condicion : '(' . error ')'  (56)
+
+	error  shift 85
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	exp_ar  goto 86
+	comparacion  goto 87
+	variable  goto 78
+	term  goto 79
+	factor  goto 80
+	constante  goto 81
+	conversion  goto 82
+
+
+state 51
+	while : T_RW_WHILE condicion .  (68)
+
+	.  reduce 68
+
+
+state 52
+	bloque : '{' . sentencias '}'  (61)
+	bloque : '{' . declaraciones sentencias '}'  (63)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	T_RW_IF  reduce 32
+
+	declaraciones  goto 88
+	declaracion  goto 31
+	sentencia  goto 89
+	d_variable  goto 12
+	tipo  goto 13
+	sentencias  goto 90
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 53
+	bloque : sentencia .  (62)
+
+	.  reduce 62
+
+
+state 54
+	do : T_RW_DO $$9 bloque . while  (65)
+
+	T_RW_WHILE  shift 22
+	.  error
+
+	while  goto 91
+
+
+state 55
+	impresion : T_RW_PRINT '{' T_STRING . '}'  (101)
+
+	'}'  shift 92
+	.  error
+
+
+state 56
+	impresion : T_RW_PRINT '(' T_STRING . ')'  (99)
+	impresion : T_RW_PRINT '(' T_STRING . error  (102)
+
+	error  shift 93
+	')'  shift 94
+	.  error
+
+
+state 57
+	impresion : T_RW_PRINT '[' T_STRING . ']'  (100)
+
+	']'  shift 95
+	.  error
+
+
+state 58
+	programa : '{' declaraciones '}' . T_ENDOFFILE  (3)
+
+	T_ENDOFFILE  shift 96
+	.  error
+
+
+state 59
+	programa : '{' declaraciones conjunto_sentencias . '}' T_ENDOFFILE  (2)
+	conjunto_sentencias : conjunto_sentencias . $$1 '{' ambito '}'  (20)
+	conjunto_sentencias : conjunto_sentencias . sentencia  (23)
+	conjunto_sentencias : conjunto_sentencias . declaracion  (24)
+	$$1 : .  (19)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	'}'  shift 97
+	T_RW_IF  reduce 32
+	'{'  reduce 19
+
+	declaracion  goto 61
+	sentencia  goto 62
+	d_variable  goto 12
+	tipo  goto 13
+	$$1  goto 63
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 60
+	programa : '{' conjunto_sentencias '}' . T_ENDOFFILE  (4)
+
+	T_ENDOFFILE  shift 98
+	.  error
+
+
+state 61
+	conjunto_sentencias : conjunto_sentencias declaracion .  (24)
+
+	.  reduce 24
+
+
+state 62
+	conjunto_sentencias : conjunto_sentencias sentencia .  (23)
+
+	.  reduce 23
+
+
+state 63
+	conjunto_sentencias : conjunto_sentencias $$1 . '{' ambito '}'  (20)
+
+	'{'  shift 99
+	.  error
+
+
+state 64
+	conjunto_sentencias : $$2 '{' . ambito '}'  (22)
+	$$3 : .  (27)
+	$$4 : .  (29)
+
+	error  shift 100
+	T_IDENTIFIER  reduce 29
+	T_RW_IF  reduce 29
+	T_RW_DO  reduce 29
+	T_RW_PRINT  reduce 29
+	T_RW_LONG  reduce 27
+	T_RW_UINT  reduce 27
+	'{'  reduce 29
+
+	ambito  goto 101
+	$$3  goto 102
+	$$4  goto 103
+
+
+state 65
+	programa : declaraciones conjunto_sentencias T_ENDOFFILE .  (6)
+
+	.  reduce 6
+
+
+state 66
+	d_variable : tipo lista_identificadores error .  (13)
+
+	.  reduce 13
+
+
+state 67
+	lista_identificadores : lista_identificadores T_IDENTIFIER .  (17)
+
+	.  reduce 17
+
+
+state 68
+	d_variable : tipo lista_identificadores ';' .  (12)
+
+	.  reduce 12
+
+
+state 69
+	lista_identificadores : lista_identificadores ',' . T_IDENTIFIER  (16)
+
+	T_IDENTIFIER  shift 104
+	.  error
+
+
+state 70
+	if : T_RW_IF error . bloque else  (49)
+	if : T_RW_IF error . else  (50)
+	$$5 : .  (32)
+
+	error  shift 105
+	T_IDENTIFIER  shift 1
+	T_RW_ELSE  shift 106
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	'{'  shift 52
+	T_RW_IF  reduce 32
+
+	sentencia  goto 53
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	bloque  goto 107
+	else  goto 108
+	variable  goto 19
+
+
+state 71
+	if : T_RW_IF condicion . $$6 bloque $$7 else  (47)
+	if : T_RW_IF condicion . error else  (48)
+	$$6 : .  (45)
+
+	error  shift 109
+	T_IDENTIFIER  reduce 45
+	T_RW_IF  reduce 45
+	T_RW_DO  reduce 45
+	T_RW_PRINT  reduce 45
+	'{'  reduce 45
+
+	$$6  goto 110
+
+
+state 72
+	asignacion : lado_izquierdo T_EQ error .  (43)
+
+	.  reduce 43
+
+
+state 73
+	constante : T_CONST .  (94)
+
+	.  reduce 94
+
+
+state 74
+	conversion : T_RW_TOLONG .  (98)
+
+	.  reduce 98
+
+
+state 75
+	constante : '-' . T_CONST  (95)
+
+	T_CONST  shift 111
+	.  error
+
+
+state 76
+	factor : '(' . exp_ar ')'  (91)
+
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	exp_ar  goto 112
+	variable  goto 78
+	term  goto 79
+	factor  goto 80
+	constante  goto 81
+	conversion  goto 82
+
+
+state 77
+	asignacion : lado_izquierdo T_EQ exp_ar .  (41)
+	exp_ar : exp_ar . '+' term  (78)
+	exp_ar : exp_ar . '-' term  (79)
+	exp_ar : exp_ar . '+' error  (81)
+	exp_ar : exp_ar . '-' error  (82)
+
+	'+'  shift 113
+	'-'  shift 114
+	error  reduce 41
+	T_IDENTIFIER  reduce 41
+	T_RW_IF  reduce 41
+	T_RW_ELSE  reduce 41
+	T_RW_DO  reduce 41
+	T_RW_PRINT  reduce 41
+	T_RW_WHILE  reduce 41
+	T_RW_LONG  reduce 41
+	T_RW_UINT  reduce 41
+	T_ENDOFFILE  reduce 41
+	'{'  reduce 41
+	'}'  reduce 41
+	';'  reduce 41
+
+
+state 78
+	factor : variable .  (88)
+
+	.  reduce 88
+
+
+state 79
+	exp_ar : term .  (80)
+	term : term . '*' factor  (83)
+	term : term . '/' factor  (84)
+	term : term . '*' error  (86)
+	term : term . '/' error  (87)
+
+	'*'  shift 115
+	'/'  shift 116
+	error  reduce 80
+	T_IDENTIFIER  reduce 80
+	T_RW_IF  reduce 80
+	T_RW_ELSE  reduce 80
+	T_RW_DO  reduce 80
+	T_RW_PRINT  reduce 80
+	T_RW_WHILE  reduce 80
+	T_RW_LONG  reduce 80
+	T_RW_UINT  reduce 80
+	T_GT  reduce 80
+	T_EQ  reduce 80
+	T_LT  reduce 80
+	T_BEQ  reduce 80
+	T_GEQ  reduce 80
+	T_ASSIGN  reduce 80
+	T_DISTINCT  reduce 80
+	T_ENDOFFILE  reduce 80
+	'+'  reduce 80
+	'-'  reduce 80
+	'{'  reduce 80
+	'}'  reduce 80
+	';'  reduce 80
+	')'  reduce 80
+
+
+state 80
+	term : factor .  (85)
+
+	.  reduce 85
+
+
+state 81
+	factor : constante .  (89)
+
+	.  reduce 89
+
+
+state 82
+	factor : conversion . '(' exp_ar ')'  (90)
+
+	'('  shift 117
+	.  error
+
+
+state 83
+	asignacion : lado_izquierdo T_ASSIGN error .  (42)
+
+	.  reduce 42
+
+
+state 84
+	asignacion : lado_izquierdo T_ASSIGN exp_ar .  (40)
+	exp_ar : exp_ar . '+' term  (78)
+	exp_ar : exp_ar . '-' term  (79)
+	exp_ar : exp_ar . '+' error  (81)
+	exp_ar : exp_ar . '-' error  (82)
+
+	'+'  shift 113
+	'-'  shift 114
+	error  reduce 40
+	T_IDENTIFIER  reduce 40
+	T_RW_IF  reduce 40
+	T_RW_ELSE  reduce 40
+	T_RW_DO  reduce 40
+	T_RW_PRINT  reduce 40
+	T_RW_WHILE  reduce 40
+	T_RW_LONG  reduce 40
+	T_RW_UINT  reduce 40
+	T_ENDOFFILE  reduce 40
+	'{'  reduce 40
+	'}'  reduce 40
+	';'  reduce 40
+
+
+state 85
+	condicion : '(' error . ')'  (56)
+
+	')'  shift 118
+	.  error
+
+
+state 86
+	comparacion : exp_ar . sgn_cmp exp_ar  (59)
+	comparacion : exp_ar . error exp_ar  (60)
+	exp_ar : exp_ar . '+' term  (78)
+	exp_ar : exp_ar . '-' term  (79)
+	exp_ar : exp_ar . '+' error  (81)
+	exp_ar : exp_ar . '-' error  (82)
+
+	error  shift 119
+	T_GT  shift 120
+	T_EQ  shift 121
+	T_LT  shift 122
+	T_BEQ  shift 123
+	T_GEQ  shift 124
+	T_ASSIGN  shift 125
+	T_DISTINCT  shift 126
+	'+'  shift 113
+	'-'  shift 114
+	.  error
+
+	sgn_cmp  goto 127
+
+
+state 87
+	condicion : '(' comparacion . ')'  (55)
+	comparacion : comparacion . sgn_cmp exp_ar  (57)
+	comparacion : comparacion . error exp_ar  (58)
+
+	error  shift 128
+	T_GT  shift 120
+	T_EQ  shift 121
+	T_LT  shift 122
+	T_BEQ  shift 123
+	T_GEQ  shift 124
+	T_ASSIGN  shift 125
+	T_DISTINCT  shift 126
+	')'  shift 129
+	.  error
+
+	sgn_cmp  goto 130
+
+
+state 88
+	declaraciones : declaraciones . declaracion  (10)
+	bloque : '{' declaraciones . sentencias '}'  (63)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	T_RW_IF  reduce 32
+
+	declaracion  goto 35
+	sentencia  goto 89
+	d_variable  goto 12
+	tipo  goto 13
+	sentencias  goto 131
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 89
+	sentencias : sentencia .  (25)
+
+	.  reduce 25
+
+
+state 90
+	sentencias : sentencias . sentencia  (26)
+	bloque : '{' sentencias . '}'  (61)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	'}'  shift 132
+	T_RW_IF  reduce 32
+
+	sentencia  goto 133
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 91
+	do : T_RW_DO $$9 bloque while .  (65)
+
+	.  reduce 65
+
+
+state 92
+	impresion : T_RW_PRINT '{' T_STRING '}' .  (101)
+
+	.  reduce 101
+
+
+state 93
+	impresion : T_RW_PRINT '(' T_STRING error .  (102)
+
+	.  reduce 102
+
+
+state 94
+	impresion : T_RW_PRINT '(' T_STRING ')' .  (99)
+
+	.  reduce 99
+
+
+state 95
+	impresion : T_RW_PRINT '[' T_STRING ']' .  (100)
+
+	.  reduce 100
+
+
+state 96
+	programa : '{' declaraciones '}' T_ENDOFFILE .  (3)
+
+	.  reduce 3
+
+
+state 97
+	programa : '{' declaraciones conjunto_sentencias '}' . T_ENDOFFILE  (2)
+
+	T_ENDOFFILE  shift 134
+	.  error
+
+
+state 98
+	programa : '{' conjunto_sentencias '}' T_ENDOFFILE .  (4)
+
+	.  reduce 4
+
+
+state 99
+	conjunto_sentencias : conjunto_sentencias $$1 '{' . ambito '}'  (20)
+	$$3 : .  (27)
+	$$4 : .  (29)
+
+	error  shift 100
+	T_IDENTIFIER  reduce 29
+	T_RW_IF  reduce 29
+	T_RW_DO  reduce 29
+	T_RW_PRINT  reduce 29
+	T_RW_LONG  reduce 27
+	T_RW_UINT  reduce 27
+	'{'  reduce 29
+
+	ambito  goto 135
+	$$3  goto 102
+	$$4  goto 103
+
+
+state 100
+	ambito : error .  (31)
+
+	.  reduce 31
+
+
+state 101
+	conjunto_sentencias : $$2 '{' ambito . '}'  (22)
+
+	'}'  shift 136
+	.  error
+
+
+state 102
+	ambito : $$3 . declaraciones conjunto_sentencias  (28)
+
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	.  error
+
+	declaraciones  goto 137
+	declaracion  goto 31
+	d_variable  goto 12
+	tipo  goto 13
+
+
+state 103
+	ambito : $$4 . conjunto_sentencias  (30)
+	$$2 : .  (21)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_IF  reduce 32
+	'{'  reduce 21
+
+	conjunto_sentencias  goto 138
+	sentencia  goto 32
+	$$2  goto 33
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 104
+	lista_identificadores : lista_identificadores ',' T_IDENTIFIER .  (16)
+
+	.  reduce 16
+
+
+state 105
+	else : error .  (54)
+
+	.  reduce 54
+
+
+state 106
+	else : T_RW_ELSE . $$8 bloque  (52)
+	else : T_RW_ELSE . error  (53)
+	$$8 : .  (51)
+
+	error  shift 139
+	T_IDENTIFIER  reduce 51
+	T_RW_IF  reduce 51
+	T_RW_DO  reduce 51
+	T_RW_PRINT  reduce 51
+	'{'  reduce 51
+
+	$$8  goto 140
+
+
+state 107
+	if : T_RW_IF error bloque . else  (49)
+
+	error  shift 105
+	T_RW_ELSE  shift 106
+	.  error
+
+	else  goto 141
+
+
+state 108
+	if : T_RW_IF error else .  (50)
+
+	.  reduce 50
+
+
+state 109
+	if : T_RW_IF condicion error . else  (48)
+
+	error  shift 105
+	T_RW_ELSE  shift 106
+	.  error
+
+	else  goto 142
+
+
+state 110
+	if : T_RW_IF condicion $$6 . bloque $$7 else  (47)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	'{'  shift 52
+	T_RW_IF  reduce 32
+
+	sentencia  goto 53
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	bloque  goto 143
+	variable  goto 19
+
+
+state 111
+	constante : '-' T_CONST .  (95)
+
+	.  reduce 95
+
+
+state 112
+	exp_ar : exp_ar . '+' term  (78)
+	exp_ar : exp_ar . '-' term  (79)
+	exp_ar : exp_ar . '+' error  (81)
+	exp_ar : exp_ar . '-' error  (82)
+	factor : '(' exp_ar . ')'  (91)
+
+	'+'  shift 113
+	'-'  shift 114
+	')'  shift 144
+	.  error
+
+
+state 113
+	exp_ar : exp_ar '+' . term  (78)
+	exp_ar : exp_ar '+' . error  (81)
+
+	error  shift 145
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	variable  goto 78
+	term  goto 146
+	factor  goto 80
+	constante  goto 81
+	conversion  goto 82
+
+
+state 114
+	exp_ar : exp_ar '-' . term  (79)
+	exp_ar : exp_ar '-' . error  (82)
+
+	error  shift 147
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	variable  goto 78
+	term  goto 148
+	factor  goto 80
+	constante  goto 81
+	conversion  goto 82
+
+
+state 115
+	term : term '*' . factor  (83)
+	term : term '*' . error  (86)
+
+	error  shift 149
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	variable  goto 78
+	factor  goto 150
+	constante  goto 81
+	conversion  goto 82
+
+
+state 116
+	term : term '/' . factor  (84)
+	term : term '/' . error  (87)
+
+	error  shift 151
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	variable  goto 78
+	factor  goto 152
+	constante  goto 81
+	conversion  goto 82
+
+
+state 117
+	factor : conversion '(' . exp_ar ')'  (90)
+
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	exp_ar  goto 153
+	variable  goto 78
+	term  goto 79
+	factor  goto 80
+	constante  goto 81
+	conversion  goto 82
+
+
+state 118
+	condicion : '(' error ')' .  (56)
+
+	.  reduce 56
+
+
+state 119
+	comparacion : exp_ar error . exp_ar  (60)
+
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	exp_ar  goto 154
+	variable  goto 78
+	term  goto 79
+	factor  goto 80
+	constante  goto 81
+	conversion  goto 82
+
+
+state 120
+	sgn_cmp : T_GT .  (71)
+
+	.  reduce 71
+
+
+state 121
+	sgn_cmp : T_EQ .  (72)
+
+	.  reduce 72
+
+
+state 122
+	sgn_cmp : T_LT .  (73)
+
+	.  reduce 73
+
+
+state 123
+	sgn_cmp : T_BEQ .  (74)
+
+	.  reduce 74
+
+
+state 124
+	sgn_cmp : T_GEQ .  (75)
+
+	.  reduce 75
+
+
+state 125
+	sgn_cmp : T_ASSIGN .  (76)
+
+	.  reduce 76
+
+
+state 126
+	sgn_cmp : T_DISTINCT .  (77)
+
+	.  reduce 77
+
+
+state 127
+	comparacion : exp_ar sgn_cmp . exp_ar  (59)
+
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	exp_ar  goto 155
+	variable  goto 78
+	term  goto 79
+	factor  goto 80
+	constante  goto 81
+	conversion  goto 82
+
+
+state 128
+	comparacion : comparacion error . exp_ar  (58)
+
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	exp_ar  goto 156
+	variable  goto 78
+	term  goto 79
+	factor  goto 80
+	constante  goto 81
+	conversion  goto 82
+
+
+state 129
+	condicion : '(' comparacion ')' .  (55)
+
+	.  reduce 55
+
+
+state 130
+	comparacion : comparacion sgn_cmp . exp_ar  (57)
+
+	T_IDENTIFIER  shift 1
+	T_CONST  shift 73
+	T_RW_TOLONG  shift 74
+	'-'  shift 75
+	'('  shift 76
+	.  error
+
+	exp_ar  goto 157
+	variable  goto 78
+	term  goto 79
+	factor  goto 80
+	constante  goto 81
+	conversion  goto 82
+
+
+state 131
+	sentencias : sentencias . sentencia  (26)
+	bloque : '{' declaraciones sentencias . '}'  (63)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	'}'  shift 158
+	T_RW_IF  reduce 32
+
+	sentencia  goto 133
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 132
+	bloque : '{' sentencias '}' .  (61)
+
+	.  reduce 61
+
+
+state 133
+	sentencias : sentencias sentencia .  (26)
+
+	.  reduce 26
+
+
+state 134
+	programa : '{' declaraciones conjunto_sentencias '}' T_ENDOFFILE .  (2)
+
+	.  reduce 2
+
+
+state 135
+	conjunto_sentencias : conjunto_sentencias $$1 '{' ambito . '}'  (20)
+
+	'}'  shift 159
+	.  error
+
+
+state 136
+	conjunto_sentencias : $$2 '{' ambito '}' .  (22)
+
+	.  reduce 22
+
+
+state 137
+	declaraciones : declaraciones . declaracion  (10)
+	ambito : $$3 declaraciones . conjunto_sentencias  (28)
+	$$2 : .  (21)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	T_RW_IF  reduce 32
+	'{'  reduce 21
+
+	conjunto_sentencias  goto 160
+	declaracion  goto 35
+	sentencia  goto 32
+	d_variable  goto 12
+	tipo  goto 13
+	$$2  goto 33
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 138
+	conjunto_sentencias : conjunto_sentencias . $$1 '{' ambito '}'  (20)
+	conjunto_sentencias : conjunto_sentencias . sentencia  (23)
+	conjunto_sentencias : conjunto_sentencias . declaracion  (24)
+	ambito : $$4 conjunto_sentencias .  (30)
+	$$1 : .  (19)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	T_RW_IF  reduce 32
+	'{'  reduce 19
+	'}'  reduce 30
+
+	declaracion  goto 61
+	sentencia  goto 62
+	d_variable  goto 12
+	tipo  goto 13
+	$$1  goto 63
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 139
+	else : T_RW_ELSE error .  (53)
+
+	.  reduce 53
+
+
+state 140
+	else : T_RW_ELSE $$8 . bloque  (52)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	'{'  shift 52
+	T_RW_IF  reduce 32
+
+	sentencia  goto 53
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	bloque  goto 161
+	variable  goto 19
+
+
+state 141
+	if : T_RW_IF error bloque else .  (49)
+
+	.  reduce 49
+
+
+state 142
+	if : T_RW_IF condicion error else .  (48)
+
+	.  reduce 48
+
+
+state 143
+	if : T_RW_IF condicion $$6 bloque . $$7 else  (47)
+	$$7 : .  (46)
+
+	.  reduce 46
+
+	$$7  goto 162
+
+
+state 144
+	factor : '(' exp_ar ')' .  (91)
+
+	.  reduce 91
+
+
+state 145
+	exp_ar : exp_ar '+' error .  (81)
+
+	.  reduce 81
+
+
+state 146
+	exp_ar : exp_ar '+' term .  (78)
+	term : term . '*' factor  (83)
+	term : term . '/' factor  (84)
+	term : term . '*' error  (86)
+	term : term . '/' error  (87)
+
+	'*'  shift 115
+	'/'  shift 116
+	error  reduce 78
+	T_IDENTIFIER  reduce 78
+	T_RW_IF  reduce 78
+	T_RW_ELSE  reduce 78
+	T_RW_DO  reduce 78
+	T_RW_PRINT  reduce 78
+	T_RW_WHILE  reduce 78
+	T_RW_LONG  reduce 78
+	T_RW_UINT  reduce 78
+	T_GT  reduce 78
+	T_EQ  reduce 78
+	T_LT  reduce 78
+	T_BEQ  reduce 78
+	T_GEQ  reduce 78
+	T_ASSIGN  reduce 78
+	T_DISTINCT  reduce 78
+	T_ENDOFFILE  reduce 78
+	'+'  reduce 78
+	'-'  reduce 78
+	'{'  reduce 78
+	'}'  reduce 78
+	';'  reduce 78
+	')'  reduce 78
+
+
+state 147
+	exp_ar : exp_ar '-' error .  (82)
+
+	.  reduce 82
+
+
+state 148
+	exp_ar : exp_ar '-' term .  (79)
+	term : term . '*' factor  (83)
+	term : term . '/' factor  (84)
+	term : term . '*' error  (86)
+	term : term . '/' error  (87)
+
+	'*'  shift 115
+	'/'  shift 116
+	error  reduce 79
+	T_IDENTIFIER  reduce 79
+	T_RW_IF  reduce 79
+	T_RW_ELSE  reduce 79
+	T_RW_DO  reduce 79
+	T_RW_PRINT  reduce 79
+	T_RW_WHILE  reduce 79
+	T_RW_LONG  reduce 79
+	T_RW_UINT  reduce 79
+	T_GT  reduce 79
+	T_EQ  reduce 79
+	T_LT  reduce 79
+	T_BEQ  reduce 79
+	T_GEQ  reduce 79
+	T_ASSIGN  reduce 79
+	T_DISTINCT  reduce 79
+	T_ENDOFFILE  reduce 79
+	'+'  reduce 79
+	'-'  reduce 79
+	'{'  reduce 79
+	'}'  reduce 79
+	';'  reduce 79
+	')'  reduce 79
+
+
+state 149
+	term : term '*' error .  (86)
+
+	.  reduce 86
+
+
+state 150
+	term : term '*' factor .  (83)
+
+	.  reduce 83
+
+
+state 151
+	term : term '/' error .  (87)
+
+	.  reduce 87
+
+
+state 152
+	term : term '/' factor .  (84)
+
+	.  reduce 84
+
+
+state 153
+	exp_ar : exp_ar . '+' term  (78)
+	exp_ar : exp_ar . '-' term  (79)
+	exp_ar : exp_ar . '+' error  (81)
+	exp_ar : exp_ar . '-' error  (82)
+	factor : conversion '(' exp_ar . ')'  (90)
+
+	'+'  shift 113
+	'-'  shift 114
+	')'  shift 163
+	.  error
+
+
+state 154
+	comparacion : exp_ar error exp_ar .  (60)
+	exp_ar : exp_ar . '+' term  (78)
+	exp_ar : exp_ar . '-' term  (79)
+	exp_ar : exp_ar . '+' error  (81)
+	exp_ar : exp_ar . '-' error  (82)
+
+	'+'  shift 113
+	'-'  shift 114
+	error  reduce 60
+	T_GT  reduce 60
+	T_EQ  reduce 60
+	T_LT  reduce 60
+	T_BEQ  reduce 60
+	T_GEQ  reduce 60
+	T_ASSIGN  reduce 60
+	T_DISTINCT  reduce 60
+	')'  reduce 60
+
+
+state 155
+	comparacion : exp_ar sgn_cmp exp_ar .  (59)
+	exp_ar : exp_ar . '+' term  (78)
+	exp_ar : exp_ar . '-' term  (79)
+	exp_ar : exp_ar . '+' error  (81)
+	exp_ar : exp_ar . '-' error  (82)
+
+	'+'  shift 113
+	'-'  shift 114
+	error  reduce 59
+	T_GT  reduce 59
+	T_EQ  reduce 59
+	T_LT  reduce 59
+	T_BEQ  reduce 59
+	T_GEQ  reduce 59
+	T_ASSIGN  reduce 59
+	T_DISTINCT  reduce 59
+	')'  reduce 59
+
+
+state 156
+	comparacion : comparacion error exp_ar .  (58)
+	exp_ar : exp_ar . '+' term  (78)
+	exp_ar : exp_ar . '-' term  (79)
+	exp_ar : exp_ar . '+' error  (81)
+	exp_ar : exp_ar . '-' error  (82)
+
+	'+'  shift 113
+	'-'  shift 114
+	error  reduce 58
+	T_GT  reduce 58
+	T_EQ  reduce 58
+	T_LT  reduce 58
+	T_BEQ  reduce 58
+	T_GEQ  reduce 58
+	T_ASSIGN  reduce 58
+	T_DISTINCT  reduce 58
+	')'  reduce 58
+
+
+state 157
+	comparacion : comparacion sgn_cmp exp_ar .  (57)
+	exp_ar : exp_ar . '+' term  (78)
+	exp_ar : exp_ar . '-' term  (79)
+	exp_ar : exp_ar . '+' error  (81)
+	exp_ar : exp_ar . '-' error  (82)
+
+	'+'  shift 113
+	'-'  shift 114
+	error  reduce 57
+	T_GT  reduce 57
+	T_EQ  reduce 57
+	T_LT  reduce 57
+	T_BEQ  reduce 57
+	T_GEQ  reduce 57
+	T_ASSIGN  reduce 57
+	T_DISTINCT  reduce 57
+	')'  reduce 57
+
+
+state 158
+	bloque : '{' declaraciones sentencias '}' .  (63)
+
+	.  reduce 63
+
+
+state 159
+	conjunto_sentencias : conjunto_sentencias $$1 '{' ambito '}' .  (20)
+
+	.  reduce 20
+
+
+state 160
+	conjunto_sentencias : conjunto_sentencias . $$1 '{' ambito '}'  (20)
+	conjunto_sentencias : conjunto_sentencias . sentencia  (23)
+	conjunto_sentencias : conjunto_sentencias . declaracion  (24)
+	ambito : $$3 declaraciones conjunto_sentencias .  (28)
+	$$1 : .  (19)
+	$$5 : .  (32)
+
+	T_IDENTIFIER  shift 1
+	T_RW_DO  shift 2
+	T_RW_PRINT  shift 3
+	T_RW_LONG  shift 4
+	T_RW_UINT  shift 5
+	T_RW_IF  reduce 32
+	'{'  reduce 19
+	'}'  reduce 28
+
+	declaracion  goto 61
+	sentencia  goto 62
+	d_variable  goto 12
+	tipo  goto 13
+	$$1  goto 63
+	$$5  goto 14
+	asignacion  goto 15
+	do  goto 16
+	impresion  goto 17
+	lado_izquierdo  goto 18
+	variable  goto 19
+
+
+state 161
+	else : T_RW_ELSE $$8 bloque .  (52)
+
+	.  reduce 52
+
+
+state 162
+	if : T_RW_IF condicion $$6 bloque $$7 . else  (47)
+
+	error  shift 105
+	T_RW_ELSE  shift 106
+	.  error
+
+	else  goto 164
+
+
+state 163
+	factor : conversion '(' exp_ar ')' .  (90)
+
+	.  reduce 90
+
+
+state 164
+	if : T_RW_IF condicion $$6 bloque $$7 else .  (47)
+
+	.  reduce 47
+
+
+36 terminals, 38 nonterminals
+104 grammar rules, 165 states
