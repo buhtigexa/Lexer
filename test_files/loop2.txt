@@ -4,8 +4,11 @@
   long a , b , k;
   
 	k:=tolong(1);
-	do
+
+	do {
+		print(' dentro del loop');
 		k++;
+	}	
 	while ( k < tolong(4));
 			
    	print( ' fin del programa ' );		

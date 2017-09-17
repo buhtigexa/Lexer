@@ -98,8 +98,23 @@ public class SymbolTable {
 				//str=  rows.get(i).prettyPrint() + "\n";
 				printWriter.write(str);
 		}
+			
 		printWriter.close();
+	
 	}
+	
+	// a method to seek by type and lexeme
+	
+	public Row find(String lexeme, String type){
+		
+		for (Row r: rows){
+			if ( ( r.getType().compareToIgnoreCase(type)==0) && (r.getLexeme().compareToIgnoreCase(lexeme)==0) ){
+				return r;
+			}
+		}
+		return null;
+	}
+	
 }
 
 

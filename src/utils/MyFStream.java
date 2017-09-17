@@ -42,7 +42,7 @@ public class MyFStream {
 		fileAsm+=tabs + txt;
 		fileAsm+="\n";
 		printWriter.write(fileAsm);
-		//System.out.println(fileAsm);
+		System.out.println(fileAsm);
 		
 		
 	}

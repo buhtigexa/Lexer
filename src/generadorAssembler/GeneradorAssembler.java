@@ -125,7 +125,7 @@ public void downloadSymbolTable(){
                 token=fila.getToken();
                 type =fila.getType();
                 lexeme=fila.getLexeme();
-                if ( token.compareTo("identifier")==0 )
+                if ( token.compareTo("variable")==0 )
                         if ( type.compareTo("long")==0 )
                                 writeArchivo(lexeme + "    dd      "  +  "   0   " +    ";      identificador  long");
                         else
@@ -562,8 +562,9 @@ void generarCodeSeg(){
                       temp =  myTercetos.get(index);
                       
                       	/****** solo impresión */
-                      System.out.println(temp);
-                      writeArchivo("; " + temp.toString() + "\n");
+                      writeArchivo("; " + temp.toString());
+                      //System.out.println(temp);
+                      
                       
                       /*** solo impresion */ 
                       if ( temp!=null) { 

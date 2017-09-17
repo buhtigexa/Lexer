@@ -422,7 +422,7 @@ YYSTYPE yylval;
 short yyss[YYSTACKSIZE];
 YYSTYPE yyvs[YYSTACKSIZE];
 #define yystacksize YYSTACKSIZE
-#line 521 "grammar.y"
+#line 530 "grammar.y"
 
 
 
@@ -1119,7 +1119,16 @@ case 93:
                                                               if (id.getType().compareTo("long")!=0){
                                                                 Lexer.showError("La operación ++ , sólo está permitida para tipos long .");
                                                               }
-                                                              Row constant = new RowConst("const","1","long");
+
+                                                              Row constant = symbolTable.find("1","long");
+                                                              
+                                                              if (constant==null){
+                                                              
+                                                              		constant = new RowConst("const","1","long");
+                                                              		symbolTable.add(constant);
+                                                              	}
+
+
                                                               Terceto terceto_plus = new Terceto ("+",yyvsp[-1].obj,constant);
                                                               generadorTercetos.add(terceto_plus);
                                                               Terceto terceto= new Terceto (":=",yyvsp[-1].obj,new Referencia(this.generadorTercetos,terceto_plus.getId()));
@@ -1131,7 +1140,7 @@ case 93:
                                                             }
 break;
 case 94:
-#line 434 "grammar.y"
+#line 443 "grammar.y"
 {  
 
                                                            
@@ -1156,7 +1165,7 @@ case 94:
                                                       }
 break;
 case 95:
-#line 458 "grammar.y"
+#line 467 "grammar.y"
 {
                                                          
                                                          long val = 0;
@@ -1183,19 +1192,19 @@ case 95:
                                                      }
 break;
 case 96:
-#line 489 "grammar.y"
+#line 498 "grammar.y"
 { tipo_identificador = "uint"; }
 break;
 case 97:
-#line 491 "grammar.y"
+#line 500 "grammar.y"
 { tipo_identificador = "long"; }
 break;
 case 98:
-#line 494 "grammar.y"
+#line 503 "grammar.y"
 { yyval = yyvsp[0]; }
 break;
 case 99:
-#line 503 "grammar.y"
+#line 512 "grammar.y"
 { 
                                                       
                                                       Row token  = (Row)yyvsp[-3].obj;
@@ -1207,22 +1216,22 @@ case 99:
                                                       }
 break;
 case 100:
-#line 513 "grammar.y"
+#line 522 "grammar.y"
 { syntaxError("Sentencia PRINT:Se espera ( y ) en lugar de [ ]."); }
 break;
 case 101:
-#line 514 "grammar.y"
+#line 523 "grammar.y"
 { syntaxError("Sentencia PRINT:Se espera ( y ) en lugar de { }."); }
 break;
 case 102:
-#line 515 "grammar.y"
+#line 524 "grammar.y"
 { syntaxError("Sentencia PRINT:Se espera )");}
 break;
 case 103:
-#line 516 "grammar.y"
+#line 525 "grammar.y"
 { syntaxError("Se espera ( luego de PRINT."); }
 break;
-#line 1226 "y.tab.c"
+#line 1235 "y.tab.c"
     }
     yyssp -= yym;
     yystate = *yyssp;

@@ -35,7 +35,7 @@ public class Main {
 		
 		NameDecorator nameDecorator=new NameDecorator();
 		SymbolTable symbolTable = new SymbolTable(nameDecorator,symbolFile);
-		Lexer lexer = new Lexer(fileToParse.getAbsolutePath(),symbolTable,errorFile,warningFile,false,true,true);
+		Lexer lexer = new Lexer(fileToParse.getAbsolutePath(),symbolTable,errorFile,warningFile,true,true,true);
 		GeneradorTercetos generadorTercetos=new GeneradorTercetos(lexer,interCode);
 
 				
@@ -47,19 +47,24 @@ public class Main {
 
 		generadorASM.generarCodigo();
 
-		System.out.println("\n Compilando ... "+  fileToParse +  " con Errors : " + Lexer.errors);
 		
 		
 		
+		System.out.println("------------------------------------------------------------");
 		Lexer.saveMessages();
 		symbolTable.saveTable();
 		generadorTercetos.saveTercetos();
 		
 		
+		System.out.println("------------------------------------------------------------");
 		System.out.println(symbolTable);
+		System.out.println("------------------------------------------------------------");
+		
 		System.out.println(generadorTercetos);
 		
 	
+		System.out.println("\n Compilando ... "+  fileToParse +  " con Errors : " + Lexer.errors);
+		
 	}
 	
 	public static void main(String[] args) {
@@ -86,11 +91,8 @@ public class Main {
 		
 		
 	
-		String programa = "./test_files/loop2.txt";
-		String asmDir = "./asm";
-		String outputDir="./salidas";
+			
 		
-		/*
 		 
 		if (args.length!=3){
 			System.out.println(" Error - Faltan argumentos ");
@@ -98,15 +100,11 @@ public class Main {
 			//return;
 		}
 		
-		
-		
-	
 		String programa=args[0];
 		String asmDir=args[1];
 		String outputDir=args[2];
 		
-		*/
-		
+				
 		File asm = new File(asmDir);
 		
 		

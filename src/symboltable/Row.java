@@ -30,6 +30,7 @@ public abstract class Row extends Operando{
 	public String toString(){
 		
 		return  lexeme  ;
+		//return "< TOKEN: " + token + " LEXEME: " + lexeme + " TYPE: " + type  + ">";
 		
 		//return "[ " + lexeme  + " ]";
 	}
