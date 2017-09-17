@@ -166,7 +166,7 @@ final ParserVal dup_yyval(ParserVal val)
   return dup;
 }
 //#### end semantic value section ####
-public final static short T_IDENTIFIER=257;
+public final static short T_VARIABLE=257;
 public final static short T_CONST=258;
 public final static short T_UINT=259;
 public final static short T_LONG=260;
@@ -446,7 +446,7 @@ null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
-null,null,null,null,null,null,null,null,"T_IDENTIFIER","T_CONST","T_UINT",
+null,null,null,null,null,null,null,null,"T_VARIABLE","T_CONST","T_UINT",
 "T_LONG","T_STRING","T_RW_IF","T_RW_ELSE","T_RW_DO","T_RW_PRINT","T_RW_WHILE",
 "T_RW_TOLONG","T_RW_LONG","T_RW_UINT","T_GT","T_EQ","T_LT","T_BEQ","T_GEQ",
 "T_ASSIGN","T_DISTINCT","T_PLUS_PLUS","T_ENDOFFILE",
@@ -467,9 +467,9 @@ final static String yyrule[] = {
 "d_variable : tipo lista_identificadores ';'",
 "d_variable : tipo lista_identificadores error",
 "d_variable : tipo error",
-"lista_identificadores : T_IDENTIFIER",
-"lista_identificadores : lista_identificadores ',' T_IDENTIFIER",
-"lista_identificadores : lista_identificadores T_IDENTIFIER",
+"lista_identificadores : T_VARIABLE",
+"lista_identificadores : lista_identificadores ',' T_VARIABLE",
+"lista_identificadores : lista_identificadores T_VARIABLE",
 "conjunto_sentencias : sentencia",
 "$$1 :",
 "conjunto_sentencias : conjunto_sentencias $$1 '{' ambito '}'",
@@ -544,8 +544,8 @@ final static String yyrule[] = {
 "factor : constante",
 "factor : conversion '(' exp_ar ')'",
 "factor : '(' exp_ar ')'",
-"variable : T_IDENTIFIER",
-"variable : T_IDENTIFIER T_PLUS_PLUS",
+"variable : T_VARIABLE",
+"variable : T_VARIABLE T_PLUS_PLUS",
 "constante : T_CONST",
 "constante : '-' T_CONST",
 "tipo : T_RW_UINT",
@@ -681,7 +681,7 @@ static {
 	  codes.put("}",new Short((short)'}'));
 	  codes.put(",",new Short((short)','));
 	  codes.put("tolong",T_RW_TOLONG);
-	  codes.put("identifier",T_IDENTIFIER);
+	  codes.put("variable",T_VARIABLE);
 	  codes.put("const",T_CONST);
 	  codes.put("if",T_RW_IF);
 	  codes.put("else",T_RW_ELSE);
@@ -850,7 +850,7 @@ boolean doaction;
       {
       if (yyerrflag==0)
         {
-        yyerror(/*"syntax error"*/"");
+        yyerror("syntax error");
         yynerrs++;
         }
       if (yyerrflag < 3) //low error count?
@@ -860,7 +860,7 @@ boolean doaction;
           {
           if (stateptr<0)   //check for under & overflow here
             {
-            yyerror(""/*stack underflow. aborting..."*/);  //note lower case 's'
+            yyerror("stack underflow. aborting...");  //note lower case 's'
             return 1;
             }
           yyn = yysindex[state_peek(0)];
@@ -881,7 +881,7 @@ boolean doaction;
               debug("error recovery discarding state "+state_peek(0)+" ");
             if (stateptr<0)   //check for under & overflow here
               {
-              yyerror(""/*Stack underflow. aborting..."*/);  //capital 'S'
+              yyerror("Stack underflow. aborting...");  //capital 'S'
               return 1;
               }
             state_pop();

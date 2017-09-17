@@ -562,7 +562,7 @@ void generarCodeSeg(){
                       temp =  myTercetos.get(index);
                       
                       	/****** solo impresión */
-                      //System.out.println(temp);
+                      System.out.println(temp);
                       writeArchivo("; " + temp.toString() + "\n");
                       
                       /*** solo impresion */ 

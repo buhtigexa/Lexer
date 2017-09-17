@@ -1,0 +1,10 @@
+
+ 0 [ (tolong) ,   ,1]  type : long
+ 1 [ (:=) , k_0_0  , [ 0 ]]  type : long
+ 2 [ (+) , k_0_0  ,1]  type : long
+ 3 [ (:=) , k_0_0  , [ 2 ]]  type : long
+ 4 [ (tolong) ,   ,4]  type : long
+ 5 [ (<) , k_0_0  , [ 4 ]]  type : long
+ 6 [ (BF) ,  [ 8 ]   ,]  type : long
+ 7 [ (BI) ,  [ 2 ]   ,]  type : long
+ 8 [ (print) ,   , fin del programa ]  type : 

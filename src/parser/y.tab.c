@@ -15,7 +15,7 @@ import utils.*;
 
 
 #line 18 "y.tab.c"
-#define T_IDENTIFIER 257
+#define T_VARIABLE 257
 #define T_CONST 258
 #define T_UINT 259
 #define T_LONG 260
@@ -282,7 +282,7 @@ char *yyname[] = {
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,"T_IDENTIFIER","T_CONST","T_UINT","T_LONG","T_STRING",
+0,0,0,0,0,0,0,0,0,0,"T_VARIABLE","T_CONST","T_UINT","T_LONG","T_STRING",
 "T_RW_IF","T_RW_ELSE","T_RW_DO","T_RW_PRINT","T_RW_WHILE","T_RW_TOLONG",
 "T_RW_LONG","T_RW_UINT","T_GT","T_EQ","T_LT","T_BEQ","T_GEQ","T_ASSIGN",
 "T_DISTINCT","T_PLUS_PLUS","T_ENDOFFILE",
@@ -303,9 +303,9 @@ char *yyrule[] = {
 "d_variable : tipo lista_identificadores ';'",
 "d_variable : tipo lista_identificadores error",
 "d_variable : tipo error",
-"lista_identificadores : T_IDENTIFIER",
-"lista_identificadores : lista_identificadores ',' T_IDENTIFIER",
-"lista_identificadores : lista_identificadores T_IDENTIFIER",
+"lista_identificadores : T_VARIABLE",
+"lista_identificadores : lista_identificadores ',' T_VARIABLE",
+"lista_identificadores : lista_identificadores T_VARIABLE",
 "conjunto_sentencias : sentencia",
 "$$1 :",
 "conjunto_sentencias : conjunto_sentencias $$1 '{' ambito '}'",
@@ -380,8 +380,8 @@ char *yyrule[] = {
 "factor : constante",
 "factor : conversion '(' exp_ar ')'",
 "factor : '(' exp_ar ')'",
-"variable : T_IDENTIFIER",
-"variable : T_IDENTIFIER T_PLUS_PLUS",
+"variable : T_VARIABLE",
+"variable : T_VARIABLE T_PLUS_PLUS",
 "constante : T_CONST",
 "constante : '-' T_CONST",
 "tipo : T_RW_UINT",
@@ -545,7 +545,7 @@ static {
 	  codes.put("}",new Short((short)'}'));
 	  codes.put(",",new Short((short)','));
 	  codes.put("tolong",T_RW_TOLONG);
-	  codes.put("identifier",T_IDENTIFIER);
+	  codes.put("variable",T_VARIABLE);
 	  codes.put("const",T_CONST);
 	  codes.put("if",T_RW_IF);
 	  codes.put("else",T_RW_ELSE);

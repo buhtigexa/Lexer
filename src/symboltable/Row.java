@@ -29,8 +29,14 @@ public abstract class Row extends Operando{
 	
 	public String toString(){
 		
-		return "< TOKEN: " + token + " LEXEME: " + lexeme + " TYPE: " + type  + ">";
+		return  lexeme  ;
+		
 		//return "[ " + lexeme  + " ]";
+	}
+	
+	public String prettyPrint(){
+		
+		return "< TOKEN: " + token + " LEXEME: " + lexeme + " TYPE: " + type  + ">";
 	}
 	
 	public boolean isEmptyType(){

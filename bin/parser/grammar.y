@@ -43,7 +43,7 @@ import utils.*;
 
 %}
 
-%token T_IDENTIFIER
+%token T_VARIABLE
        T_CONST
        T_UINT
        T_LONG
@@ -101,11 +101,11 @@ d_variable : tipo lista_identificadores ';'
 
 
 
-lista_identificadores   : T_IDENTIFIER                            {  updateDeclaration(((Row)$1.obj),tipo_identificador);    }
+lista_identificadores   : T_VARIABLE                            {  updateDeclaration(((Row)$1.obj),tipo_identificador);    }
 
-                        | lista_identificadores ',' T_IDENTIFIER  {  updateDeclaration((Row)($3.obj),tipo_identificador);    }   
+                        | lista_identificadores ',' T_VARIABLE  {  updateDeclaration((Row)($3.obj),tipo_identificador);    }   
 
-                        | lista_identificadores T_IDENTIFIER       
+                        | lista_identificadores T_VARIABLE       
                         ;
 
 
@@ -404,7 +404,7 @@ factor          :       variable                                 {  $$ = $1;   }
                 ;
 
 
-variable        :       T_IDENTIFIER                          {  
+variable        :       T_VARIABLE                          {  
                                                                
                                                                Row row = verifyDeclaration (decorator,($1.obj));
                                                                $$.obj=row;
@@ -412,7 +412,7 @@ variable        :       T_IDENTIFIER                          {
                                                                }
 
                 
-                |       T_IDENTIFIER T_PLUS_PLUS           {  
+                |       T_VARIABLE T_PLUS_PLUS           {  
                                                               Row id = (Row)$1.obj;
                                                               if (id.getType().compareTo("long")!=0){
                                                                 Lexer.showError("La operación ++ , sólo está permitida para tipos long .");
@@ -640,7 +640,7 @@ static {
 	  codes.put("}",new Short((short)'}'));
 	  codes.put(",",new Short((short)','));
 	  codes.put("tolong",T_RW_TOLONG);
-	  codes.put("identifier",T_IDENTIFIER);
+	  codes.put("variable",T_VARIABLE);
 	  codes.put("const",T_CONST);
 	  codes.put("if",T_RW_IF);
 	  codes.put("else",T_RW_ELSE);

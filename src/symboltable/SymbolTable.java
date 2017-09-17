@@ -49,7 +49,7 @@ public class SymbolTable {
 		String str=new String();
 		
 		for (int i=0; i< rows.size();i++){
-			System.out.println(rows.get(i));
+			System.out.println( rows.get(i).prettyPrint());
 		}
 		
 		return str;
@@ -95,6 +95,7 @@ public class SymbolTable {
 		String str=new String();
 			for (int i=0; i< rows.size();i++){
 				str=rows.get(i).toString() + "\n";
+				//str=  rows.get(i).prettyPrint() + "\n";
 				printWriter.write(str);
 		}
 		printWriter.close();

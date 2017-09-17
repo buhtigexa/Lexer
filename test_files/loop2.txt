@@ -1,0 +1,13 @@
+{
+
+  uint i , j ;
+  long a , b , k;
+  
+	k:=tolong(1);
+	do
+		k++;
+	while ( k < tolong(4));
+			
+   	print( ' fin del programa ' );		
+
+}

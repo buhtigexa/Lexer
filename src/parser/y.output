@@ -19,9 +19,9 @@
   13             | tipo lista_identificadores error
   14             | tipo error
 
-  15  lista_identificadores : T_IDENTIFIER
-  16                        | lista_identificadores ',' T_IDENTIFIER
-  17                        | lista_identificadores T_IDENTIFIER
+  15  lista_identificadores : T_VARIABLE
+  16                        | lista_identificadores ',' T_VARIABLE
+  17                        | lista_identificadores T_VARIABLE
 
   18  conjunto_sentencias : sentencia
 
@@ -126,8 +126,8 @@
   90         | conversion '(' exp_ar ')'
   91         | '(' exp_ar ')'
 
-  92  variable : T_IDENTIFIER
-  93           | T_IDENTIFIER T_PLUS_PLUS
+  92  variable : T_VARIABLE
+  93           | T_VARIABLE T_PLUS_PLUS
 
   94  constante : T_CONST
   95            | '-' T_CONST
@@ -148,7 +148,7 @@ state 0
 	programa : .  (1)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_LONG  shift 4
@@ -173,12 +173,12 @@ state 0
 
 
 state 1
-	variable : T_IDENTIFIER .  (92)
-	variable : T_IDENTIFIER . T_PLUS_PLUS  (93)
+	variable : T_VARIABLE .  (92)
+	variable : T_VARIABLE . T_PLUS_PLUS  (93)
 
 	T_PLUS_PLUS  shift 20
 	error  reduce 92
-	T_IDENTIFIER  reduce 92
+	T_VARIABLE  reduce 92
 	T_RW_IF  reduce 92
 	T_RW_ELSE  reduce 92
 	T_RW_DO  reduce 92
@@ -212,7 +212,7 @@ state 2
 
 	error  shift 21
 	T_RW_WHILE  shift 22
-	T_IDENTIFIER  reduce 64
+	T_VARIABLE  reduce 64
 	T_RW_IF  reduce 64
 	T_RW_DO  reduce 64
 	T_RW_PRINT  reduce 64
@@ -255,7 +255,7 @@ state 6
 	$$2 : .  (21)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_LONG  shift 4
@@ -290,7 +290,7 @@ state 8
 	$$2 : .  (21)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_LONG  shift 4
@@ -323,7 +323,7 @@ state 10
 	declaracion_sentencia : declaracion .  (7)
 	declaraciones : declaracion .  (9)
 
-	T_IDENTIFIER  reduce 9
+	T_VARIABLE  reduce 9
 	T_RW_IF  reduce 9
 	T_RW_DO  reduce 9
 	T_RW_PRINT  reduce 9
@@ -351,7 +351,7 @@ state 13
 	d_variable : tipo . error  (14)
 
 	error  shift 37
-	T_IDENTIFIER  shift 38
+	T_VARIABLE  shift 38
 	.  error
 
 	lista_identificadores  goto 39
@@ -372,7 +372,7 @@ state 15
 
 	';'  shift 42
 	error  reduce 37
-	T_IDENTIFIER  reduce 37
+	T_VARIABLE  reduce 37
 	T_RW_IF  reduce 37
 	T_RW_ELSE  reduce 37
 	T_RW_DO  reduce 37
@@ -391,7 +391,7 @@ state 16
 
 	';'  shift 43
 	error  reduce 39
-	T_IDENTIFIER  reduce 39
+	T_VARIABLE  reduce 39
 	T_RW_IF  reduce 39
 	T_RW_ELSE  reduce 39
 	T_RW_DO  reduce 39
@@ -410,7 +410,7 @@ state 17
 
 	';'  shift 44
 	error  reduce 38
-	T_IDENTIFIER  reduce 38
+	T_VARIABLE  reduce 38
 	T_RW_IF  reduce 38
 	T_RW_ELSE  reduce 38
 	T_RW_DO  reduce 38
@@ -443,7 +443,7 @@ state 19
 
 
 state 20
-	variable : T_IDENTIFIER T_PLUS_PLUS .  (93)
+	variable : T_VARIABLE T_PLUS_PLUS .  (93)
 
 	.  reduce 93
 
@@ -472,7 +472,7 @@ state 23
 	do : T_RW_DO $$9 . bloque while  (65)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	'{'  shift 52
@@ -529,7 +529,7 @@ state 29
 	$$2 : .  (21)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_LONG  shift 4
@@ -560,7 +560,7 @@ state 30
 	$$1 : .  (19)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_LONG  shift 4
@@ -609,7 +609,7 @@ state 34
 	$$1 : .  (19)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_LONG  shift 4
@@ -650,7 +650,7 @@ state 37
 
 
 state 38
-	lista_identificadores : T_IDENTIFIER .  (15)
+	lista_identificadores : T_VARIABLE .  (15)
 
 	.  reduce 15
 
@@ -658,11 +658,11 @@ state 38
 state 39
 	d_variable : tipo lista_identificadores . ';'  (12)
 	d_variable : tipo lista_identificadores . error  (13)
-	lista_identificadores : lista_identificadores . ',' T_IDENTIFIER  (16)
-	lista_identificadores : lista_identificadores . T_IDENTIFIER  (17)
+	lista_identificadores : lista_identificadores . ',' T_VARIABLE  (16)
+	lista_identificadores : lista_identificadores . T_VARIABLE  (17)
 
 	error  shift 66
-	T_IDENTIFIER  shift 67
+	T_VARIABLE  shift 67
 	';'  shift 68
 	','  shift 69
 	.  error
@@ -716,7 +716,7 @@ state 46
 	asignacion : lado_izquierdo T_EQ . error  (43)
 
 	error  shift 72
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -736,7 +736,7 @@ state 47
 	asignacion : lado_izquierdo T_ASSIGN . error  (42)
 
 	error  shift 83
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -768,7 +768,7 @@ state 50
 	condicion : '(' . error ')'  (56)
 
 	error  shift 85
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -795,7 +795,7 @@ state 52
 	bloque : '{' . declaraciones sentencias '}'  (63)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_LONG  shift 4
@@ -869,7 +869,7 @@ state 59
 	$$1 : .  (19)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_LONG  shift 4
@@ -923,7 +923,7 @@ state 64
 	$$4 : .  (29)
 
 	error  shift 100
-	T_IDENTIFIER  reduce 29
+	T_VARIABLE  reduce 29
 	T_RW_IF  reduce 29
 	T_RW_DO  reduce 29
 	T_RW_PRINT  reduce 29
@@ -949,7 +949,7 @@ state 66
 
 
 state 67
-	lista_identificadores : lista_identificadores T_IDENTIFIER .  (17)
+	lista_identificadores : lista_identificadores T_VARIABLE .  (17)
 
 	.  reduce 17
 
@@ -961,9 +961,9 @@ state 68
 
 
 state 69
-	lista_identificadores : lista_identificadores ',' . T_IDENTIFIER  (16)
+	lista_identificadores : lista_identificadores ',' . T_VARIABLE  (16)
 
-	T_IDENTIFIER  shift 104
+	T_VARIABLE  shift 104
 	.  error
 
 
@@ -973,7 +973,7 @@ state 70
 	$$5 : .  (32)
 
 	error  shift 105
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_ELSE  shift 106
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
@@ -997,7 +997,7 @@ state 71
 	$$6 : .  (45)
 
 	error  shift 109
-	T_IDENTIFIER  reduce 45
+	T_VARIABLE  reduce 45
 	T_RW_IF  reduce 45
 	T_RW_DO  reduce 45
 	T_RW_PRINT  reduce 45
@@ -1034,7 +1034,7 @@ state 75
 state 76
 	factor : '(' . exp_ar ')'  (91)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -1059,7 +1059,7 @@ state 77
 	'+'  shift 113
 	'-'  shift 114
 	error  reduce 41
-	T_IDENTIFIER  reduce 41
+	T_VARIABLE  reduce 41
 	T_RW_IF  reduce 41
 	T_RW_ELSE  reduce 41
 	T_RW_DO  reduce 41
@@ -1089,7 +1089,7 @@ state 79
 	'*'  shift 115
 	'/'  shift 116
 	error  reduce 80
-	T_IDENTIFIER  reduce 80
+	T_VARIABLE  reduce 80
 	T_RW_IF  reduce 80
 	T_RW_ELSE  reduce 80
 	T_RW_DO  reduce 80
@@ -1148,7 +1148,7 @@ state 84
 	'+'  shift 113
 	'-'  shift 114
 	error  reduce 40
-	T_IDENTIFIER  reduce 40
+	T_VARIABLE  reduce 40
 	T_RW_IF  reduce 40
 	T_RW_ELSE  reduce 40
 	T_RW_DO  reduce 40
@@ -1216,7 +1216,7 @@ state 88
 	bloque : '{' declaraciones . sentencias '}'  (63)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_LONG  shift 4
@@ -1247,7 +1247,7 @@ state 90
 	bloque : '{' sentencias . '}'  (61)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	'}'  shift 132
@@ -1317,7 +1317,7 @@ state 99
 	$$4 : .  (29)
 
 	error  shift 100
-	T_IDENTIFIER  reduce 29
+	T_VARIABLE  reduce 29
 	T_RW_IF  reduce 29
 	T_RW_DO  reduce 29
 	T_RW_PRINT  reduce 29
@@ -1361,7 +1361,7 @@ state 103
 	$$2 : .  (21)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_IF  reduce 32
@@ -1379,7 +1379,7 @@ state 103
 
 
 state 104
-	lista_identificadores : lista_identificadores ',' T_IDENTIFIER .  (16)
+	lista_identificadores : lista_identificadores ',' T_VARIABLE .  (16)
 
 	.  reduce 16
 
@@ -1396,7 +1396,7 @@ state 106
 	$$8 : .  (51)
 
 	error  shift 139
-	T_IDENTIFIER  reduce 51
+	T_VARIABLE  reduce 51
 	T_RW_IF  reduce 51
 	T_RW_DO  reduce 51
 	T_RW_PRINT  reduce 51
@@ -1435,7 +1435,7 @@ state 110
 	if : T_RW_IF condicion $$6 . bloque $$7 else  (47)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	'{'  shift 52
@@ -1475,7 +1475,7 @@ state 113
 	exp_ar : exp_ar '+' . error  (81)
 
 	error  shift 145
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -1494,7 +1494,7 @@ state 114
 	exp_ar : exp_ar '-' . error  (82)
 
 	error  shift 147
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -1513,7 +1513,7 @@ state 115
 	term : term '*' . error  (86)
 
 	error  shift 149
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -1531,7 +1531,7 @@ state 116
 	term : term '/' . error  (87)
 
 	error  shift 151
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -1547,7 +1547,7 @@ state 116
 state 117
 	factor : conversion '(' . exp_ar ')'  (90)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -1571,7 +1571,7 @@ state 118
 state 119
 	comparacion : exp_ar error . exp_ar  (60)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -1631,7 +1631,7 @@ state 126
 state 127
 	comparacion : exp_ar sgn_cmp . exp_ar  (59)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -1649,7 +1649,7 @@ state 127
 state 128
 	comparacion : comparacion error . exp_ar  (58)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -1673,7 +1673,7 @@ state 129
 state 130
 	comparacion : comparacion sgn_cmp . exp_ar  (57)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_CONST  shift 73
 	T_RW_TOLONG  shift 74
 	'-'  shift 75
@@ -1693,7 +1693,7 @@ state 131
 	bloque : '{' declaraciones sentencias . '}'  (63)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	'}'  shift 158
@@ -1745,7 +1745,7 @@ state 137
 	$$2 : .  (21)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_LONG  shift 4
@@ -1775,7 +1775,7 @@ state 138
 	$$1 : .  (19)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_LONG  shift 4
@@ -1807,7 +1807,7 @@ state 140
 	else : T_RW_ELSE $$8 . bloque  (52)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	'{'  shift 52
@@ -1866,7 +1866,7 @@ state 146
 	'*'  shift 115
 	'/'  shift 116
 	error  reduce 78
-	T_IDENTIFIER  reduce 78
+	T_VARIABLE  reduce 78
 	T_RW_IF  reduce 78
 	T_RW_ELSE  reduce 78
 	T_RW_DO  reduce 78
@@ -1906,7 +1906,7 @@ state 148
 	'*'  shift 115
 	'/'  shift 116
 	error  reduce 79
-	T_IDENTIFIER  reduce 79
+	T_VARIABLE  reduce 79
 	T_RW_IF  reduce 79
 	T_RW_ELSE  reduce 79
 	T_RW_DO  reduce 79
@@ -2067,7 +2067,7 @@ state 160
 	$$1 : .  (19)
 	$$5 : .  (32)
 
-	T_IDENTIFIER  shift 1
+	T_VARIABLE  shift 1
 	T_RW_DO  shift 2
 	T_RW_PRINT  shift 3
 	T_RW_LONG  shift 4

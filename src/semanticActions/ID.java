@@ -31,7 +31,7 @@ public class ID extends SimpleAction{
 				}
 				lexer.lexeme=lexer.symTable.getDecorator().decorate(lexer.lexeme);
 				if (!lexer.symTable.contains(lexer.lexeme)){
-					token=new RowIdentifier("identifier",lexer.lexeme,"");
+					token=new RowIdentifier("variable",lexer.lexeme,"");
 					lexer.symTable.add(token);
 					}
 				else

@@ -53,11 +53,12 @@ public class Main {
 		
 		Lexer.saveMessages();
 		symbolTable.saveTable();
+		generadorTercetos.saveTercetos();
 		
-		/*
+		
 		System.out.println(symbolTable);
 		System.out.println(generadorTercetos);
-		*/
+		
 	
 	}
 	
@@ -85,7 +86,12 @@ public class Main {
 		
 		
 	
-	
+		String programa = "./test_files/loop2.txt";
+		String asmDir = "./asm";
+		String outputDir="./salidas";
+		
+		/*
+		 
 		if (args.length!=3){
 			System.out.println(" Error - Faltan argumentos ");
 			System.out.println(" Uso : [1]path al programa [2] path al directorio de archivos assembler [3] directorio para guardar la salida  ");
@@ -99,6 +105,7 @@ public class Main {
 		String asmDir=args[1];
 		String outputDir=args[2];
 		
+		*/
 		
 		File asm = new File(asmDir);
 		
@@ -143,6 +150,8 @@ public class Main {
 			System.out.println(" No hay programa para compilar .");
 			return;
 		}
+		
+
 		
 		t.setUp(file,asmDir,outputDir);
 			

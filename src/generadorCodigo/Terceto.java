@@ -125,7 +125,7 @@ public class Terceto {
 		
 		//str="[ (" + operador  + ") "+ opI  + "   ---   "  + opD + " --type : <" + type +">]";
 		
-		str= id +" [ (" + operador  + ") "+ opIstr.toString()  + "   ---   "  + opDstr.toString()  + " --type : <" + type +">]";
+		str= id +" [ (" + operador  + ") , "+ opIstr.toString()  + "  ,"  + opDstr.toString()  + "]  type : " + type ;
 
 		return str;
 	}
