@@ -94,8 +94,8 @@ public class SymbolTable {
 		
 		String str=new String();
 			for (int i=0; i< rows.size();i++){
-				str=rows.get(i).toString() + "\n";
-				//str=  rows.get(i).prettyPrint() + "\n";
+				//str=rows.get(i).toString() + "\n";
+				str=  rows.get(i).prettyPrint() + "\n";
 				printWriter.write(str);
 		}
 			

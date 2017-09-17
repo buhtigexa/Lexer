@@ -57,7 +57,10 @@ public class Main {
 		
 		
 		System.out.println("------------------------------------------------------------");
+		
+		
 		System.out.println(symbolTable);
+		
 		System.out.println("------------------------------------------------------------");
 		
 		System.out.println(generadorTercetos);
