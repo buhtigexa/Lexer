@@ -1,0 +1,27 @@
+{
+
+  uint i , j ;
+  long a , b , k;
+
+ 
+  i:=1;
+  a:=tolong(1);
+  b:=tolong(5);
+  k:=tolong(1);
+
+  do { 
+  		if (a < b){
+
+  	   		a++;
+  	   		print('a < b');
+  	}	
+  	
+  	else
+  			print('fuera del if');
+  	
+  	
+  }
+
+  while ( k < tolong(5));
+  print(' debe haber 4 carteles, uno es distinto (fuera del if)')
+}

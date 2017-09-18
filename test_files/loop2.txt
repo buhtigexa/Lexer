@@ -3,14 +3,28 @@
   uint i , j ;
   long a , b , k;
   
-	k:=tolong(1);
 
+	k:=tolong(1);
+	i:=1;
 	do {
-		print(' dentro del loop');
+		
+		print(' tres prints');
 		k++;
+
+	
 	}	
 	while ( k < tolong(4));
-			
+	
+	b:=tolong(0);
+	do {
+
+		b++;
+		print('incrementando b... 5 prints');
+	}
+
+	while ( b < tolong(5) );
+	
+
    	print( ' fin del programa ' );		
 
 }
