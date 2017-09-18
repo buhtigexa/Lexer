@@ -196,8 +196,10 @@ public class GeneradorTercetos {
 					if (src.operador.compareTo("BF")==0){
 						src.type=tercetos.get(posTercetoAnterior).type;
 					}
-						else
+						else // esto es un parche barbaro .... 
+							if (destino < tercetos.size()){
 						src.type=tercetos.get(destino).type;
+							}
 					
 					if (destino < tercetos.size()){
 						tercetoDestino=tercetos.get(destino);
