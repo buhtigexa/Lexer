@@ -23,5 +23,5 @@
   }
 
   while ( k < tolong(5));
-  print(' debe haber 4 carteles, uno es distinto (fuera del if)')
+  print(' debe haber 4 carteles, uno es distinto (fuera del if)');
 }
