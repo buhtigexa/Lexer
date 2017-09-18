@@ -99,11 +99,6 @@ public class Main {
 		System.out.println(" ");
 		System.out.println(" ---------------------------------------------------------------- ");
 		
-		
-	
-			
-		
-		 
 		if (args.length!=3){
 			System.out.println(" Error - Faltan argumentos ");
 			System.out.println(" Uso : [1]path al programa [2] path al directorio de archivos assembler [3] directorio para guardar la salida  ");
