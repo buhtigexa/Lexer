@@ -7,6 +7,7 @@ public class Terceto {
 	public String operador;
 	public boolean isAsignacion;
 	public Object result;
+	public boolean isPlus;
 	
 	// solo para etiquetado
 	public String labelSrc;
@@ -21,6 +22,7 @@ public class Terceto {
 
 	public boolean isSalto(){
 		
+	
 		return (operador.compareTo("BF")==0) || (operador.compareTo("BI")==0);
 	}
 	public int id;
@@ -67,9 +69,13 @@ public class Terceto {
 		this.isAsignacion=isAsignacion();
 		this.labelDst="";
 		this.labelSrc="";
+		this.isPlus=false;
 		
 	}
 	
+	public void setPlus(boolean isPlus){
+		this.isPlus=isPlus;
+	}
 	public boolean isAsignacion(){
 		
 		if (operador.compareTo(":=")==0){

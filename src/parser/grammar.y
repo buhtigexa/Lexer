@@ -428,8 +428,10 @@ variable        :       T_VARIABLE                          {
 
 
                                                               Terceto terceto_plus = new Terceto ("+",$1.obj,constant);
+                                                              terceto_plus.setPlus(true);
                                                               generadorTercetos.add(terceto_plus);
                                                               Terceto terceto= new Terceto (":=",$1.obj,new Referencia(this.generadorTercetos,terceto_plus.getId()));
+                                                              terceto.setPlus(true);
                                                               generadorTercetos.add(terceto);
                                                               //System.out.println(terceto);
                                                               //$$.obj=terceto;

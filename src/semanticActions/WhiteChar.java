@@ -21,7 +21,7 @@ public class WhiteChar extends SimpleAction{
 		}
 		// New Line \n 		\n tiene sentido en unix
 		if (code == 10) {
-			lexer.line++;
+			++lexer.line;
 			lexer.column=0;
 		}
 		// Carriage return \r   \n\r tiene sentido en windows

@@ -93,7 +93,8 @@ public class GeneradorTercetos {
 		}
 		else{
 			if (t.operador.compareTo("print")!=0){
-				Lexer.showError("Error de tipos, se requiere conversión explícita:  " );
+				if (!t.isPlus)
+					Lexer.showError("Error de tipos, se requiere conversión explícita:  " );
 			 }
 			}
 	}

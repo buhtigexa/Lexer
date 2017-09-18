@@ -456,6 +456,8 @@ public class Lexer {
 		reservedWords.put("tolong","tolong");
 		reservedWords.put("touint","touint");
 		position=0;
+		line=1;
+		column=1; 
 	
 		
 	}
@@ -481,6 +483,7 @@ public class Lexer {
 		String errorTxt ="";
 		
 		if (message!=""|| !message.isEmpty()){
+			
 			errorTxt = "\n -[ERROR]"  +  "linea:columna (" + line + " , " + column + " ) :" + message;
 			errors++;
 		}
@@ -495,7 +498,7 @@ public class Lexer {
 
 		String msgTxt = "\n  -[INFO] "  +  "linea:columna (" + line + " , " + column + " ) :" + message;
 		if (printMsg){
-			System.out.println(msgTxt);
+		//	System.out.println(msgTxt);
 		}
 	}
 	public static void saveMessages(){
