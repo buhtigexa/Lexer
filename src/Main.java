@@ -21,12 +21,15 @@ public class Main {
 	
 	public void setUp(File fileToParse,String generatedPath,String output){
 		
+		System.out.println(" Generated path " + generatedPath);
 		String fileName= fileToParse.getName();
 		if (fileName.length()>8){
 			fileName=fileName.substring(0, 7);
 			fileName=fileName + ".txt";
 		}
-		MyFStream fstream = new MyFStream(generatedPath+"/"+  fileName.replace(".txt", ".asm").toLowerCase());
+		String newName = generatedPath+"/"+  fileName.replace(".txt", ".asm").toLowerCase();
+		newName=newName.replace(".t.asm", ".asm");
+		MyFStream fstream = new MyFStream(newName);
 		
 		String symbolFile=output+"/symbolTable.txt";
 		String errorFile =output+"/errors.txt";

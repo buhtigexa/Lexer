@@ -417,7 +417,16 @@ variable        :       T_VARIABLE                          {
                                                               if (id.getType().compareTo("long")!=0){
                                                                 Lexer.showError("La operación ++ , sólo está permitida para tipos long .");
                                                               }
-                                                              Row constant = new RowConst("const","1","long");
+
+                                                              Row constant = symbolTable.find("1","long");
+                                                              
+                                                              if (constant==null){
+                                                              
+                                                              		constant = new RowConst("const","1","long");
+                                                              		symbolTable.add(constant);
+                                                              	}
+
+
                                                               Terceto terceto_plus = new Terceto ("+",$1.obj,constant);
                                                               generadorTercetos.add(terceto_plus);
                                                               Terceto terceto= new Terceto (":=",$1.obj,new Referencia(this.generadorTercetos,terceto_plus.getId()));

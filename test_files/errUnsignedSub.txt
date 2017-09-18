@@ -24,6 +24,8 @@
 				print(' do while dentro de un ambito');
 				d:=-1;
 				f:=-10;
+		
+
 				i:=d-f;
 						
 				if ( i > tolong(w)+tolong(index) )
