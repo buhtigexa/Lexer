@@ -125,8 +125,16 @@ public class Terceto {
 		
 		//str="[ (" + operador  + ") "+ opI  + "   ---   "  + opD + " --type : <" + type +">]";
 		
-		str= id +" [ (" + operador  + ") , "+ opIstr.toString()  + "  ,"  + opDstr.toString()  + "]  type : " + type ;
-
+		if ((opIstr!=null) && (opDstr!=null)){
+			str= id +" [ (" + operador  + ") , "+ opIstr.toString()  + "  ,"  + opDstr.toString()  + "]  type : " + type ;
+		}
+		else if (opDstr!=null){
+			str= id +" [ (" + operador  + ") , "+ " --- "  + "  ,"  + opDstr.toString()  + "]  type : " + type ;
+		}
+		
+		else if (opIstr!=null){
+			str= id +" [ (" + operador  + ") , "+  opIstr.toString()  + "  ,"  + "-----"  + "]  type : " + type ;
+		}
 		return str;
 	}
 	

@@ -21,7 +21,7 @@ public class Main {
 	
 	public void setUp(File fileToParse,String generatedPath,String output){
 		
-		System.out.println(" Generated path " + generatedPath);
+		//System.out.println(" Generated path " + generatedPath);
 		String fileName= fileToParse.getName();
 		if (fileName.length()>8){
 			fileName=fileName.substring(0, 7);
@@ -48,8 +48,12 @@ public class Main {
 		
 		GeneradorAssembler generadorASM=new GeneradorAssembler(fstream, generadorTercetos, symbolTable);
 
-		generadorASM.generarCodigo();
-
+		if (Lexer.errors==0){ 
+			
+			// si hay errores no generamos código.
+			
+			generadorASM.generarCodigo();
+		}
 		
 		
 		
