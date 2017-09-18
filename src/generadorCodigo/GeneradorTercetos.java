@@ -93,6 +93,13 @@ public class GeneradorTercetos {
 		}
 		else{
 			if (t.operador.compareTo("print")!=0){
+				//
+				if ((!opD.isReferencia) && (!opI.isReferencia)  && (t.operador.compareTo(":=")==0)){
+					Lexer.showError("Asignación no válida . se requiere conversión explícita:  " );
+					
+				}
+				else
+				//
 				if (!t.isPlus)
 					Lexer.showError("Error de tipos, se requiere conversión explícita:  " );
 			 }
