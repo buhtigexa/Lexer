@@ -2,10 +2,13 @@
   uint i , j ;
   long k;
   i:=-1;
+ 
   if (k < j)
   	print (' k es menor que j');
   else 
   	print ('k es mayor que j');
+ 
  j++;
  k++;
+ 
  }
